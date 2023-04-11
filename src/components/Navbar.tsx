@@ -75,7 +75,7 @@ const Navbar: NextPage = () => {
                 </div>
             </nav>
             <div className={`${openMenu ? 'flex' : 'hidden'} z-50 mt-8 flex-1 justify-center md:mt-0 md:block md:pb-0`}>
-                <ul className='items-center justify-center space-y-8 text-center md:flex md:space-x-6 md:space-y-0 mt-10'>
+                <ul className='items-center justify-center space-y-8 text-center md:flex md:space-x-6 md:space-y-0 mt-10 mb-5'>
                     <li>
                         <Link
                             href='/'
