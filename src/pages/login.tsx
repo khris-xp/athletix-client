@@ -2,6 +2,7 @@ import React, { Fragment, useState } from 'react'
 import { NextPage } from 'next'
 import Loading from '@/components/Loading';
 import Layout from '@/layouts/Layout';
+import { loginService } from '@/services/user.services';
 
 interface LoginProps {
     email: string,
@@ -16,6 +17,7 @@ const Login: NextPage = () => {
         setIsLoading(true);
         try {
             event.preventDefault();
+            await loginService(user.email, user.password);
             setUser({ ...user, email: '', password: '' });
             setIsLoading(false);
         } catch (err) {
