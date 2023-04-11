@@ -1,7 +1,8 @@
 import Layout from '@/layouts/Layout'
+import { NextPage } from 'next'
 import React, { Fragment } from 'react'
 
-const Register = () => {
+const Register: NextPage = () => {
     return (
         <Fragment>
             <Layout>

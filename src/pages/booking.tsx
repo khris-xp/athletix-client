@@ -1,9 +1,10 @@
-import React, { Fragment } from 'react'
+import { Fragment, useEffect } from 'react'
 import Banner from '@/components/Banner'
 import Slots from '@/components/Slots'
 import Layout from '@/layouts/Layout'
+import { NextPage } from 'next'
 
-const Booking = () => {
+const Booking: NextPage = () => {
     return (
         <Fragment>
             <Layout>
