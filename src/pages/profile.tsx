@@ -4,7 +4,7 @@ import Layout from '@/layouts/Layout';
 import { useAuth } from '@/context/auth';
 
 const Profile: NextPage = () => {
-    const { user } = useAuth()
+    const { user } = useAuth();
     return (
         <Fragment>
             <Layout>
@@ -57,11 +57,11 @@ const Profile: NextPage = () => {
                                     </div>
                                     <div className="text-center ">
                                         <h3 className="text-4xl font-semibold leading-normal text-gray-800 mb-2">
-                                            {user?.fullname}
+                                            {user?._Person__fullname}
                                         </h3>
                                         <div className="text-sm leading-normal mt-0 mb-2 text-gray-500 font-bold uppercase">
                                             <i className="fas fa-map-marker-alt mr-2 text-lg text-gray-500"></i>{" "}
-                                            {user?.account.role}
+                                            {user?._Person__account._Account__role}
                                         </div>
                                     </div>
                                     <hr className="mt-6 border-b-1 border-blueGray-300" />
@@ -79,7 +79,7 @@ const Profile: NextPage = () => {
                                                                     <label className="block uppercase text-blueGray-600 text-xs font-bold mb-2" htmlFor="grid-password">
                                                                         Fullname
                                                                     </label>
-                                                                    <p className='py-2 px-1'>{user?.fullname}</p>
+                                                                    <p className='py-2 px-1'>{user?._Person__fullname}</p>
                                                                 </div>
                                                             </div>
                                                             <div className="w-full lg:w-6/12 px-4">
@@ -87,7 +87,7 @@ const Profile: NextPage = () => {
                                                                     <label className="block uppercase text-blueGray-600 text-xs font-bold mb-2" htmlFor="grid-password">
                                                                         Email address
                                                                     </label>
-                                                                    <p className='py-2 px-1'>{user?.email}</p>
+                                                                    <p className='py-2 px-1'>{user?._Person__email}</p>
                                                                 </div>
                                                             </div>
                                                             <div className="w-full lg:w-6/12 px-4">
@@ -95,7 +95,7 @@ const Profile: NextPage = () => {
                                                                     <label className="block uppercase text-blueGray-600 text-xs font-bold mb-2" htmlFor="grid-password">
                                                                         Birth Date
                                                                     </label>
-                                                                    <p className='py-2 px-1'>{user?.birth_date}</p>
+                                                                    <p className='py-2 px-1'>{user?._Person__birth_date}</p>
                                                                 </div>
                                                             </div>
                                                             <div className="w-full lg:w-6/12 px-4">
@@ -103,7 +103,7 @@ const Profile: NextPage = () => {
                                                                     <label className="block uppercase text-blueGray-600 text-xs font-bold mb-2" htmlFor="grid-password">
                                                                         Role
                                                                     </label>
-                                                                    <p className='py-2 px-1'>{user?.account.role}</p>
+                                                                    <p className='py-2 px-1'>{user?._Person__account._Account__role}</p>
                                                                 </div>
                                                             </div>
                                                         </div>
@@ -119,7 +119,7 @@ const Profile: NextPage = () => {
                                                                     <label className="block uppercase text-blueGray-600 text-xs font-bold mb-2" htmlFor="grid-password">
                                                                         Address
                                                                     </label>
-                                                                    <p className='py-2 px-1'>{user?.address}</p>
+                                                                    <p className='py-2 px-1'>{user?._Person__address}</p>
                                                                 </div>
                                                             </div>
                                                             <div className="w-full lg:w-4/12 px-4">
@@ -127,7 +127,7 @@ const Profile: NextPage = () => {
                                                                     <label className="block uppercase text-blueGray-600 text-xs font-bold mb-2" htmlFor="grid-password">
                                                                         Phone Number
                                                                     </label>
-                                                                    <p className='py-2 px-1'>{user?.phone_number}</p>
+                                                                    <p className='py-2 px-1'>{user?._Person__phone_number}</p>
                                                                 </div>
                                                             </div>
                                                             <div className="w-full lg:w-4/12 px-4">
@@ -135,7 +135,7 @@ const Profile: NextPage = () => {
                                                                     <label className="block uppercase text-blueGray-600 text-xs font-bold mb-2" htmlFor="grid-password">
                                                                         Emergency Contact Fullname
                                                                     </label>
-                                                                    <p className='p-3'>{user?.emergency_contact_fullname}</p>
+                                                                    <p className='p-3'>{user?._Person__emergency_contact_fullname}</p>
                                                                 </div>
                                                             </div>
                                                             <div className="w-full lg:w-4/12 px-4">
@@ -143,7 +143,7 @@ const Profile: NextPage = () => {
                                                                     <label className="block uppercase text-blueGray-600 text-xs font-bold mb-2" htmlFor="grid-password">
                                                                         Emergency Contact Phone Number
                                                                     </label>
-                                                                    <p className='p-3'>{user?.emergency_contact_phone_number}</p>
+                                                                    <p className='p-3'>{user?._Person__emergency_contact_phone_number}</p>
                                                                 </div>
                                                             </div>
                                                         </div>
