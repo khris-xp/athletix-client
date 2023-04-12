@@ -1,18 +1,22 @@
-import React, { Fragment, useState, createContext, useEffect, useContext, ReactNode } from 'react'
+import { Fragment, useState, createContext, useEffect, useContext, ReactNode } from 'react'
 import { loginService, logoutService, getUserService } from '../services/user.services';
 import Loading from '@/components/Loading';
+import { IUser } from '@/interfaces/user';
+import { IAuthContext } from '@/interfaces/user';
+import { NextRouter, useRouter } from 'next/router';
+import Error from '@/components/Error';
 
-const AuthContext = createContext<any>({
+const AuthContext = createContext<IAuthContext>({
     isAuthenticated: false,
     isLoading: false,
     user: null,
-    loginService: () => { },
-    logoutService: () => { },
+    loginService: async () => { },
+    logoutService: async () => { },
 });
 
-export const AuthProvider = ({ children }: any) => {
+export const AuthProvider = ({ children }: { children: ReactNode }) => {
     const [isLoading, setIsLoading] = useState<boolean>(true);
-    const [user, setUser] = useState<any>(null);
+    const [user, setUser] = useState<IUser | null>(null);
 
     useEffect(() => {
         const fetchUser = async () => {
@@ -23,7 +27,7 @@ export const AuthProvider = ({ children }: any) => {
             } catch (err: unknown) {
                 setIsLoading(false);
             }
-        }
+        };
         fetchUser();
     }, []);
 
@@ -39,16 +43,20 @@ export const AuthProvider = ({ children }: any) => {
         >
             {children}
         </AuthContext.Provider>
-    )
-}
+    );
+};
 
-export const useAuth = () => useContext(AuthContext);
+export const useAuth = (): IAuthContext => useContext(AuthContext);
 
-export const ProtectRoute = ({ children }: any) => {
+export const ProtectRoute = ({ children }: { children: ReactNode }) => {
+    const Router: NextRouter = useRouter();
     const { isAuthenticated, isLoading } = useAuth();
-    if (isLoading) return <Loading />;
-    if (!isAuthenticated) {
-        console.log("No Authenticated");
+    if (isLoading) {
+        <Loading />
     };
+    if (!isAuthenticated && Router.pathname !== '/login' && Router.pathname !== '/register' && Router.pathname !== '/'
+        && Router.pathname !== '/booking' && Router.pathname !== '/news' && Router.pathname !== '/news/[id]') {
+        return <Error />
+    }
     return <Fragment>{children}</Fragment>;
-}
+};

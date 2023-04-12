@@ -18,13 +18,13 @@ const Slots: NextPage = () => {
                     <>
                         {slotsClick && slotsId === slot.id ? (
                             <button
-                                className='rounded-lg bg-emerald-900 px-2 py-2 font-medium text-white active:scale-95'
+                                className='rounded-lg bg-blue-900 px-2 py-2 font-medium text-white active:scale-95'
                                 onClick={() => handleSlotsClick(slot.id)}
                                 key={slot.id}
                             >{slot.time}</button>
                         ) : (
                             <button
-                                className='rounded-lg bg-emerald-100 px-2 py-2 font-medium text-emerald-900 active:scale-95'
+                                className='rounded-lg bg-blue-100 px-2 py-2 font-medium text-blue-900 active:scale-95'
                                 onClick={() => handleSlotsClick(slot.id)}
                                 key={slot.id}
                             >{slot.time}</button>

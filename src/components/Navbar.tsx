@@ -4,11 +4,13 @@ import Link from "next/link"
 import Image from "next/image"
 import { logoutService } from "@/services/user.services"
 import { useAuth } from "@/context/auth"
+import { Router, NextRouter, useRouter } from "next/router"
 
 const Navbar: NextPage = () => {
     const [navbarMenu, setIsNavbarMenu] = useState<boolean>(false);
     const [userMenu, setIsUserMenu] = useState<boolean>(true);
     const { isAuthenticated } = useAuth();
+    const Router: NextRouter = useRouter();
 
     const handleNavbarMenu = (): void => {
         setIsNavbarMenu(!navbarMenu);
@@ -27,8 +29,10 @@ const Navbar: NextPage = () => {
                     <div className="flex items-center md:order-2">
                         {!isAuthenticated ? (
                             <Fragment>
-                                <Link href='/login' className='inline-flex items-center justify-center px-5 py-3 text-base font-medium text-center text-indigo-100 border border-indigo-500 rounded-lg shadow-sm cursor-pointer hover:text-white bg-gradient-to-br from-purple-500 via-indigo-500 to-indigo-500'>
-                                    <span className='relative'>Login</span>
+                                <Link href='/login'>
+                                    <button type="button" className="text-white bg-blue-700 hover:bg-blue-800 focus:ring-4 focus:outline-none focus:ring-blue-300 font-medium rounded-lg text-sm px-4 py-3 text-center mr-3 md:mr-0">
+                                        Sign in
+                                    </button>
                                 </Link>
                             </Fragment>
                         ) : (
@@ -61,16 +65,16 @@ const Navbar: NextPage = () => {
                     <div className={`items-center justify-between ${navbarMenu ? 'hidden' : 'block'} w-full md:flex md:w-auto md:order-1`}>
                         <ul className="flex flex-col font-medium p-4 md:p-0 mt-4 border border-gray-100 rounded-lg bg-gray-50 md:flex-row md:space-x-8 md:mt-0 md:border-0 md:bg-white">
                             <li>
-                                <Link href="/" className="block py-2 pl-3 pr-4 text-white bg-blue-700 rounded md:bg-transparent md:text-blue-700 md:p-0">Home</Link>
+                                <Link href="/" className={`block py-2 pl-3 pr-4 ${Router.pathname === '/' ? ('text-white bg-blue-700 rounded md:bg-transparent md:text-blue-700') : ('text-gray-900 rounded hover:bg-gray-100 md:hover:bg-transparent md:hover:text-blue-700')} md:p-0`}>Home</Link>
                             </li>
                             <li>
-                                <Link href="/booking" className="block py-2 pl-3 pr-4 text-gray-900 rounded hover:bg-gray-100 md:hover:bg-transparent md:hover:text-blue-700 md:p-0">Booking</Link>
+                                <Link href="/booking" className={`block py-2 pl-3 pr-4 ${Router.pathname === '/booking' ? ('text-white bg-blue-700 rounded md:bg-transparent md:text-blue-700') : ('text-gray-900 rounded hover:bg-gray-100 md:hover:bg-transparent md:hover:text-blue-700')} md:p-0`}>Booking</Link>
                             </li>
                             <li>
-                                <Link href="/" className="block py-2 pl-3 pr-4 text-gray-900 rounded hover:bg-gray-100 md:hover:bg-transparent md:hover:text-blue-700 md:p-0">News</Link>
+                                <Link href="/" className={`block py-2 pl-3 pr-4 ${Router.pathname === '/news' ? ('text-white bg-blue-700 rounded md:bg-transparent md:text-blue-700') : ('text-gray-900 rounded hover:bg-gray-100 md:hover:bg-transparent md:hover:text-blue-700')} md:p-0`}>News</Link>
                             </li>
                             <li>
-                                <Link href="/" className="block py-2 pl-3 pr-4 text-gray-900 rounded hover:bg-gray-100 md:hover:bg-transparent md:hover:text-blue-700 md:p-0">About</Link>
+                                <Link href="/" className={`block py-2 pl-3 pr-4 ${Router.pathname === '/about' ? ('text-white bg-blue-700 rounded md:bg-transparent md:text-blue-700') : ('text-gray-900 rounded hover:bg-gray-100 md:hover:bg-transparent md:hover:text-blue-700')} md:p-0`}>About</Link>
                             </li>
                         </ul>
                     </div>

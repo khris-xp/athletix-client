@@ -1,6 +1,7 @@
 import Layout from '@/layouts/Layout'
 import { NextPage } from 'next'
 import React, { Fragment } from 'react'
+import Links from 'next/link'
 
 const Register: NextPage = () => {
     return (
@@ -71,10 +72,10 @@ const Register: NextPage = () => {
                                             className='w-full text-white bg-blue-600 hover:bg-blue-700 focus:ring-4 focus:outline-none focus:ring-blue-300 font-medium rounded-lg text-sm px-5 py-2.5 text-center dark:bg-blue-600 dark:hover:bg-blue-700 dark:focus:ring-blue-800 '
                                         >Sign up</button>
                                         <p className='text-sm font-light text-gray-500 dark:text-gray-400'>
-                                            Already have acoount yet ? <a
-                                                href='/login'
-                                                className='font-medium text-blue-600 hover:underline dark:text-blue-500'
-                                            >Sign in</a>
+                                            Already have account yet ?
+                                            <Links href='/login' className='ml-2 font-medium text-blue-600 hover:underline dark:text-blue-500'>
+                                                Sign in
+                                            </Links>
                                         </p>
                                     </div>
                                 </form>
