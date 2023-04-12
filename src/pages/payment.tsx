@@ -1,8 +1,9 @@
 import React, { Fragment } from 'react'
 import Image from 'next/image'
 import Layout from '@/layouts/Layout'
+import { NextPage } from 'next'
 
-const Payment = () => {
+const Payment: NextPage = () => {
     return (
         <Fragment>
             <Layout>

@@ -15,7 +15,7 @@ const Footer: NextPage = () => {
                     className='flex flex-wrap items-center mt-3 text-sm font-medium text-gray-500 dark:text-gray-400 sm:mt-0'
                 >
                     <li>
-                        <Link href='#' className='mr-4 hover:underline md:mr-6'>Home</Link>
+                        <Link href='/' className='mr-4 hover:underline md:mr-6'>Home</Link>
                     </li>
                     <li>
                         <Link href='/booking' className='mr-4 hover:underline md:mr-6'>Booking</Link>
@@ -24,7 +24,7 @@ const Footer: NextPage = () => {
                         <Link href='#' className='mr-4 hover:underline md:mr-6'>News</Link>
                     </li>
                     <li>
-                        <Link href='#' className='hover:underline'>About</Link>
+                        <Link href='/about' className='hover:underline'>About</Link>
                     </li>
                 </ul>
             </footer>

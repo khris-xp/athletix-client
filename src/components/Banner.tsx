@@ -5,7 +5,7 @@ const Banner = () => {
     return (
         <Fragment>
             <div
-                className='relative mx-auto mb-20 max-w-screen-lg overflow-hidden rounded-xl bg-emerald-400/60 py-32 text-center shadow-xl shadow-gray-300'
+                className='relative mx-auto mb-20 max-w-screen-lg overflow-hidden rounded-xl bg-blue-400/60 py-32 text-center shadow-xl shadow-gray-300'
             >
                 <h1 className='mt-2 px-8 text-3xl font-bold text-white md:text-5xl'>
                     Book an appointment
