@@ -3,7 +3,6 @@ import { NextPage } from 'next'
 import Layout from '@/layouts/Layout';
 import { loginService } from '@/services/user.services';
 import Link from 'next/link';
-import { toast } from 'react-hot-toast';
 
 interface LoginProps {
     email: string,
@@ -48,9 +47,9 @@ const Login: NextPage = () => {
                                             type='email'
                                             placeholder='Enter your email'
                                             value={user.email}
-                                            onChange={(e) => {
-                                                setUser({ ...user, email: e.target.value });
-                                                e.preventDefault();
+                                            onChange={(event: React.ChangeEvent<HTMLInputElement>) => {
+                                                setUser({ ...user, email: event.target.value });
+                                                event.preventDefault();
                                             }}
                                             className='bg-gray-50 border border-gray-300 text-gray-900 sm:text-sm rounded-lg focus:ring-blue-600 focus:border-blue-600 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500'
                                             required
@@ -65,9 +64,9 @@ const Login: NextPage = () => {
                                             type='password'
                                             placeholder='********'
                                             value={user.password}
-                                            onChange={(e) => {
-                                                setUser({ ...user, password: e.target.value });
-                                                e.preventDefault();
+                                            onChange={(event: React.ChangeEvent<HTMLInputElement>) => {
+                                                setUser({ ...user, password: event.target.value });
+                                                event.preventDefault();
                                             }}
                                             className='bg-gray-50 border border-gray-300 text-gray-900 sm:text-sm rounded-lg focus:ring-blue-600 focus:border-blue-600 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500'
                                             required

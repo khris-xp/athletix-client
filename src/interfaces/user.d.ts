@@ -13,6 +13,17 @@ export interface IUser {
   };
 }
 
+export interface IUserRegister {
+  fullname: string;
+  email: strin;
+  password: string
+  phone_number: string;
+  address: string;
+  birth_date: string;
+  emergency_contact_fullname: string;
+  emergency_contact_phone_number: string;
+}
+
 export interface IAuthContext {
   isAuthenticated: boolean;
   isLoading: boolean;
