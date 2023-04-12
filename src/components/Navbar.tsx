@@ -7,7 +7,7 @@ import { useAuth } from "@/context/auth"
 import { Router, NextRouter, useRouter } from "next/router"
 
 const Navbar: NextPage = () => {
-    const [navbarMenu, setIsNavbarMenu] = useState<boolean>(false);
+    const [navbarMenu, setIsNavbarMenu] = useState<boolean>(true);
     const [userMenu, setIsUserMenu] = useState<boolean>(true);
     const { isAuthenticated } = useAuth();
     const Router: NextRouter = useRouter();
