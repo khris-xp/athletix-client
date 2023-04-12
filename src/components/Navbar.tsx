@@ -37,8 +37,8 @@ const Navbar: NextPage = () => {
                             </Fragment>
                         ) : (
                             <Fragment>
-                                <button type="button" className="flex mr-3 text-sm bg-gray-800 rounded-full md:mr-0 focus:ring-4 focus:ring-gray-300" onClick={handleUserMenu}>
-                                    <Image className="w-8 h-8 rounded-full" src="https://avatars.githubusercontent.com/u/84142253?v=4" width={1000} height={1000} alt="user-photo" />
+                                <button type="button" className="flex mr-3 text-sm rounded-full md:mr-0 focus:ring-4 focus:ring-gray-300" onClick={handleUserMenu}>
+                                    <Image className="w-12 h-12 rounded-full" src="https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcS-NBM75ZQZZnw1LjpWznA06oYugMc2aPgGvMm9F_3XoeANFiUtQ5OZ_tq7ykNQCPrHoAE&usqp=CAU" width={1000} height={1000} alt="user-photo" />
                                 </button>
                                 <div className={`relative ${userMenu ? 'hidden' : 'block'} text-base list-none divide-y divide-gray-100 rounded-lg shadow`}>
                                     <div className="relative">

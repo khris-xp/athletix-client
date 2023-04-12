@@ -55,7 +55,7 @@ const Profile: NextPage = () => {
                                             </div>
                                         </div>
                                     </div>
-                                    <div className="text-center ">
+                                    <div className="text-center">
                                         <h3 className="text-4xl font-semibold leading-normal text-gray-800 mb-2">
                                             {user?._Person__fullname}
                                         </h3>
