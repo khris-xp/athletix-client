@@ -3,9 +3,11 @@ import { Fragment, useState } from "react"
 import Link from "next/link"
 import Image from "next/image"
 import MenuIcon from '/public/hamburger.svg'
+import { useAuth } from "@/context/auth"
 
 const Navbar: NextPage = () => {
     const [openMenu, setIsOpenMenu] = useState<boolean>(false);
+    const { isAuthenticated } = useAuth();
     return (
         <Fragment>
             <nav
@@ -56,9 +58,9 @@ const Navbar: NextPage = () => {
                                     </li>
                                     <li>
                                         <Link
-                                            href='/login'
+                                            href={isAuthenticated ? '/profile' : 'login'}
                                             className='block py-2 pl-3 pr-4 text-gray-700 rounded hover:bg-gray-100 md:hover:bg-transparent md:hover:text-blue-700 md:p-0 md:dark:hover:text-white dark:text-gray-400 dark:hover:bg-gray-700 dark:hover:text-white md:dark:hover:bg-transparent dark:border-gray-700'
-                                        >Login</Link>
+                                        >{isAuthenticated ? 'Profile' : 'Login'}</Link>
                                     </li>
                                 </ul>
                             </div>

@@ -7,6 +7,7 @@ export const loginService = async (email: string, password: string): Promise<voi
         const response: AxiosResponse = await axios.post('http://localhost:4000/auth/login', { email, password });
         const token: string = response.headers.authorization;
         Cookies.set('token', token);
+        window.location.href = '/';
     } catch (err: unknown) {
         console.log(err);
     }
