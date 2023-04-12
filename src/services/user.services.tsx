@@ -1,6 +1,5 @@
 import axios, { AxiosResponse } from "axios";
 import Cookies from "js-cookie";
-import router from 'next/router';
 
 export const loginService = async (email: string, password: string): Promise<void> => {
     try {
@@ -16,6 +15,7 @@ export const loginService = async (email: string, password: string): Promise<voi
 export const logoutService = async (): Promise<void> => {
     try {
         Cookies.remove('token');
+        window.location.href = '/';
     } catch (err: unknown) {
         console.log(err);
     }

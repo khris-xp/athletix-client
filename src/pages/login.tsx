@@ -1,9 +1,9 @@
 import React, { Fragment, useState } from 'react'
 import { NextPage } from 'next'
-import Loading from '@/components/Loading';
 import Layout from '@/layouts/Layout';
 import { loginService } from '@/services/user.services';
 import Link from 'next/link';
+import { toast } from 'react-hot-toast';
 
 interface LoginProps {
     email: string,
