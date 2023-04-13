@@ -1,7 +1,8 @@
 import React, { Fragment } from 'react'
 import Image from 'next/image'
+import { NextPage } from 'next'
 
-const Banner = () => {
+const Banner: NextPage = () => {
     return (
         <Fragment>
             <div
@@ -20,7 +21,8 @@ const Banner = () => {
                     height={1000}
                     width={1000}
                 />
-            </div></Fragment>
+            </div>
+        </Fragment>
     )
 }
 

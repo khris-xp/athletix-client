@@ -1,8 +1,6 @@
 import Layout from '@/layouts/Layout'
 import { NextPage } from 'next'
-import Hero from '@/components/Hero'
-import Card from '@/components/Card'
-import Member from '@/components/Member'
+import { Hero, Card, Member } from '@/components'
 
 const Home: NextPage = () => {
   return (

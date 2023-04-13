@@ -71,7 +71,7 @@ const Navbar: NextPage = () => {
                                 <Link href="/booking" className={`block py-2 pl-3 pr-4 ${Router.pathname === '/booking' ? ('text-white bg-blue-700 rounded md:bg-transparent md:text-blue-700') : ('text-gray-900 rounded hover:bg-gray-100 md:hover:bg-transparent md:hover:text-blue-700')} md:p-0`}>Booking</Link>
                             </li>
                             <li>
-                                <Link href="/" className={`block py-2 pl-3 pr-4 ${Router.pathname === '/news' ? ('text-white bg-blue-700 rounded md:bg-transparent md:text-blue-700') : ('text-gray-900 rounded hover:bg-gray-100 md:hover:bg-transparent md:hover:text-blue-700')} md:p-0`}>News</Link>
+                                <Link href="/news" className={`block py-2 pl-3 pr-4 ${Router.pathname === '/news' ? ('text-white bg-blue-700 rounded md:bg-transparent md:text-blue-700') : ('text-gray-900 rounded hover:bg-gray-100 md:hover:bg-transparent md:hover:text-blue-700')} md:p-0`}>News</Link>
                             </li>
                             <li>
                                 <Link href="/about" className={`block py-2 pl-3 pr-4 ${Router.pathname === '/about' ? ('text-white bg-blue-700 rounded md:bg-transparent md:text-blue-700') : ('text-gray-900 rounded hover:bg-gray-100 md:hover:bg-transparent md:hover:text-blue-700')} md:p-0`}>About</Link>
