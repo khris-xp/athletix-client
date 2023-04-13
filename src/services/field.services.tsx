@@ -24,3 +24,16 @@ export const createFieldService = async (field: ICreateField) => {
         console.log(err);
     }
 }
+
+export const editFieldService = async (field: ICreateField, id: string) => {
+    try {
+        const Cookies: IToken = parseCookies();
+        if (Cookies.token) {
+            axios.defaults.headers.common['Authorization'] = `Bearer ${Cookies.token}`;
+            const response: AxiosResponse = await axios.patch(`http://localhost:4000/fields/${id}`, field);
+            return response.data;
+        }
+    } catch (err: unknown) {
+        console.log(err);
+    }
+}

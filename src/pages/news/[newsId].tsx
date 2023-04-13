@@ -28,13 +28,20 @@ const NewsDetailPages: NextPage<Props> = ({ title, description, createdDate, ima
                                 <div
                                     className='relative mx-auto mb-6 max-w-screen-lg overflow-hidden rounded-xl py-32 text-center shadow-xl shadow-gray-300'
                                 >
-                                    <Image
-                                        src={`${image_url}`}
-                                        alt='banner-image'
-                                        className='absolute top-0 left-0 -z-10 h-full w-full object-cover'
-                                        height={1000}
-                                        width={1000}
-                                    />
+                                    {image_url === '' || image_url === 'test image url' ?
+                                        (<Image
+                                            src='https://wipelectric.com/wp-content/uploads/2021/06/Ref-Trinoi1-1024x679.jpg'
+                                            alt='banner-image'
+                                            className='absolute top-0 left-0 -z-10 h-full w-full object-cove'
+                                            height={1000}
+                                            width={1000}
+                                        />) : (<Image
+                                            src={`${image_url}`}
+                                            alt='banner-image'
+                                            className='absolute top-0 left-0 -z-10 h-full w-full object-cover'
+                                            height={1000}
+                                            width={1000}
+                                        />)}
                                 </div>
                             </div>
                             <div className="grow-0 shrink-0 basis-auto w-full md:w-8/12 xl:w-6/12 px-3">

@@ -2,11 +2,11 @@ import React, { Fragment } from 'react'
 import Image from 'next/image'
 import Layout from '@/layouts/Layout'
 import { NextPage } from 'next'
-import { ProtectRoute } from '@/context/auth'
+import { CustomerRoute } from '@/context/auth'
 
 const Payment: NextPage = () => {
     return (
-        <ProtectRoute>
+        <CustomerRoute>
             <Fragment>
                 <Layout>
                     <div
@@ -122,7 +122,7 @@ const Payment: NextPage = () => {
                     </div>
                 </Layout>
             </Fragment >
-        </ProtectRoute>
+        </CustomerRoute>
     )
 }
 

@@ -35,7 +35,7 @@ const NewsCard: NextPage<Props> = ({ id, title, description, createdDate, image 
             <div className="xl:w-1/3 md:w-1/2 p-4">
                 <div className="bg-white p-6 rounded-lg">
                     <Link href={`/news/${id}`}>
-                        {image === '' ?
+                        {image === '' || image === 'test image url' ?
                             (
                                 <Image className="lg:h-60 xl:h-56 md:h-64 sm:h-72 xs:h-72 h-72  rounded w-full object-cover object-center mb-6" src="https://wipelectric.com/wp-content/uploads/2021/06/Ref-Trinoi1-1024x679.jpg" alt="Image Size 720x400" height={1000} width={1000} />
                             ) : (

@@ -1,4 +1,4 @@
-import { ICreateField } from "@/interfaces/field";
+import { ICreateField } from "../interfaces/field";
 
 export const CreateFieldInitialValues: ICreateField = {
     name: "",

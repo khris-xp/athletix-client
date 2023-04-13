@@ -34,6 +34,7 @@ const About: NextPage = () => {
                                         <span className="mr-2">
                                             <Image src="https://static-00.iconduck.com/assets.00/file-type-tailwind-icon-512x307-l0anq79h.png" alt="Tailwind CSS" className="h-4 w-6 inline-block" width={1000} height={1000} />
                                         </span>
+                                        Tailwind CSS
                                     </li>
                                 </ul>
                                 Backend Development:
