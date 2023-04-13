@@ -54,8 +54,7 @@ export const ProtectRoute = ({ children }: { children: ReactNode }) => {
     if (isLoading) {
         <Loading />
     };
-    if (!isAuthenticated && Router.pathname !== '/login' && Router.pathname !== '/register' && Router.pathname !== '/'
-        && Router.pathname !== '/booking' && Router.pathname !== '/news' && Router.pathname !== '/news/[id]') {
+    if (!isAuthenticated) {
         return <Error />
     }
     return <Fragment>{children}</Fragment>;

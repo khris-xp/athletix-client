@@ -7,6 +7,7 @@ import { format } from 'date-fns';
 import Link from 'next/link';
 
 interface Props {
+    newsId: string;
     title: string;
     description: string;
     createdDate: string;
@@ -91,6 +92,7 @@ export const getStaticProps: GetStaticProps = async ({ params }: GetStaticPropsC
         }
         return {
             props: {
+                newsId,
                 title: newsItem._News__title,
                 description: newsItem._News__content,
                 createdDate: newsItem._News__created_at,
@@ -102,7 +104,5 @@ export const getStaticProps: GetStaticProps = async ({ params }: GetStaticPropsC
         };
     }
 };
-
-
 
 export default NewsDetailPages;
