@@ -49,6 +49,11 @@ const Navbar: NextPage = () => {
                                                 </Link>
                                             </li>
                                             <li>
+                                                <Link href="/history" className="block px-4 py-2 text-sm text-gray-700 hover:bg-gray-100" onClick={handleUserMenu}>
+                                                    History
+                                                </Link>
+                                            </li>
+                                            <li>
                                                 <Link href="/" className="block px-4 py-2 text-sm text-gray-700 hover:bg-gray-100" onClick={logoutService}>
                                                     Sign out
                                                 </Link>
