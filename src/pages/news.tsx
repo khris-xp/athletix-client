@@ -33,9 +33,9 @@ const News: NextPage<Props> = ({ data }) => {
     )
 }
 
-export const getServerSideProps: GetServerSideProps = async (context: GetServerSidePropsContext) => {
+export const getServerSideProps: GetServerSideProps = async () => {
     try {
-        const data = await getNewService(context);
+        const data = await getNewService();
         if (data) {
             return {
                 props: {

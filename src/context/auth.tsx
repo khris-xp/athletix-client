@@ -14,12 +14,16 @@ const AuthContext = createContext<IAuthContext>({
     logoutService: async () => { },
 });
 
+interface ChildrenProp {
+    children: ReactNode;
+}
+
 export const AuthProvider = ({ children }: { children: ReactNode }) => {
     const [isLoading, setIsLoading] = useState<boolean>(true);
     const [user, setUser] = useState<IUser | null>(null);
 
     useEffect(() => {
-        const fetchUser = async () => {
+        const fetchUser = async (): Promise<void> => {
             try {
                 const response = await getUserService();
                 setUser(response);
@@ -48,7 +52,7 @@ export const AuthProvider = ({ children }: { children: ReactNode }) => {
 
 export const useAuth = (): IAuthContext => useContext(AuthContext);
 
-export const ProtectRoute = ({ children }: { children: ReactNode }) => {
+export const ProtectRoute = ({ children }: ChildrenProp) => {
     const Router: NextRouter = useRouter();
     const { isAuthenticated, isLoading } = useAuth();
     if (isLoading) {

@@ -1,6 +1,6 @@
 import { Fragment } from 'react'
 import { GetStaticPaths, GetStaticProps, GetStaticPropsContext, NextPage } from 'next'
-import { getNewDetailService, getNewServiceById } from '@/services/news.services';
+import { getNewDetailService, getNewService } from '@/services/news.services';
 import Layout from '@/layouts/Layout';
 import Image from 'next/image';
 import { format } from 'date-fns';
@@ -14,9 +14,9 @@ interface Props {
 }
 
 const NewsDetailPages: NextPage<Props> = ({ title, description, createdDate }) => {
-    const createdFormatDate = new Date(createdDate);
-    const createdAt = format(createdFormatDate, 'dd MMM yyyy  HH:mm');
-    const [formattedDate, formattedTime] = createdAt.split('  ');
+    const createdFormatDate: Date = new Date(createdDate);
+    const createdAt: string = format(createdFormatDate, 'dd MMM yyyy  HH:mm');
+    const [formattedDate, formattedTime]: string[] = createdAt.split('  ');
     return (
         <Fragment>
             <Layout>
@@ -46,7 +46,7 @@ const NewsDetailPages: NextPage<Props> = ({ title, description, createdDate }) =
                                 <p className="mb-6">
                                     {description}
                                 </p>
-                                <Link href="/news" className="text-blue-500 flex justify-end font-bold underline">Go Back</Link> {/* Add this line for the link */}
+                                <Link href="/news" className="text-blue-500 flex justify-end font-bold underline">Go Back</Link>
                             </div>
                         </div>
                     </section>
@@ -58,7 +58,7 @@ const NewsDetailPages: NextPage<Props> = ({ title, description, createdDate }) =
 
 export const getStaticPaths: GetStaticPaths = async () => {
     try {
-        const newsItems = await getNewServiceById();
+        const newsItems = await getNewService();
         const paths = newsItems.map((newsItem: { _News__id: string }) => ({
             params: { newsId: newsItem._News__id },
         }));

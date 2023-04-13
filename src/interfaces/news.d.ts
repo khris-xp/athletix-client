@@ -7,3 +7,10 @@ export interface INews {
     _News__updated_at: string;
     _News__draft: boolean;
 }
+
+export interface ICreateNew {
+    title: string;
+    content: string;
+    image_url: string;
+    draft: boolean
+}
