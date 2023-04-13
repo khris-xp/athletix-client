@@ -4,12 +4,15 @@ import { getNewService } from '@/services/news.services';
 import Layout from '@/layouts/Layout'
 import { NewsCard } from '@/components';
 import { INews } from '@/interfaces/news';
+import { useAuth } from '@/context/auth';
 
 interface Props {
     data: INews[]
 }
 
 const News: NextPage<Props> = ({ data }) => {
+    const { isAdmin } = useAuth();
+
     return (
         <Fragment>
             <Layout>
@@ -18,7 +21,7 @@ const News: NextPage<Props> = ({ data }) => {
                         <div className="flex flex-wrap w-full mb-4 p-4">
                             <div className="w-full mb-6 lg:mb-0">
                                 <h1 className="sm:text-4xl text-5xl font-bold title-font mb-2 text-gray-900">News</h1>
-                                <div className="h-1 w-20 bg-indigo-500 rounded"></div>
+                                <div className="h-1 w-20 bg-blue-500 rounded"></div>
                             </div>
                         </div>
                         <div className="flex flex-wrap -m-4">

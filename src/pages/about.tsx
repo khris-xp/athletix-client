@@ -21,7 +21,7 @@ const About: NextPage = () => {
                     <div className="flex lg:flex-row flex-col justify-between gap-8 pt-12">
                         <div className="w-full lg:w-5/12 flex flex-col justify-center">
                             <h1 className="text-3xl lg:text-4xl font-bold leading-9 text-gray-800 pb-4">Our Tech Stack</h1>
-                            <p className="font-normal text-base leading-6 text-gray-600">
+                            <div className="font-normal text-base leading-6 text-gray-600">
                                 Frontend Development:
                                 <ul className="pl-6 my-2 space-y-2">
                                     <li>
@@ -34,7 +34,6 @@ const About: NextPage = () => {
                                         <span className="mr-2">
                                             <Image src="https://static-00.iconduck.com/assets.00/file-type-tailwind-icon-512x307-l0anq79h.png" alt="Tailwind CSS" className="h-4 w-6 inline-block" width={1000} height={1000} />
                                         </span>
-                                        Tailwind CSS
                                     </li>
                                 </ul>
                                 Backend Development:
@@ -46,7 +45,7 @@ const About: NextPage = () => {
                                         Python (with FastAPI)
                                     </li>
                                 </ul>
-                            </p>
+                            </div>
                         </div>
 
                         <div className="w-full lg:w-8/12 lg:pt-8">

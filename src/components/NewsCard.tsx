@@ -3,6 +3,9 @@ import { Fragment } from 'react'
 import Image from 'next/image'
 import { format } from 'date-fns';
 import Link from 'next/link';
+import { useAuth } from '@/context/auth';
+import { deleteNewService } from '@/services/news.services';
+import { useRouter } from 'next/router';
 
 interface Props {
     id: string;
@@ -13,8 +16,23 @@ interface Props {
 
 const NewsCard: NextPage<Props> = ({ id, title, description, createdDate }) => {
     const createdFormatDate = new Date(createdDate);
+    const { isAdmin } = useAuth();
+    const router = useRouter()
     const createdAt = format(createdFormatDate, 'dd MMM yyyy  HH:mm');
     const [formattedDate, formattedTime] = createdAt.split('  ');
+
+    const handleEdit = () => {
+        console.log(`Edit button clicked for news with ID: ${id}`);
+    };
+
+    const handleDelete = async (): Promise<void> => {
+        try {
+            await deleteNewService(id)
+            router.reload();
+        } catch (err) {
+            throw new Error('Delete news failed');
+        }
+    };
     return (
         <Fragment>
             <div className="xl:w-1/3 md:w-1/2 p-4">
@@ -26,6 +44,16 @@ const NewsCard: NextPage<Props> = ({ id, title, description, createdDate }) => {
                     <h2 className="text-lg text-gray-900 font-medium title-font my-2 uppercase">{title}</h2>
                     <p className="leading-relaxed text-base">{description}</p>
                     <p className="mt-4 text-xs text-gray-500"> Created on: {formattedDate} at {formattedTime}</p>
+                    {isAdmin ? (
+                        <Fragment>
+                            <button className="text-blue-500 mt-2" onClick={handleEdit}>
+                                Edit
+                            </button>
+                            <button className="text-red-500 ml-2 mt-2" onClick={handleDelete}>
+                                Delete
+                            </button>
+                        </Fragment>
+                    ) : null}
                 </div>
             </div>
         </Fragment>

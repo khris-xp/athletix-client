@@ -35,3 +35,16 @@ export const createNewService = async (news: ICreateNew) => {
     throw new Error('Failed to create new');
   }
 }
+
+export const deleteNewService = async (id: string) => {
+  try {
+    const Cookies: IToken = parseCookies();
+    if (Cookies.token) {
+      axios.defaults.headers.common['Authorization'] = `Bearer ${Cookies.token}`;
+      const response: AxiosResponse = await axios.delete(`http://localhost:4000/news/${id}`);
+      return response.data;
+    }
+  } catch (err: unknown) {
+    throw new Error('Failed to delete new');
+  }
+}
