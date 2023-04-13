@@ -26,6 +26,8 @@ export interface IUserRegister {
 
 export interface IAuthContext {
   isAuthenticated: boolean;
+  isAdmin: boolean;
+  isCustomer: boolean;
   isLoading: boolean;
   user: IUser | null;
   loginService: (email: string, password: string) => Promise<void>;

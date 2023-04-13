@@ -1,6 +1,5 @@
 import { Fragment, useEffect } from 'react'
-import Banner from '@/components/Banner'
-import Slots from '@/components/Slots'
+import { Banner, Slots } from '@/components'
 import Layout from '@/layouts/Layout'
 import { NextPage } from 'next'
 import Link from 'next/link'
