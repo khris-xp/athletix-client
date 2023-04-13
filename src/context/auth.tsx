@@ -67,7 +67,7 @@ export const AdminRoute = ({ children }: { children: ReactNode }) => {
     if (isLoading) {
         return <Loading />
     }
-    if (!isAdmin || !isAuthenticated) {
+    if (!isAdmin && !isAuthenticated) {
         return <Error />
     }
     return <Fragment>{children}</Fragment>;

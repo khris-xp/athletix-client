@@ -6,7 +6,6 @@ import { CreateNewInitialValues } from '@/constants/new'
 import { ICreateNew } from '@/interfaces/news'
 import { createNewService } from '@/services/news.services'
 import { AdminRoute } from '@/context/auth'
-import { useAuth } from '@/context/auth'
 
 const CreateNew: NextPage = () => {
     const [news, setNews] = useState<ICreateNew>(CreateNewInitialValues);
@@ -31,7 +30,7 @@ const CreateNew: NextPage = () => {
                                         <p className="font-medium text-lg">Create News</p>
                                         <p>Please fill out all the fields.</p>
                                         {!news.image_url ? (<Image
-                                            src='https://www.fieldturf.co.th/wp-content/uploads/2022/01/20220116_151911-scaled.jpg'
+                                            src='https://wipelectric.com/wp-content/uploads/2021/06/Ref-Trinoi1-1024x679.jpg'
                                             alt='banner-image'
                                             className='mt-6 px-5 lg:px-2 lg:pr-10'
                                             height={1000}

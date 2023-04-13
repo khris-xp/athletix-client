@@ -11,9 +11,10 @@ interface Props {
     title: string;
     description: string;
     createdDate: string;
+    image_url: string;
 }
 
-const NewsDetailPages: NextPage<Props> = ({ title, description, createdDate }) => {
+const NewsDetailPages: NextPage<Props> = ({ title, description, createdDate, image_url }) => {
     const createdFormatDate: Date = new Date(createdDate);
     const createdAt: string = format(createdFormatDate, 'dd MMM yyyy  HH:mm');
     const [formattedDate, formattedTime]: string[] = createdAt.split('  ');
@@ -28,7 +29,7 @@ const NewsDetailPages: NextPage<Props> = ({ title, description, createdDate }) =
                                     className='relative mx-auto mb-6 max-w-screen-lg overflow-hidden rounded-xl py-32 text-center shadow-xl shadow-gray-300'
                                 >
                                     <Image
-                                        src='https://www.fieldturf.co.th/wp-content/uploads/2022/01/20220116_151911-scaled.jpg'
+                                        src={`${image_url}`}
                                         alt='banner-image'
                                         className='absolute top-0 left-0 -z-10 h-full w-full object-cover'
                                         height={1000}
@@ -96,6 +97,7 @@ export const getStaticProps: GetStaticProps = async ({ params }: GetStaticPropsC
                 title: newsItem._News__title,
                 description: newsItem._News__content,
                 createdDate: newsItem._News__created_at,
+                image_url: newsItem._News__image_url,
             },
         };
     } catch (err: unknown) {

@@ -14,3 +14,11 @@ export interface ICreateNew {
     image_url: string;
     draft: boolean
 }
+
+export interface IUpdateNew {
+    news_id?: string;
+    title: string;
+    content: string;
+    image_url: string;
+    draft?: boolean
+}

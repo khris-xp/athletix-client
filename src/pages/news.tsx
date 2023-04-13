@@ -4,15 +4,12 @@ import { getNewService } from '@/services/news.services';
 import Layout from '@/layouts/Layout'
 import { NewsCard } from '@/components';
 import { INews } from '@/interfaces/news';
-import { useAuth } from '@/context/auth';
 
 interface Props {
     data: INews[]
 }
 
 const News: NextPage<Props> = ({ data }) => {
-    const { isAdmin } = useAuth();
-
     return (
         <Fragment>
             <Layout>
@@ -26,7 +23,7 @@ const News: NextPage<Props> = ({ data }) => {
                         </div>
                         <div className="flex flex-wrap -m-4">
                             {data.map((news: INews) => (
-                                <NewsCard key={news._News__id} id={news._News__id} title={news._News__title} description={news._News__content} createdDate={news._News__created_at} />
+                                <NewsCard key={news._News__id} id={news._News__id} title={news._News__title} description={news._News__content} createdDate={news._News__created_at} image={news._News__image_url} />
                             ))}
                         </div>
                     </div>
