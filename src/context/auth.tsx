@@ -7,6 +7,7 @@ const AuthContext = createContext<IAuthContext>({
     isAuthenticated: false,
     isAdmin: false,
     isCustomer: false,
+    isFrontDesk: false,
     isLoading: false,
     user: null,
     loginService: async () => { },
@@ -16,6 +17,7 @@ const AuthContext = createContext<IAuthContext>({
 export const AuthProvider = ({ children }: { children: ReactNode }) => {
     const [isLoading, setIsLoading] = useState<boolean>(true);
     const [isCustomer, setIsCustomer] = useState<boolean>(false);
+    const [isFrontDesk, setIsFrontDesk] = useState<boolean>(false);
     const [isAdmin, setIsAdmin] = useState<boolean>(false);
     const [user, setUser] = useState<IUser | null>(null);
 
@@ -26,6 +28,9 @@ export const AuthProvider = ({ children }: { children: ReactNode }) => {
                 setUser(response);
                 if (user?._Person__account._Account__role === 'admin') {
                     setIsAdmin(true);
+                }
+                if (user?._Person__account._Account__role === 'frontdesk') {
+                    setIsFrontDesk(true);
                 }
                 if (user?._Person__account._Account__role === 'customer') {
                     setIsCustomer(true);
@@ -45,6 +50,7 @@ export const AuthProvider = ({ children }: { children: ReactNode }) => {
                 user,
                 isAdmin,
                 isCustomer,
+                isFrontDesk,
                 isLoading,
                 loginService,
                 logoutService,
@@ -62,7 +68,18 @@ export const CustomerRoute = ({ children }: { children: ReactNode }) => {
     if (isLoading) {
         return <Loading />
     }
-    if (!isCustomer && !isAuthenticated) {
+    if (isCustomer === false && isAuthenticated === false) {
+        return <Error />
+    }
+    return <Fragment>{children}</Fragment>;
+}
+
+export const FrontDeskRoute = ({ children }: { children: ReactNode }) => {
+    const { isAuthenticated, isLoading, isFrontDesk } = useAuth();
+    if (isLoading) {
+        return <Loading />
+    }
+    if (isFrontDesk === false && isAuthenticated === false) {
         return <Error />
     }
     return <Fragment>{children}</Fragment>;
@@ -73,7 +90,7 @@ export const AdminRoute = ({ children }: { children: ReactNode }) => {
     if (isLoading) {
         return <Loading />
     }
-    if (!isAdmin && !isAuthenticated) {
+    if (isAdmin === false && isAuthenticated === false) {
         return <Error />
     }
     return <Fragment>{children}</Fragment>;

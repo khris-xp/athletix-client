@@ -1,7 +1,7 @@
 import React, { Fragment, useState } from 'react'
 import Layout from '@/layouts/Layout'
 import { ICreateField } from '@/interfaces/field'
-import { CreateFieldInitialValues } from '@/constants/filed'
+import { CreateFieldInitialValues } from '@/constants/field'
 import { createFieldService } from '@/services/field.services'
 import router from 'next/router'
 

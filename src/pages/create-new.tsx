@@ -7,7 +7,11 @@ import { ICreateNew } from '@/interfaces/news'
 import { createNewService } from '@/services/news.services'
 import { AdminRoute } from '@/context/auth'
 
+import { useAuth } from '@/context/auth'
+
 const CreateNew: NextPage = () => {
+    const { isAdmin } = useAuth();
+    console.log(isAdmin)
     const [news, setNews] = useState<ICreateNew>(CreateNewInitialValues);
     const handleCreateNews = async (event: React.FormEvent<HTMLFormElement>) => {
         try {

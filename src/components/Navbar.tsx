@@ -9,8 +9,9 @@ import { Router, NextRouter, useRouter } from "next/router"
 const Navbar: NextPage = () => {
     const [navbarMenu, setIsNavbarMenu] = useState<boolean>(true);
     const [userMenu, setIsUserMenu] = useState<boolean>(true);
-    const { isAuthenticated } = useAuth();
+    const { isAuthenticated, user } = useAuth();
     const Router: NextRouter = useRouter();
+    console.log(user?._Person__fullname)
 
     const handleNavbarMenu = (): void => {
         setIsNavbarMenu(!navbarMenu);
@@ -42,7 +43,12 @@ const Navbar: NextPage = () => {
                                 </button>
                                 <div className={`relative ${userMenu ? 'hidden' : 'block'} text-base list-none divide-y divide-gray-100 rounded-lg shadow`}>
                                     <div className="relative">
-                                        <ul className="absolute right-0 z-10 py-2 mt-2 w-48 bg-white rounded-md shadow-lg border-2 ">
+                                        <ul className="absolute right-0 z-10 py-2 mt-4 w-48 bg-white rounded-md shadow-lg border-2 ">
+                                            <li>
+                                                <p className="block px-4 py-2 text-base text-gray-700 hover:bg-gray-100 uppercase border-b-2">
+                                                    {user?._Person__fullname}
+                                                </p>
+                                            </li>
                                             <li>
                                                 <Link href="/profile" className="block px-4 py-2 text-sm text-gray-700 hover:bg-gray-100" onClick={handleUserMenu}>
                                                     Dashboard

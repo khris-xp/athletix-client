@@ -28,6 +28,7 @@ export interface IAuthContext {
   isAuthenticated: boolean;
   isAdmin: boolean;
   isCustomer: boolean;
+  isFrontDesk: boolean;
   isLoading: boolean;
   user: IUser | null;
   loginService: (email: string, password: string) => Promise<void>;

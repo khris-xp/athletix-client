@@ -34,7 +34,7 @@ const EditNews: NextPage<Props> = ({ news_id, title, content, image_url }) => {
                                 <div className="text-gray-600">
                                     <p className="font-medium text-lg">Edit News</p>
                                     <p>Please fill out all the fields.</p>
-                                    {!news.image_url ? (<Image
+                                    {!news.image_url || news.image_url === 'test image url' ? (<Image
                                         src='https://wipelectric.com/wp-content/uploads/2021/06/Ref-Trinoi1-1024x679.jpg'
                                         alt='banner-image'
                                         className='mt-6 px-5 lg:px-2 lg:pr-10'
