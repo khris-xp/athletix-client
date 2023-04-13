@@ -1,8 +1,10 @@
 import Layout from '@/layouts/Layout'
-import { NextPage } from 'next'
+import { GetServerSideProps, NextPage } from 'next'
 import { Hero, Card, Member } from '@/components'
+import Field from '@/components/Field'
+import { getFieldService } from '@/services/field.services'
 
-const Home: NextPage = () => {
+const Home: NextPage = ({ data }: any) => {
   return (
     <Layout>
       <Hero />
@@ -26,23 +28,15 @@ const Home: NextPage = () => {
       <section
         className='container mx-auto p-10 md:p-20 grid lg:grid-cols-2 2xl:grid-cols-3 grid-cols-1 gap-y-20 transform duration-500'
       >
-        <Card
-          title='Football Field'
-          description='Lorem ipsum dolor, sit amet consectetur adipisicing elit.'
-          image='https://editorial.uefa.com/resources/025c-0f8e775cc072-f99f8b3389ab-1000/the_new_tottenham_hotspur_stadium_has_an_unusual_flexible_playing_surface.jpeg'
-        />
+        {data.map((field: any) => (
+          <Card
+            key={field._Field__id}
+            title={field._Field__name}
+            description={field._Field__description}
+            image='https://editorial.uefa.com/resources/025c-0f8e775cc072-f99f8b3389ab-1000/the_new_tottenham_hotspur_stadium_has_an_unusual_flexible_playing_surface.jpeg'
+          />
+        ))}
 
-        <Card
-          title='Basketball Field'
-          description='Lorem ipsum dolor, sit amet consectetur adipisicing elit.'
-          image='https://5.imimg.com/data5/SELLER/Default/2020/12/UI/LQ/TM/475165/synthetic-acrylic-basketball-court-500x500.jpeg'
-        />
-
-        <Card
-          title='Football Field'
-          description='Lorem ipsum dolor, sit amet consectetur adipisicing elit.'
-          image='https://editorial.uefa.com/resources/025c-0f8e775cc072-f99f8b3389ab-1000/the_new_tottenham_hotspur_stadium_has_an_unusual_flexible_playing_surface.jpeg'
-        />
       </section>
       <div
         className='grid gap-8 lg:gap-16 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4'
@@ -70,6 +64,31 @@ const Home: NextPage = () => {
       </div>
     </Layout >
   )
+}
+
+export const getServerSideProps: GetServerSideProps = async () => {
+  try {
+    const data = await getFieldService();
+    if (data) {
+      return {
+        props: {
+          data
+        }
+      };
+    } else {
+      return {
+        redirect: {
+          destination: '/login',
+          permanent: false
+        }
+      };
+    }
+  } catch (err) {
+    console.log(err);
+    return {
+      props: {}
+    }
+  }
 }
 
 export default Home
