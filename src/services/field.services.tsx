@@ -1,11 +1,21 @@
 import axios, { AxiosResponse } from 'axios';
 import { parseCookies } from 'nookies';
 import { IToken } from '@/interfaces/token';
+import router from 'next/router';
 import { ICreateField } from '@/interfaces/field';
 
 export const getFieldService = async () => {
     try {
         const response: AxiosResponse = await axios.get('http://localhost:4000/fields');
+        return response.data;
+    } catch (err: unknown) {
+        console.log(err);
+    }
+}
+
+export const getFieldDetailService = async (id: string) => {
+    try {
+        const response: AxiosResponse = await axios.get(`http://localhost:4000/fields/${id}`);
         return response.data;
     } catch (err: unknown) {
         console.log(err);
@@ -31,6 +41,7 @@ export const editFieldService = async (field: ICreateField, id: string) => {
         if (Cookies.token) {
             axios.defaults.headers.common['Authorization'] = `Bearer ${Cookies.token}`;
             const response: AxiosResponse = await axios.patch(`http://localhost:4000/fields/${id}`, field);
+            router.push('/')
             return response.data;
         }
     } catch (err: unknown) {

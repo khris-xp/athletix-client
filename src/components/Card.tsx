@@ -1,4 +1,4 @@
-import React, { Fragment } from 'react'
+import { Fragment } from 'react'
 import Image from 'next/image'
 import { NextPage } from 'next'
 import { useAuth } from '@/context/auth'
@@ -49,7 +49,7 @@ const Card: NextPage<Props> = ({ id, image, title, description }) => {
                 {isAdmin ? (
                     <Fragment>
                         <div className='p-8'>
-                            <Link href={'/'}>
+                            <Link href={`/edit-field/${id}`}>
                                 <button className="text-blue-500 mt-2 font-semibold hover:underline">
                                     Edit
                                 </button>

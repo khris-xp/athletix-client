@@ -18,7 +18,7 @@ interface IField {
 export interface ICreateField {
     name: string,
     description: string,
-    price_by_slot: string,
+    price_by_slot: number,
     category: string,
     type: string,
 }

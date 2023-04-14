@@ -32,7 +32,7 @@ const Home: NextPage<Props> = ({ data }) => {
       <section
         className='container mx-auto p-10 md:p-20 grid lg:grid-cols-2 2xl:grid-cols-3 grid-cols-1 gap-y-20 transform duration-500'
       >
-        {data.map((field: any) => (
+        {data.map((field: IField) => (
           <Card
             key={field._Field__id}
             id={field._Field__id}
