@@ -24,6 +24,11 @@ export interface IUserRegister {
   emergency_contact_phone_number: string;
 }
 
+export interface IUserChangePassword {
+  old_password: string;
+  new_password: string;
+}
+
 export interface IAuthContext {
   isAuthenticated: boolean;
   isAdmin: boolean;

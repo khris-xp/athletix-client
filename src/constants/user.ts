@@ -1,4 +1,4 @@
-import { IUserRegister } from "@/interfaces/user";
+import { IUserRegister, IUserChangePassword } from "@/interfaces/user";
 
 export const UserRegisterInitialValues: IUserRegister = {
     fullname: "",
@@ -9,4 +9,9 @@ export const UserRegisterInitialValues: IUserRegister = {
     birth_date: "",
     emergency_contact_fullname: "",
     emergency_contact_phone_number: ""
+}
+
+export const UserChangePassword: IUserChangePassword = {
+    old_password: "",
+    new_password: "",
 }

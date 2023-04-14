@@ -4,6 +4,7 @@ import Layout from "@/layouts/Layout"
 import Image from "next/image"
 import { getNewService, getNewDetailService, editNewService } from "@/services/news.services"
 import { IUpdateNew } from "@/interfaces/news"
+import { toast } from "react-hot-toast"
 
 interface Props {
     news_id: any;
@@ -15,12 +16,12 @@ interface Props {
 
 const EditNews: NextPage<Props> = ({ news_id, title, content, image_url }) => {
     const [news, setNews] = useState<IUpdateNew>({ title: title, content: content, image_url: image_url, draft: false })
-
     const handleEditNews = async () => {
         try {
             await editNewService(news, news_id)
+            toast.success('Edit News Success');
         } catch (err) {
-            console.log(err)
+            toast.error('Edit News Failed');
         }
     }
 

@@ -1,24 +1,31 @@
-import React, { Fragment, useState } from 'react'
+import { Fragment, useState } from 'react'
+import { NextPage, GetStaticPaths, GetStaticProps, GetStaticPropsContext } from 'next'
+import { getFieldService, getFieldDetailService, editFieldService } from '@/services/field.services'
 import Layout from '@/layouts/Layout'
-import { ICreateField } from '@/interfaces/field'
-import { CreateFieldInitialValues } from '@/constants/field'
-import { createFieldService } from '@/services/field.services'
-import router from 'next/router'
+import { updateSlots } from '@/constants/slots'
 import { toast } from 'react-hot-toast'
 
-const CreateField = () => {
-    const [field, setField] = useState<ICreateField>(CreateFieldInitialValues);
-    const handleCreateField = async (event: React.FormEvent<HTMLFormElement>) => {
+interface Props {
+    field_id: string;
+    name: string;
+    description: string;
+    price_by_slot: number;
+    category: string;
+    type: string;
+}
+
+const EditField: NextPage<Props> = ({ field_id, name, description, price_by_slot, category, type }) => {
+    const [field, setField] = useState({ name: name, description: description, price_by_slot: price_by_slot, category: category, type: type, slot: updateSlots });
+
+    const handleEditField = async () => {
         try {
-            event.preventDefault()
-            await createFieldService(field);
-            setField(CreateFieldInitialValues)
-            router.push('/')
-            toast.success('Field created successfully');
+            await editFieldService(field, field_id);
+            toast.success('Field updated successfully');
         } catch (err) {
-            toast.error('Failed to create field');
+            toast.error('Failed to update field');
         }
     }
+
     return (
         <Fragment>
             <Layout>
@@ -27,11 +34,11 @@ const CreateField = () => {
                         <div className="bg-white rounded shadow-lg p-4 px-4 md:p-8 mb-36">
                             <div className="grid gap-4 gap-y-2 text-sm grid-cols-1 lg:grid-cols-3">
                                 <div className="text-gray-600">
-                                    <p className="font-medium text-lg">Create Field</p>
+                                    <p className="font-medium text-lg">Edit Field</p>
                                     <p>Please fill out all the fields.</p>
                                 </div>
                                 <div className="lg:col-span-2">
-                                    <form onSubmit={handleCreateField}>
+                                    <form>
                                         <div className="grid gap-4 gap-y-2 text-sm grid-cols-1 md:grid-cols-5">
                                             <div className="md:col-span-5">
                                                 <label>Field Name</label>
@@ -39,6 +46,7 @@ const CreateField = () => {
                                                     onChange={(event: React.ChangeEvent<HTMLInputElement>) => {
                                                         setField({ ...field, name: event.target.value })
                                                     }}
+                                                    value={field.name}
                                                 />
                                             </div>
 
@@ -48,6 +56,7 @@ const CreateField = () => {
                                                     onChange={(event: React.ChangeEvent<HTMLTextAreaElement>) => {
                                                         setField({ ...field, description: event.target.value })
                                                     }}
+                                                    value={field.description}
                                                 ></textarea>
                                             </div>
 
@@ -55,8 +64,9 @@ const CreateField = () => {
                                                 <label>Booking Price</label>
                                                 <input type="number" className="h-10 border mt-1 rounded px-4 w-full bg-gray-50" placeholder='0'
                                                     onChange={(event: React.ChangeEvent<HTMLInputElement>) => {
-                                                        setField({ ...field, price_by_slot: parseInt(event.target.value) })
+                                                        setField({ ...field, price_by_slot: parseFloat(event.target.value) })
                                                     }}
+                                                    value={field.price_by_slot}
                                                 />
                                             </div>
 
@@ -67,6 +77,7 @@ const CreateField = () => {
                                                     onChange={(event: React.ChangeEvent<HTMLSelectElement>) => {
                                                         setField({ ...field, category: event.target.value })
                                                     }}
+                                                    value={field.category}
                                                     required
                                                 >
                                                     <option value={'Football'}>Football</option>
@@ -83,6 +94,7 @@ const CreateField = () => {
                                                     onChange={(event: React.ChangeEvent<HTMLSelectElement>) => {
                                                         setField({ ...field, type: event.target.value })
                                                     }}
+                                                    value={field.type}
                                                     required
                                                 >
                                                     <option value={'Indoor'}>Indoor</option>
@@ -92,7 +104,9 @@ const CreateField = () => {
 
                                             <div className="md:col-span-5 text-right mt-5">
                                                 <div className="inline-flex items-end">
-                                                    <button className="bg-blue-700 hover:bg-blue-900 text-white font-bold py-2 px-4 rounded">Submit</button>
+                                                    <button type='button' className="bg-blue-700 hover:bg-blue-900 text-white font-bold py-2 px-4 rounded"
+                                                        onClick={() => handleEditField()}
+                                                    >Submit</button>
                                                 </div>
                                             </div>
                                         </div>
@@ -107,4 +121,55 @@ const CreateField = () => {
     )
 }
 
-export default CreateField
+export const getStaticPaths: GetStaticPaths = async () => {
+    try {
+        const fieldItems = await getFieldService();
+        const paths = fieldItems.map((fieldItem: { _Field__id: string }) => ({
+            params: { id: fieldItem._Field__id },
+        }));
+
+        return {
+            paths,
+            fallback: false,
+        };
+    } catch (err: unknown) {
+        console.log(err);
+        return {
+            paths: [],
+            fallback: false,
+        };
+    }
+}
+
+export const getStaticProps: GetStaticProps = async ({ params }: GetStaticPropsContext) => {
+    try {
+        if (!params || !params.id || Array.isArray(params.id)) {
+            return {
+                notFound: true
+            }
+        }
+        const { id } = params;
+        const fieldItem = await getFieldDetailService(id);
+        if (!fieldItem) {
+            return {
+                notFound: true
+            }
+        }
+        return {
+            props: {
+                field_id: fieldItem._Field__id,
+                name: fieldItem._Field__name,
+                description: fieldItem._Field__description,
+                price_by_slot: fieldItem._Field__price_by_slot,
+                category: fieldItem._Field__category,
+                type: fieldItem._Field__type,
+            }
+        }
+    } catch (err) {
+        return {
+            notFound: true
+        }
+    }
+}
+
+export default EditField

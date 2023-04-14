@@ -5,7 +5,8 @@ import { format } from 'date-fns';
 import Link from 'next/link';
 import { useAuth } from '@/context/auth';
 import { deleteNewService } from '@/services/news.services';
-import { useRouter } from 'next/router';
+import { NextRouter, useRouter } from 'next/router';
+import { toast } from 'react-hot-toast';
 
 interface Props {
     id: string;
@@ -16,18 +17,21 @@ interface Props {
 }
 
 const NewsCard: NextPage<Props> = ({ id, title, description, createdDate, image }) => {
-    const createdFormatDate = new Date(createdDate);
+    const createdFormatDate: Date = new Date(createdDate);
     const { isAdmin } = useAuth();
-    const router = useRouter()
-    const createdAt = format(createdFormatDate, 'dd MMM yyyy  HH:mm');
-    const [formattedDate, formattedTime] = createdAt.split('  ');
+    const router: NextRouter = useRouter()
+    const createdAt: string = format(createdFormatDate, 'dd MMM yyyy  HH:mm');
+    const [formattedDate, formattedTime]: string[] = createdAt.split('  ');
 
     const handleDelete = async (): Promise<void> => {
         try {
-            await deleteNewService(id)
-            router.reload();
+            await deleteNewService(id);
+            toast.success('Delete news success');
+            setTimeout(() => {
+                router.reload();
+            }, 400);
         } catch (err) {
-            throw new Error('Delete news failed');
+            toast.error('Delete news failed');
         }
     };
     return (

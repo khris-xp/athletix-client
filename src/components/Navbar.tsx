@@ -4,20 +4,24 @@ import Link from "next/link"
 import Image from "next/image"
 import { logoutService } from "@/services/user.services"
 import { useAuth } from "@/context/auth"
-import { Router, NextRouter, useRouter } from "next/router"
+import { NextRouter, useRouter } from "next/router"
 
 const Navbar: NextPage = () => {
     const [navbarMenu, setIsNavbarMenu] = useState<boolean>(true);
     const [userMenu, setIsUserMenu] = useState<boolean>(true);
-    const { isAuthenticated, user } = useAuth();
+    const [newsMenu, setIsNewsMenu] = useState<boolean>(true);
+    const { isAuthenticated, user, isAdmin } = useAuth();
     const Router: NextRouter = useRouter();
-    console.log(user?._Person__fullname)
 
     const handleNavbarMenu = (): void => {
         setIsNavbarMenu(!navbarMenu);
     };
     const handleUserMenu = (): void => {
         setIsUserMenu(!userMenu);
+    }
+
+    const handleNewsMenu = (): void => {
+        setIsNewsMenu(!newsMenu);
     }
 
     return (
@@ -69,7 +73,7 @@ const Navbar: NextPage = () => {
                                 </div>
                             </Fragment>
                         )}
-                        <button type="button" className="inline-flex items-center p-2 ml-1 text-sm text-gray-500 rounded-lg md:hidden hover:bg-gray-100 focus:outline-none focus:ring-2 focus:ring-gray-200 dark:text-gray-400 dark:hover:bg-gray-700 dark:focus:ring-gray-600" onClick={handleNavbarMenu}>
+                        <button type="button" className="inline-flex items-center p-2 ml-1 text-sm text-gray-500 rounded-lg md:hidden hover:bg-gray-100 focus:outline-none focus:ring-2 focus:ring-gray-200" onClick={handleNavbarMenu}>
                             <svg className="w-6 h-6" aria-hidden="true" fill="currentColor" viewBox="0 0 20 20" xmlns="http://www.w3.org/2000/svg"><path fillRule="evenodd" d="M3 5a1 1 0 011-1h12a1 1 0 110 2H4a1 1 0 01-1-1zM3 10a1 1 0 011-1h12a1 1 0 110 2H4a1 1 0 01-1-1zM3 15a1 1 0 011-1h12a1 1 0 110 2H4a1 1 0 01-1-1z" clipRule="evenodd"></path></svg>
                         </button>
                     </div>
@@ -82,8 +86,40 @@ const Navbar: NextPage = () => {
                                 <Link href="/booking" className={`block py-2 pl-3 pr-4 ${Router.pathname === '/booking' ? ('text-white bg-blue-700 rounded md:bg-transparent md:text-blue-700') : ('text-gray-900 rounded hover:bg-gray-100 md:hover:bg-transparent md:hover:text-blue-700')} md:p-0`}>Booking</Link>
                             </li>
                             <li>
-                                <Link href="/news" className={`block py-2 pl-3 pr-4 ${Router.pathname === '/news' ? ('text-white bg-blue-700 rounded md:bg-transparent md:text-blue-700') : ('text-gray-900 rounded hover:bg-gray-100 md:hover:bg-transparent md:hover:text-blue-700')} md:p-0`}>News</Link>
+                                {isAdmin ?
+                                    (
+                                        <Fragment>
+                                            <button className={`flex items-center py-2 pl-3 pr-4 ${Router.pathname === '/news' ? ('text-white bg-blue-700 rounded md:bg-transparent md:text-blue-700') : ('text-gray-900 rounded hover:bg-gray-100 md:hover:bg-transparent md:hover:text-blue-700')} md:p-0`}
+                                                onClick={handleNewsMenu}>News <svg className="w-5 h-5 ml-1" aria-hidden="true" fill="currentColor" viewBox="0 0 20 20" xmlns="http://www.w3.org/2000/svg"><path fill-rule="evenodd" d="M5.293 7.293a1 1 0 011.414 0L10 10.586l3.293-3.293a1 1 0 111.414 1.414l-4 4a1 1 0 01-1.414 0l-4-4a1 1 0 010-1.414z" clipRule="evenodd"></path></svg></button>
+                                            <div className={`relative ${newsMenu ? 'hidden' : 'block'} text-base list-none divide-y divide-gray-100 rounded-lg shadow`}>
+                                                <div className="relative">
+                                                    <ul className="absolute right-0 z-10 py-2 mt-4 w-48 bg-white rounded-md shadow-lg border-2 ">
+                                                        <li>
+                                                            <Link href="/news" className="block px-4 py-2 text-sm text-gray-700 hover:bg-gray-100" onClick={handleNewsMenu}>
+                                                                News Page
+                                                            </Link>
+                                                        </li>
+                                                        <li>
+                                                            <Link href="/create-new" className="block px-4 py-2 text-sm text-gray-700 hover:bg-gray-100" onClick={handleNewsMenu}>
+                                                                Create News
+                                                            </Link>
+                                                        </li>
+                                                    </ul>
+                                                </div>
+                                            </div>
+                                        </Fragment>
+                                    ) : (
+                                        <Link href="/news" className={`block py-2 pl-3 pr-4 ${Router.pathname === '/news' ? ('text-white bg-blue-700 rounded md:bg-transparent md:text-blue-700') : ('text-gray-900 rounded hover:bg-gray-100 md:hover:bg-transparent md:hover:text-blue-700')} md:p-0`}>News</Link>
+                                    )}
+
                             </li>
+                            {isAdmin ?
+                                (
+                                    <li>
+                                        <Link href="/equipment" className={`block py-2 pl-3 pr-4 ${Router.pathname === '/equipment' ? ('text-white bg-blue-700 rounded md:bg-transparent md:text-blue-700') : ('text-gray-900 rounded hover:bg-gray-100 md:hover:bg-transparent md:hover:text-blue-700')} md:p-0`}>Equipment</Link>
+                                    </li>
+                                ) : null
+                            }
                             <li>
                                 <Link href="/about" className={`block py-2 pl-3 pr-4 ${Router.pathname === '/about' ? ('text-white bg-blue-700 rounded md:bg-transparent md:text-blue-700') : ('text-gray-900 rounded hover:bg-gray-100 md:hover:bg-transparent md:hover:text-blue-700')} md:p-0`}>About</Link>
                             </li>

@@ -21,7 +21,7 @@ const Footer: NextPage = () => {
                         <Link href='/booking' className='mr-4 hover:underline md:mr-6'>Booking</Link>
                     </li>
                     <li>
-                        <Link href='#' className='mr-4 hover:underline md:mr-6'>News</Link>
+                        <Link href='/news' className='mr-4 hover:underline md:mr-6'>News</Link>
                     </li>
                     <li>
                         <Link href='/about' className='hover:underline'>About</Link>
