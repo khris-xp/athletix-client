@@ -12,7 +12,6 @@ export const registerService = async (fullname: string, email: string, password:
         const token: string = response.headers.authorization;
         Cookies.set('token', token);
         window.location.href = '/';
-        console.log(response.data);
     } catch (err) {
         console.log(err);
     }
@@ -23,9 +22,11 @@ export const loginService = async (email: string, password: string): Promise<voi
         const response: AxiosResponse = await axios.post('http://localhost:4000/auth/login', { email, password });
         const token: string = response.headers.authorization;
         Cookies.set('token', token);
-        window.location.href = '/';
+        setTimeout(() => {
+            window.location.href = '/';
+        }, 1000);
     } catch (err: unknown) {
-        console.log(err);
+        throw new Error('Login Failed');
     }
 }
 
@@ -55,9 +56,10 @@ export const changeUserPasswordService = async (changePassword: IUserChangePassw
     try {
         const CookiesToken = parseCookies();
         const token: string = CookiesToken.token;
+        console.log(token);
         if (token) {
             axios.defaults.headers.common['Authorization'] = `Bearer ${token}`
-            const response = await axios.post('localhost:4000/users/change-password', changePassword);
+            const response = await axios.post('http://localhost:4000/users/change-password', changePassword);
             console.log(response.data);
         }
     } catch (err) {

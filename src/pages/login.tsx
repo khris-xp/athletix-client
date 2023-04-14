@@ -4,6 +4,7 @@ import Layout from '@/layouts/Layout';
 import { loginService } from '@/services/user.services';
 import Link from 'next/link';
 import { toast } from 'react-hot-toast';
+import router from 'next/router';
 
 interface LoginProps {
     email: string,
@@ -18,6 +19,7 @@ const Login: NextPage = () => {
             event.preventDefault();
             await loginService(user.email, user.password);
             setUser({ ...user, email: '', password: '' });
+            toast.success("Login Success");
         } catch (err) {
             toast.error("Login Failed");
         }
