@@ -25,9 +25,11 @@ const NewsCard: NextPage<Props> = ({ id, title, description, createdDate, image 
 
     const handleDelete = async (): Promise<void> => {
         try {
-            await deleteNewService(id)
-            router.reload();
+            await deleteNewService(id);
             toast.success('Delete news success');
+            setTimeout(() => {
+                router.reload();
+            }, 400);
         } catch (err) {
             toast.error('Delete news failed');
         }

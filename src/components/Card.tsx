@@ -24,7 +24,7 @@ const Card: NextPage<Props> = ({ id, image, title, description }) => {
             toast.success('Delete field success');
             setTimeout(() => {
                 router.reload();
-            },500)
+            },400)
         } catch (err: unknown) {
             toast.error('Delete field failed');
         }

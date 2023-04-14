@@ -10,3 +10,13 @@ export const getEquipmentService = async () => {
         throw Error(err as string);
     }
 };
+
+export const deleteEquipmentService = async (id: string) => {
+    try {
+        const response: AxiosResponse = await axios.delete(`http://localhost:4000/equipments/${id}`);
+        console.log(response.data)
+        return response.data;
+    } catch (err) {
+        console.log(err);
+    }
+}

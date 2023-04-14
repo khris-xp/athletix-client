@@ -13,7 +13,7 @@ export const registerService = async (fullname: string, email: string, password:
         Cookies.set('token', token);
         setTimeout(() => {
             window.location.href = '/';
-        }, 1000);
+        }, 400);
     } catch (err) {
         throw new Error('Register Failed');
     }
@@ -26,7 +26,7 @@ export const loginService = async (email: string, password: string): Promise<voi
         Cookies.set('token', token);
         setTimeout(() => {
             window.location.href = '/';
-        }, 1000);
+        }, 400);
     } catch (err: unknown) {
         throw new Error('Login Failed');
     }
@@ -37,7 +37,7 @@ export const logoutService = async (): Promise<void> => {
         Cookies.remove('token');
         setTimeout(() => {
             window.location.href = '/';
-        }, 1000);
+        }, 400);
     } catch (err: unknown) {
         throw new Error('Logout Failed');
     }

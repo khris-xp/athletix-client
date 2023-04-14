@@ -1,4 +1,4 @@
-import { Fragment, useEffect } from 'react'
+import { Fragment } from 'react'
 import { Banner, Slots } from '@/components'
 import Layout from '@/layouts/Layout'
 import { NextPage } from 'next'
