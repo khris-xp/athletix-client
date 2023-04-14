@@ -14,13 +14,21 @@ export const getEquipmentByIdService = async (id: string) => {
     try {
         const response: AxiosResponse = await axios.get(`http://localhost:4000/equipments/${id}`);
         return response.data;
-    } catch (err) {
+    } catch (err: unknown) {
+        throw Error(err as string);
+    }
+}
+
+export const createEquipmentService = async (equipment: IUpdateEquipment) => {
+    try {
+        const response: AxiosResponse = await axios.post("http://localhost:4000/equipments/football", equipment);
+        return response.data;
+    } catch (err: unknown) {
         throw Error(err as string);
     }
 }
 
 export const editEquipmentService = async (id: string, equipment: IUpdateEquipment) => {
-    console.log(equipment);
     try {
         const response: AxiosResponse = await axios.patch(`http://localhost:4000/equipments/${id}`, equipment);
         return response.data;

@@ -9,7 +9,7 @@ export const getFieldService = async () => {
         const response: AxiosResponse = await axios.get('http://localhost:4000/fields');
         return response.data;
     } catch (err: unknown) {
-        console.log(err);
+        throw Error('Failed to fetch field');
     }
 }
 
