@@ -4,14 +4,13 @@ import Link from "next/link"
 import Image from "next/image"
 import { logoutService } from "@/services/user.services"
 import { useAuth } from "@/context/auth"
-import { Router, NextRouter, useRouter } from "next/router"
+import { NextRouter, useRouter } from "next/router"
 
 const Navbar: NextPage = () => {
     const [navbarMenu, setIsNavbarMenu] = useState<boolean>(true);
     const [userMenu, setIsUserMenu] = useState<boolean>(true);
-    const { isAuthenticated, user } = useAuth();
+    const { isAuthenticated, user, isAdmin, isCustomer } = useAuth();
     const Router: NextRouter = useRouter();
-    console.log(user?._Person__fullname)
 
     const handleNavbarMenu = (): void => {
         setIsNavbarMenu(!navbarMenu);

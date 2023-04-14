@@ -1,10 +1,14 @@
 import Layout from '@/layouts/Layout'
 import { GetServerSideProps, NextPage } from 'next'
 import { Hero, Card, Member } from '@/components'
-import Field from '@/components/Field'
 import { getFieldService } from '@/services/field.services'
+import { IField } from '@/interfaces/field'
 
-const Home: NextPage = ({ data }: any) => {
+interface Props {
+  data: IField[]
+}
+
+const Home: NextPage<Props> = ({ data }) => {
   return (
     <Layout>
       <Hero />
@@ -31,6 +35,7 @@ const Home: NextPage = ({ data }: any) => {
         {data.map((field: any) => (
           <Card
             key={field._Field__id}
+            id={field._Field__id}
             title={field._Field__name}
             description={field._Field__description}
             image='https://editorial.uefa.com/resources/025c-0f8e775cc072-f99f8b3389ab-1000/the_new_tottenham_hotspur_stadium_has_an_unusual_flexible_playing_surface.jpeg'
@@ -68,7 +73,7 @@ const Home: NextPage = ({ data }: any) => {
 
 export const getServerSideProps: GetServerSideProps = async () => {
   try {
-    const data = await getFieldService();
+    const data: IField = await getFieldService();
     if (data) {
       return {
         props: {

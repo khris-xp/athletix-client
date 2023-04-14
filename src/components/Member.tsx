@@ -17,8 +17,8 @@ const Member: NextPage<Props> = ({ image, name, studentId }) => {
                     className='mx-auto mb-4 w-36 h-36 rounded-full'
                     src={image}
                     alt='member-Avatar'
-                    height={100}
-                    width={100}
+                    height={1000}
+                    width={1000}
                 />
                 <h3
                     className='mb-1 text-2xl font-bold tracking-tight text-gray-900 dark:text-white'

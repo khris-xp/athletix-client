@@ -37,3 +37,16 @@ export const editFieldService = async (field: ICreateField, id: string) => {
         console.log(err);
     }
 }
+
+export const deleteFieldService = async (id: string) => {
+    try {
+        const Cookies: IToken = parseCookies();
+        if (Cookies.token) {
+            axios.defaults.headers.common['Authorization'] = `Bearer ${Cookies.token}`;
+            const response: AxiosResponse = await axios.delete(`http://localhost:4000/fields/${id}`);
+            return response.data;
+        }
+    } catch (err: unknown) {
+        console.log(err);
+    }
+}

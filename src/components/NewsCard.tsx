@@ -5,7 +5,7 @@ import { format } from 'date-fns';
 import Link from 'next/link';
 import { useAuth } from '@/context/auth';
 import { deleteNewService } from '@/services/news.services';
-import { useRouter } from 'next/router';
+import { NextRouter, useRouter } from 'next/router';
 
 interface Props {
     id: string;
@@ -16,11 +16,11 @@ interface Props {
 }
 
 const NewsCard: NextPage<Props> = ({ id, title, description, createdDate, image }) => {
-    const createdFormatDate = new Date(createdDate);
+    const createdFormatDate: Date = new Date(createdDate);
     const { isAdmin } = useAuth();
-    const router = useRouter()
-    const createdAt = format(createdFormatDate, 'dd MMM yyyy  HH:mm');
-    const [formattedDate, formattedTime] = createdAt.split('  ');
+    const router: NextRouter = useRouter()
+    const createdAt: string = format(createdFormatDate, 'dd MMM yyyy  HH:mm');
+    const [formattedDate, formattedTime]: string[] = createdAt.split('  ');
 
     const handleDelete = async (): Promise<void> => {
         try {
