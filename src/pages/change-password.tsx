@@ -1,27 +1,28 @@
-import React, { Fragment, useState } from 'react'
 import { NextPage } from 'next'
-import Layout from '@/layouts/Layout';
-import { loginService } from '@/services/user.services';
-import Link from 'next/link';
-import { toast } from 'react-hot-toast';
+import { Fragment, useState } from 'react'
+import Layout from '@/layouts/Layout'
+import Link from 'next/link'
+import { IUserChangePassword } from '@/interfaces/user'
+import { UserChangePassword } from '@/constants/user'
+import { changeUserPasswordService } from '@/services/user.services'
+import { toast } from 'react-hot-toast'
+import router from 'next/router'
 
-interface LoginProps {
-    email: string,
-    password: string,
-}
+const ChangePassword: NextPage = () => {
+    const [changePassword, setChangePassword] = useState<IUserChangePassword>(UserChangePassword)
 
-const Login: NextPage = () => {
-    const [user, setUser] = useState<LoginProps>({ email: '', password: '' });
-
-    const handleSubmit = async (event: React.FormEvent<HTMLFormElement>) => {
+    const handleChangePassword = (event: React.ChangeEvent<HTMLFormElement>) => {
         try {
             event.preventDefault();
-            await loginService(user.email, user.password);
-            setUser({ ...user, email: '', password: '' });
+            changeUserPasswordService(changePassword);
+            setChangePassword(UserChangePassword);
+            router.push('/login');
+            toast.success('Change Password Success');
         } catch (err) {
-            toast.error("Login Failed");
+            toast.error('Change Password Failed');
         }
     }
+
     return (
         <Fragment>
             <Layout>
@@ -38,7 +39,7 @@ const Login: NextPage = () => {
                                 >
                                     Sign in to your account
                                 </h1>
-                                <form className='space-y-4 md:space-y-6' onSubmit={handleSubmit}>
+                                <form className='space-y-4 md:space-y-6' onSubmit={handleChangePassword}>
                                     <div>
                                         <label
                                             htmlFor='email'
@@ -47,33 +48,39 @@ const Login: NextPage = () => {
                                         <input
                                             type='email'
                                             placeholder='Enter your email'
-                                            value={user.email}
-                                            onChange={(event: React.ChangeEvent<HTMLInputElement>) => {
-                                                setUser({ ...user, email: event.target.value });
-                                                event.preventDefault();
-                                            }}
                                             className='bg-gray-50 border border-gray-300 text-gray-900 sm:text-sm rounded-lg focus:ring-blue-600 focus:border-blue-600 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500'
                                             required
                                         />
                                     </div>
+
                                     <div>
                                         <label
                                             htmlFor='password'
                                             className='block mb-2 text-sm font-medium text-gray-900 dark:text-white'
-                                        >Password</label>
+                                        >Your Password</label>
                                         <input
                                             type='password'
                                             placeholder='********'
-                                            value={user.password}
-                                            onChange={(event: React.ChangeEvent<HTMLInputElement>) => {
-                                                setUser({ ...user, password: event.target.value });
-                                                event.preventDefault();
-                                            }}
                                             className='bg-gray-50 border border-gray-300 text-gray-900 sm:text-sm rounded-lg focus:ring-blue-600 focus:border-blue-600 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500'
+                                            onChange={(event: React.ChangeEvent<HTMLInputElement>) => setChangePassword({ ...changePassword, old_password: event.target.value })}
                                             required
                                         />
                                     </div>
-                                    <Link href='/change-password' className='text-sm font-medium text-blue-600 hover:underline flex justify-end'>Change Password</Link>
+
+                                    <div>
+                                        <label
+                                            htmlFor='password'
+                                            className='block mb-2 text-sm font-medium text-gray-900 dark:text-white'
+                                        >New Password</label>
+                                        <input
+                                            type='password'
+                                            placeholder='********'
+                                            className='bg-gray-50 border border-gray-300 text-gray-900 sm:text-sm rounded-lg focus:ring-blue-600 focus:border-blue-600 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500'
+                                            onChange={(event: React.ChangeEvent<HTMLInputElement>) => setChangePassword({ ...changePassword, new_password: event.target.value })}
+                                            required
+                                        />
+                                    </div>
+
                                     <button
                                         type='submit'
                                         className='w-full text-white bg-blue-600 hover:bg-blue-700 focus:ring-4 focus:outline-none focus:ring-blue-300 font-medium rounded-lg text-sm px-5 py-2.5 text-center dark:bg-blue-600 dark:hover:bg-blue-700 dark:focus:ring-blue-800'
@@ -93,4 +100,4 @@ const Login: NextPage = () => {
     )
 }
 
-export default Login
+export default ChangePassword

@@ -1,5 +1,7 @@
 import axios, { AxiosResponse } from "axios";
+import { parseCookies } from "nookies";
 import Cookies from "js-cookie";
+import { IUserChangePassword } from "@/interfaces/user";
 
 export const registerService = async (fullname: string, email: string, password: string, phone_number: string, address: string,
     birth_date: string, emergency_contact_fullname: string, emergency_contact_phone_number: string): Promise<void> => {
@@ -45,6 +47,20 @@ export const getUserService = async () => {
             return response.data;
         }
     } catch (err: unknown) {
+        console.log(err);
+    }
+}
+
+export const changeUserPasswordService = async (changePassword: IUserChangePassword): Promise<void> => {
+    try {
+        const CookiesToken = parseCookies();
+        const token: string = CookiesToken.token;
+        if (token) {
+            axios.defaults.headers.common['Authorization'] = `Bearer ${token}`
+            const response = await axios.post('localhost:4000/users/change-password', changePassword);
+            console.log(response.data);
+        }
+    } catch (err) {
         console.log(err);
     }
 }

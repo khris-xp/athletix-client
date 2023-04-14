@@ -6,6 +6,7 @@ import Link from 'next/link';
 import { useAuth } from '@/context/auth';
 import { deleteNewService } from '@/services/news.services';
 import { NextRouter, useRouter } from 'next/router';
+import { toast } from 'react-hot-toast';
 
 interface Props {
     id: string;
@@ -26,8 +27,10 @@ const NewsCard: NextPage<Props> = ({ id, title, description, createdDate, image 
         try {
             await deleteNewService(id)
             router.reload();
+            toast.success('Delete news success');
+
         } catch (err) {
-            throw new Error('Delete news failed');
+            toast.error('Delete news failed');
         }
     };
     return (

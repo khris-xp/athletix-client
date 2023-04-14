@@ -62,36 +62,3 @@ export const AuthProvider = ({ children }: { children: ReactNode }) => {
 };
 
 export const useAuth = (): IAuthContext => useContext(AuthContext);
-
-export const CustomerRoute = ({ children }: { children: ReactNode }) => {
-    const { isAuthenticated, isLoading, isCustomer } = useAuth();
-    if (isLoading) {
-        return <Loading />
-    }
-    if (isCustomer === false && isAuthenticated === false) {
-        return <Error />
-    }
-    return <Fragment>{children}</Fragment>;
-}
-
-export const FrontDeskRoute = ({ children }: { children: ReactNode }) => {
-    const { isAuthenticated, isLoading, isFrontDesk } = useAuth();
-    if (isLoading) {
-        return <Loading />
-    }
-    if (isFrontDesk === false && isAuthenticated === false) {
-        return <Error />
-    }
-    return <Fragment>{children}</Fragment>;
-}
-
-export const AdminRoute = ({ children }: { children: ReactNode }) => {
-    const { isAuthenticated, isLoading, isAdmin } = useAuth();
-    if (isLoading) {
-        return <Loading />
-    }
-    if (isAdmin === false && isAuthenticated === false) {
-        return <Error />
-    }
-    return <Fragment>{children}</Fragment>;
-}
