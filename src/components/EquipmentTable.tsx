@@ -20,7 +20,7 @@ const EquipmentTable: NextPage<Props> = ({ id, name, price, quantity }) => {
             toast.success('Delete Equipment Success');
             setTimeout(() => {
                 router.reload();
-            },400)
+            }, 400)
         } catch (err) {
             toast.error('Delete Equipment Failed');
         }
@@ -44,7 +44,7 @@ const EquipmentTable: NextPage<Props> = ({ id, name, price, quantity }) => {
                     </td>
                     <td className="px-6 py-4">
                         <div className='space-x-3'>
-                            <Link href="#" className="font-medium text-blue-600 dark:text-blue-500 hover:underline">Edit</Link>
+                            <Link href={`/edit-equipment/${id}`} className="font-medium text-blue-600 dark:text-blue-500 hover:underline">Edit</Link>
                             <button className="font-medium text-red-600 dark:text-red-500 hover:underline" onClick={() => handleDeleteEquipment()}>Delete</button>
                         </div>
                     </td>

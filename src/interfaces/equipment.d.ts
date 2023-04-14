@@ -4,3 +4,9 @@ export interface IEquipment {
     _Equipment__price_per_unit: number;
     _Equipment__quantity: number;
 }
+
+export interface IUpdateEquipment {
+    name: string;
+    price_per_unit: number;
+    quantity: number;
+}
