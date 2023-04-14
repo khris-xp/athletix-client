@@ -18,7 +18,7 @@ export const getFieldDetailService = async (id: string) => {
         const response: AxiosResponse = await axios.get(`http://localhost:4000/fields/${id}`);
         return response.data;
     } catch (err: unknown) {
-        console.log(err);
+        throw Error('Failed to fetch field detail');
     }
 }
 
@@ -31,7 +31,7 @@ export const createFieldService = async (field: ICreateField) => {
             return response.data;
         }
     } catch (err: unknown) {
-        console.log(err);
+        throw Error('Failed to create field');
     }
 }
 
@@ -45,7 +45,7 @@ export const editFieldService = async (field: ICreateField, id: string) => {
             return response.data;
         }
     } catch (err: unknown) {
-        console.log(err);
+        throw Error('Failed to edit field');
     }
 }
 
@@ -58,6 +58,6 @@ export const deleteFieldService = async (id: string) => {
             return response.data;
         }
     } catch (err: unknown) {
-        console.log(err);
+        throw Error('Failed to delete field');
     }
 }

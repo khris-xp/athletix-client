@@ -4,6 +4,7 @@ import { ICreateField } from '@/interfaces/field'
 import { CreateFieldInitialValues } from '@/constants/field'
 import { createFieldService } from '@/services/field.services'
 import router from 'next/router'
+import { toast } from 'react-hot-toast'
 
 const CreateField = () => {
     const [field, setField] = useState<ICreateField>(CreateFieldInitialValues);
@@ -13,8 +14,9 @@ const CreateField = () => {
             await createFieldService(field);
             setField(CreateFieldInitialValues)
             router.push('/')
+            toast.success('Field created successfully');
         } catch (err) {
-            console.log(err)
+            toast.error('Failed to create field');
         }
     }
     return (
@@ -53,7 +55,7 @@ const CreateField = () => {
                                                 <label>Booking Price</label>
                                                 <input type="number" className="h-10 border mt-1 rounded px-4 w-full bg-gray-50" placeholder='0'
                                                     onChange={(event: React.ChangeEvent<HTMLInputElement>) => {
-                                                        setField({ ...field, price_by_slot: event.target.value })
+                                                        setField({ ...field, price_by_slot: parseInt(event.target.value) })
                                                     }}
                                                 />
                                             </div>

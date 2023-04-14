@@ -9,7 +9,7 @@ export const getNewService = async () => {
     const response: AxiosResponse = await axios.get('http://localhost:4000/news');
     return response.data;
   } catch (err: unknown) {
-    console.log(err);
+    throw new Error('Failed to fetch news');
   }
 }
 

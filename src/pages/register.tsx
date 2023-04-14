@@ -5,6 +5,7 @@ import Link from 'next/link'
 import { registerService } from '@/services/user.services'
 import { UserRegisterInitialValues } from '@/constants/user'
 import { IUserRegister } from '@/interfaces/user'
+import { toast } from 'react-hot-toast'
 
 const Register: NextPage = () => {
     const [user, setUser] = useState<IUserRegister>(UserRegisterInitialValues)
@@ -14,8 +15,9 @@ const Register: NextPage = () => {
             event.preventDefault();
             await registerService(user.fullname, user.email, user.password, user.phone_number, user.address, user.birth_date, user.emergency_contact_fullname, user.emergency_contact_phone_number);
             setUser({ ...user, fullname: '', email: '', password: '', phone_number: '', address: '', birth_date: '', emergency_contact_fullname: '', emergency_contact_phone_number: '' })
+            toast.success('Register Success');
         } catch (err) {
-            console.log(err)
+            toast.error('Register Failed');
         }
     }
     return (

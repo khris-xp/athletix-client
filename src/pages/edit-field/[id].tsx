@@ -3,6 +3,7 @@ import { NextPage, GetStaticPaths, GetStaticProps, GetStaticPropsContext } from 
 import { getFieldService, getFieldDetailService, editFieldService } from '@/services/field.services'
 import Layout from '@/layouts/Layout'
 import { updateSlots } from '@/constants/slots'
+import { toast } from 'react-hot-toast'
 
 interface Props {
     field_id: string;
@@ -19,8 +20,9 @@ const EditField: NextPage<Props> = ({ field_id, name, description, price_by_slot
     const handleEditField = async () => {
         try {
             await editFieldService(field, field_id);
+            toast.success('Field updated successfully');
         } catch (err) {
-            console.log(err);
+            toast.error('Failed to update field');
         }
     }
 

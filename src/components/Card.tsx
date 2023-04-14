@@ -5,6 +5,7 @@ import { useAuth } from '@/context/auth'
 import Link from 'next/link'
 import { deleteFieldService } from '@/services/field.services'
 import { NextRouter, useRouter } from 'next/router'
+import { toast } from 'react-hot-toast'
 
 interface Props {
     id: string;
@@ -20,9 +21,12 @@ const Card: NextPage<Props> = ({ id, image, title, description }) => {
     const handleDelete = async (): Promise<void> => {
         try {
             await deleteFieldService(id)
-            router.reload();
+            toast.success('Delete field success');
+            setTimeout(() => {
+                router.reload();
+            },500)
         } catch (err: unknown) {
-            throw new Error('Delete field failed');
+            toast.error('Delete field failed');
         }
     }
 

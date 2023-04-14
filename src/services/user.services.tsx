@@ -11,9 +11,11 @@ export const registerService = async (fullname: string, email: string, password:
         })
         const token: string = response.headers.authorization;
         Cookies.set('token', token);
-        window.location.href = '/';
+        setTimeout(() => {
+            window.location.href = '/';
+        }, 1000);
     } catch (err) {
-        console.log(err);
+        throw new Error('Register Failed');
     }
 }
 
@@ -33,9 +35,11 @@ export const loginService = async (email: string, password: string): Promise<voi
 export const logoutService = async (): Promise<void> => {
     try {
         Cookies.remove('token');
-        window.location.href = '/';
+        setTimeout(() => {
+            window.location.href = '/';
+        }, 1000);
     } catch (err: unknown) {
-        console.log(err);
+        throw new Error('Logout Failed');
     }
 }
 
@@ -44,11 +48,11 @@ export const getUserService = async () => {
         const token: string | undefined = Cookies.get('token');
         if (token) {
             axios.defaults.headers.common['Authorization'] = `Bearer ${token}`
-            const response = await axios.get('http://localhost:4000/users/profile');
+            const response: AxiosResponse = await axios.get('http://localhost:4000/users/profile');
             return response.data;
         }
     } catch (err: unknown) {
-        console.log(err);
+        throw new Error('Failed to fetch user');
     }
 }
 
@@ -59,10 +63,10 @@ export const changeUserPasswordService = async (changePassword: IUserChangePassw
         console.log(token);
         if (token) {
             axios.defaults.headers.common['Authorization'] = `Bearer ${token}`
-            const response = await axios.post('http://localhost:4000/users/change-password', changePassword);
-            console.log(response.data);
+            const response: AxiosResponse = await axios.post('http://localhost:4000/users/change-password', changePassword);
+            return response.data;
         }
     } catch (err) {
-        console.log(err);
+        throw new Error('Failed to change password');
     }
 }
