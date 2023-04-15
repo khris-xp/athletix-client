@@ -1,8 +1,9 @@
 import axios, { AxiosResponse } from "axios";
 import { parseCookies } from "nookies";
 import { IToken } from "@/interfaces/token";
+import { IBooking } from "@/interfaces/booking";
 
-export const createBookingService = async (booking: any) => {
+export const createBookingService = async (booking: IBooking) => {
     try {
         const CookiesToken: IToken = parseCookies();
         if (CookiesToken.token) {

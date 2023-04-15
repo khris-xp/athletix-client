@@ -1,8 +1,7 @@
-import { Fragment, useState } from 'react';
+import React, { Fragment, useState } from 'react';
 import { Banner } from '@/components';
 import Layout from '@/layouts/Layout';
 import { NextPage, GetServerSideProps } from 'next';
-import Link from 'next/link';
 import { getFieldService } from '@/services/field.services';
 import { IField } from '@/interfaces/field';
 import { SlotsInitialValue } from '@/constants/slots';
@@ -10,21 +9,20 @@ import { CreateBookingInitialValue } from '@/constants/booking';
 import { createBookingService } from '@/services/booking.services';
 import { toast } from 'react-hot-toast';
 import { AxiosError } from 'axios';
+import { IBooking } from '@/interfaces/booking';
 
 interface Props {
     data: IField[];
 }
 
 const Booking: NextPage<Props> = ({ data }) => {
-    const [booking, setBooking] = useState<any>(CreateBookingInitialValue);
+    const [booking, setBooking] = useState<IBooking>(CreateBookingInitialValue);
     const [selectedId, setSelectedId] = useState<string | null>(null);
     const [selectedDate, setSelectedDate] = useState<string>('');
-    const [dateFormat, setDateFormat] = useState<string>('');
     const [slotsId, setSlotsId] = useState<string>('');
     const [slotsClick, setSlotsClick] = useState<boolean>(false);
 
-    console.log(booking);
-    const handleSlotsClick = (id: string, start_time: string) => {
+    const handleSlotsClick = (id: string): void => {
         setSlotsId(id);
         setSlotsClick(true);
     }
@@ -33,28 +31,27 @@ const Booking: NextPage<Props> = ({ data }) => {
         setSelectedId(id);
     }
 
-    const handleDateChange = (e: any) => {
-        const inputDate = e.target.value;
+    const handleDateChange = (event: React.ChangeEvent<HTMLInputElement>) => {
+        const inputDate = event.target.value;
         setSelectedDate(inputDate);
-        const dateRegex = /^(\d{4})-(\d{2})-(\d{2})$/
+        const dateRegex: RegExp = /^(\d{4})-(\d{2})-(\d{2})$/;
         const match = inputDate.match(dateRegex);
 
         if (match) {
-            const year = match[1];
-            const month = match[2] - 1;
-            const day = match[3];
+            const year = parseInt(match[1], 10);
+            const month = parseInt(match[2], 10) - 1;
+            const day = parseInt(match[3], 10);
             const date = new Date(year, month, day);
             date.setUTCHours(0, 0, 0, 0);
             date.setDate(date.getUTCDate() + 1);
             const updatedBooking = { ...booking };
-            const formattedDate = date.toISOString()
-            setDateFormat(formattedDate);
+            const formattedDate = date.toISOString();
             updatedBooking.slot.date = formattedDate;
             setBooking(updatedBooking);
         } else {
             console.error("Invalid date format");
         }
-    }
+    };
 
     const handleStartTimeChange = (startTime: string, endTime: string) => {
         const updatedBooking = { ...booking };
@@ -69,13 +66,13 @@ const Booking: NextPage<Props> = ({ data }) => {
         const minutes = parseInt(startTimeMatch[2]);
 
         if (!selectedDate) {
-            console.error("selectedDate is null or undefined.");
+            toast.error("Please Select Date Before Select time");
             return;
         }
 
         const date = new Date(selectedDate);
         if (isNaN(date.getTime())) {
-            console.error("Invalid selectedDate:", selectedDate);
+            toast.error("Invalid selectedDate");
             return;
         }
 
@@ -99,14 +96,14 @@ const Booking: NextPage<Props> = ({ data }) => {
         setBooking(updatedBooking);
     }
 
-    const handleCreateBooking = async (booking: any) => {
+    const handleCreateBooking = async (booking: IBooking) => {
         try {
-            const response = await createBookingService(booking);
+            await createBookingService(booking);
             toast.success('Booking created successfully');
         } catch (err) {
             const errorMessage = (err as AxiosError)?.message;
             toast.error(errorMessage);
-          }
+        }
     };
 
     return (
@@ -154,6 +151,7 @@ const Booking: NextPage<Props> = ({ data }) => {
                                     name='dateInput'
                                     value={selectedDate}
                                     onChange={handleDateChange}
+                                    min={new Date().toISOString().split('T')[0]}
                                 />
                             </div>
                         </div>
@@ -168,13 +166,13 @@ const Booking: NextPage<Props> = ({ data }) => {
                                         {slotsClick && slotsId === Slots.id ? (
                                             <button
                                                 className='rounded-lg bg-blue-900 px-2 py-2 font-medium text-white active:scale-95'
-                                                onClick={() => { handleSlotsClick(Slots.id, Slots.start_time); handleStartTimeChange(Slots.start_time, Slots.end_time); }}
+                                                onClick={() => { handleSlotsClick(Slots.id); handleStartTimeChange(Slots.start_time, Slots.end_time); }}
                                                 key={Slots.id}
                                             >{Slots.start_time} - {Slots.end_time}</button >
                                         ) : (
                                             <button
                                                 className='rounded-lg bg-blue-100 px-2 py-2 font-medium text-blue-900 active:scale-95'
-                                                onClick={() => { handleSlotsClick(Slots.id, Slots.start_time); handleStartTimeChange(Slots.start_time, Slots.end_time); }}
+                                                onClick={() => { handleSlotsClick(Slots.id); handleStartTimeChange(Slots.start_time, Slots.end_time); }}
                                                 key={Slots.id}
                                             >{Slots.start_time} - {Slots.end_time}</button>
                                         )}
