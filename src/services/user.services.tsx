@@ -2,6 +2,8 @@ import axios, { AxiosResponse } from "axios";
 import { parseCookies } from "nookies";
 import Cookies from "js-cookie";
 import { IUserChangePassword } from "@/interfaces/user";
+import { IToken } from "@/interfaces/token";
+import { GetServerSidePropsContext, GetStaticPropsContext } from "next";
 
 export const registerService = async (fullname: string, email: string, password: string, phone_number: string, address: string,
     birth_date: string, emergency_contact_fullname: string, emergency_contact_phone_number: string): Promise<void> => {
@@ -60,7 +62,6 @@ export const changeUserPasswordService = async (changePassword: IUserChangePassw
     try {
         const CookiesToken = parseCookies();
         const token: string = CookiesToken.token;
-        console.log(token);
         if (token) {
             axios.defaults.headers.common['Authorization'] = `Bearer ${token}`
             const response: AxiosResponse = await axios.post('http://localhost:4000/users/change-password', changePassword);
@@ -68,5 +69,18 @@ export const changeUserPasswordService = async (changePassword: IUserChangePassw
         }
     } catch (err) {
         throw new Error('Failed to change password');
+    }
+}
+
+export const getUserHistoryService = async (context: GetServerSidePropsContext) => {
+    try {
+        const CookiesToken: IToken = parseCookies(context);
+        if (CookiesToken.token) {
+            axios.defaults.headers.common['Authorization'] = `Bearer ${CookiesToken.token}`
+            const response: AxiosResponse = await axios.get('http://localhost:4000/booking/history');
+            return response.data;
+        }
+    } catch (err) {
+        console.log(err);
     }
 }

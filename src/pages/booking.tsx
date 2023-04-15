@@ -1,10 +1,111 @@
-import { Fragment } from 'react'
-import { Banner, Slots } from '@/components'
-import Layout from '@/layouts/Layout'
-import { NextPage } from 'next'
-import Link from 'next/link'
+import React, { Fragment, useState } from 'react';
+import { Banner } from '@/components';
+import Layout from '@/layouts/Layout';
+import { NextPage, GetServerSideProps } from 'next';
+import { getFieldService } from '@/services/field.services';
+import { IField } from '@/interfaces/field';
+import { SlotsInitialValue } from '@/constants/slots';
+import { CreateBookingInitialValue } from '@/constants/booking';
+import { createBookingService } from '@/services/booking.services';
+import { toast } from 'react-hot-toast';
+import { AxiosError } from 'axios';
+import { IBooking } from '@/interfaces/booking';
 
-const Booking: NextPage = () => {
+interface Props {
+    data: IField[];
+}
+
+const Booking: NextPage<Props> = ({ data }) => {
+    const [booking, setBooking] = useState<IBooking>(CreateBookingInitialValue);
+    const [selectedId, setSelectedId] = useState<string | null>(null);
+    const [selectedDate, setSelectedDate] = useState<string>('');
+    const [slotsId, setSlotsId] = useState<string>('');
+    const [slotsClick, setSlotsClick] = useState<boolean>(false);
+
+    const handleSlotsClick = (id: string): void => {
+        setSlotsId(id);
+        setSlotsClick(true);
+    }
+
+    const handleRadioChange = (id: string): void => {
+        setSelectedId(id);
+    }
+
+    const handleDateChange = (event: React.ChangeEvent<HTMLInputElement>) => {
+        const inputDate = event.target.value;
+        setSelectedDate(inputDate);
+        const dateRegex: RegExp = /^(\d{4})-(\d{2})-(\d{2})$/;
+        const match = inputDate.match(dateRegex);
+
+        if (match) {
+            const year = parseInt(match[1], 10);
+            const month = parseInt(match[2], 10) - 1;
+            const day = parseInt(match[3], 10);
+            const date = new Date(year, month, day);
+            date.setUTCHours(0, 0, 0, 0);
+            date.setDate(date.getUTCDate() + 1);
+            const updatedBooking = { ...booking };
+            const formattedDate = date.toISOString();
+            updatedBooking.slot.date = formattedDate;
+            setBooking(updatedBooking);
+        } else {
+            console.error("Invalid date format");
+        }
+    };
+
+    const handleStartTimeChange = (startTime: string, endTime: string) => {
+        const updatedBooking = { ...booking };
+
+        const startTimeRegex = /^([0-9]{2}):([0-9]{2})$/;
+        const startTimeMatch = startTime.match(startTimeRegex);
+        if (!startTimeMatch) {
+            console.error("Invalid startTime:", startTime);
+            return;
+        }
+        const hours = parseInt(startTimeMatch[1]);
+        const minutes = parseInt(startTimeMatch[2]);
+
+        if (!selectedDate) {
+            toast.error("Please Select Date Before Select time");
+            return;
+        }
+
+        const date = new Date(selectedDate);
+        if (isNaN(date.getTime())) {
+            toast.error("Invalid selectedDate");
+            return;
+        }
+
+        date.setUTCHours(hours, minutes, 0, 0);
+        const formattedStartTime = date.toISOString();
+
+        const endTimeRegex = /^([0-9]{2}):([0-9]{2})$/;
+        const endTimeMatch = endTime.match(endTimeRegex);
+        if (!endTimeMatch) {
+            console.error("Invalid endTime:", endTime);
+            return;
+        }
+        const endHours = parseInt(endTimeMatch[1]);
+        const endMinutes = parseInt(endTimeMatch[2]);
+
+        date.setUTCHours(endHours, endMinutes, 0, 0);
+        const formattedEndTime = date.toISOString();
+
+        updatedBooking.slot.start_time = formattedStartTime;
+        updatedBooking.slot.end_time = formattedEndTime;
+        setBooking(updatedBooking);
+    }
+
+    const handleCreateBooking = async (booking: IBooking) => {
+        try {
+            await createBookingService(booking);
+            toast.success('Booking created successfully');
+        } catch (err) {
+            const errorMessage = (err as AxiosError)?.message;
+            toast.error(errorMessage);
+        }
+    };
+
     return (
         <Fragment>
             <Layout>
@@ -16,87 +117,41 @@ const Booking: NextPage = () => {
                             <div
                                 className='mt-4 grid max-w-3xl gap-x-4 gap-y-3 sm:grid-cols-2 md:grid-cols-3'
                             >
-                                <div className='relative'>
-                                    <input
-                                        className='peer hidden'
-                                        id='radio_1'
-                                        type='radio'
-                                        name='radio'
-                                    />
-                                    <span
-                                        className='absolute right-4 top-1/2 box-content block h-3 w-3 -translate-y-1/2 rounded-full border-8 border-gray-300 bg-white peer-checked:border-blue-400'
-                                    ></span>
+                                {data.map((field: IField) => (
+                                    <div className='relative' key={field._Field__id}>
+                                        <input
+                                            className='peer hidden'
+                                            id={field._Field__id}
+                                            type='radio'
+                                            name='radio'
+                                            checked={selectedId === field._Field__id}
+                                            onChange={() => { handleRadioChange(field._Field__id), setBooking({ ...booking, field_id: field._Field__id }) }}
+                                        />
+                                        <span
+                                            className='absolute right-4 top-1/2 box-content block h-3 w-3 -translate-y-1/2 rounded-full border-8 border-gray-300 bg-white peer-checked:border-blue-400'
+                                        ></span>
 
-                                    <label
-                                        className='flex h-full cursor-pointer flex-col rounded-lg p-4 shadow-lg shadow-slate-100 peer-checked:bg-blue-600 peer-checked:text-white'
-                                        htmlFor='radio_1'
-                                    >
-                                        <span className='mt-2 font-medium'>Football Field</span>
-                                    </label>
-                                </div>
-                                <div className='relative'>
-                                    <input
-                                        className='peer hidden'
-                                        id='radio_2'
-                                        type='radio'
-                                        name='radio'
-                                    />
-                                    <span
-                                        className='absolute right-4 top-1/2 box-content block h-3 w-3 -translate-y-1/2 rounded-full border-8 border-gray-300 bg-white peer-checked:border-blue-400'
-                                    ></span>
-
-                                    <label
-                                        className='flex h-full cursor-pointer flex-col rounded-lg p-4 shadow-lg shadow-slate-100 peer-checked:bg-blue-600 peer-checked:text-white'
-                                        htmlFor='radio_2'
-                                    >
-                                        <span className='mt-2 font-medium'>Basketball Field</span>
-                                    </label>
-                                </div>
-                                <div className='relative'>
-                                    <input
-                                        className='peer hidden'
-                                        id='radio_3'
-                                        type='radio'
-                                        name='radio'
-                                    />
-                                    <span
-                                        className='absolute right-4 top-1/2 box-content block h-3 w-3 -translate-y-1/2 rounded-full border-8 border-gray-300 bg-white peer-checked:border-blue-400'
-                                    ></span>
-
-                                    <label
-                                        className='flex h-full cursor-pointer flex-col rounded-lg p-4 shadow-lg shadow-slate-100 peer-checked:bg-blue-600 peer-checked:text-white'
-                                        htmlFor='radio_3'
-                                    >
-                                        <span className='mt-2 font-medium'>Badminton Field</span>
-                                    </label>
-                                </div>
+                                        <label
+                                            className='flex h-full cursor-pointer flex-col rounded-lg p-4 shadow-lg shadow-slate-100 peer-checked:bg-blue-600 peer-checked:text-white'
+                                            htmlFor={field._Field__id}
+                                        >
+                                            <span className='mt-2 font-medium'>{field._Field__name}</span>
+                                        </label>
+                                    </div>
+                                ))}
                             </div>
                         </div>
 
                         <div>
-                            <p className='my-8 text-xl font-bold text-blue-900'>
-                                Select a date
-                            </p>
+                            <p className='my-8 text-xl font-bold text-blue-900'>Select a date</p>
                             <div className='relative mt-4 w-56'>
-                                <div
-                                    className='pointer-events-none absolute inset-y-0 left-0 flex items-center pl-3'
-                                >
-                                    <svg
-                                        aria-hidden='true'
-                                        className='h-5 w-5 text-gray-500'
-                                        fill='currentColor'
-                                        viewBox='0 0 20 20'
-                                        xmlns='http://www.w3.org/2000/svg'
-                                    ><path
-                                        fill-rule='evenodd'
-                                        d='M6 2a1 1 0 00-1 1v1H4a2 2 0 00-2 2v10a2 2 0 002 2h12a2 2 0 002-2V6a2 2 0 00-2-2h-1V3a1 1 0 10-2 0v1H7V3a1 1 0 00-1-1zm0 5a1 1 0 000 2h8a1 1 0 100-2H6z'
-                                        clip-rule='evenodd'></path></svg>
-                                </div>
                                 <input
-                                    datepicker-orientation='bottom'
-                                    type='text'
-                                    className='datepicker-input block w-full rounded-lg border border-blue-300 bg-blue-50 p-2.5 pl-10 text-blue-800 outline-none ring-opacity-30 placeholder:text-blue-800 focus:ring focus:ring-blue-300 sm:text-sm'
-                                    placeholder='Select date'
+                                    className='peer block w-full px-4 pl-14 py-2 text-gray-800 bg-white border border-gray-300 rounded-md shadow-sm focus:outline-none focus:border-blue-500'
+                                    type='date'
+                                    name='dateInput'
+                                    value={selectedDate}
+                                    onChange={handleDateChange}
+                                    min={new Date().toISOString().split('T')[0]}
                                 />
                             </div>
                         </div>
@@ -105,19 +160,61 @@ const Booking: NextPage = () => {
                             <p className='my-8 text-xl font-bold text-blue-900'>
                                 Select a time
                             </p>
-                            <Slots />
+                            <div className='mt-4 grid grid-cols-6 gap-2'>
+                                {SlotsInitialValue.map((Slots: any) => (
+                                    <>
+                                        {slotsClick && slotsId === Slots.id ? (
+                                            <button
+                                                className='rounded-lg bg-blue-900 px-2 py-2 font-medium text-white active:scale-95'
+                                                onClick={() => { handleSlotsClick(Slots.id); handleStartTimeChange(Slots.start_time, Slots.end_time); }}
+                                                key={Slots.id}
+                                            >{Slots.start_time} - {Slots.end_time}</button >
+                                        ) : (
+                                            <button
+                                                className='rounded-lg bg-blue-100 px-2 py-2 font-medium text-blue-900 active:scale-95'
+                                                onClick={() => { handleSlotsClick(Slots.id); handleStartTimeChange(Slots.start_time, Slots.end_time); }}
+                                                key={Slots.id}
+                                            >{Slots.start_time} - {Slots.end_time}</button>
+                                        )}
+                                    </>
+                                ))}
+                            </div>
                         </div>
 
-                        <Link href='/payment'>
-                            <button
-                                className='mt-8 w-56 rounded-full border-8 border-blue-500 bg-blue-600 px-10 py-4 text-lg font-bold text-white transition hover:translate-y-1'
-                            >Book Now</button>
-                        </Link>
+                        <button
+                            className='mt-8 w-56 rounded-full border-8 border-blue-500 bg-blue-600 px-10 py-4 text-lg font-bold text-white transition hover:translate-y-1'
+                            onClick={() => handleCreateBooking(booking)}
+                        >Book Now</button>
                     </div>
                 </div>
             </Layout>
-        </Fragment>
+        </Fragment >
     )
+}
+
+export const getServerSideProps: GetServerSideProps = async () => {
+    try {
+        const data = await getFieldService();
+        if (data) {
+            return {
+                props: {
+                    data
+                }
+            }
+        } else {
+            return {
+                redirect: {
+                    destination: '/',
+                    permanent: false
+                }
+            };
+        }
+    } catch (err) {
+        console.log(err);
+        return {
+            props: {}
+        }
+    }
 }
 
 export default Booking

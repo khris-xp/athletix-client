@@ -1,24 +1,16 @@
-import { ISlot } from "@/interfaces/field"
+import { ISlots } from "@/interfaces/slot"
 
-export const slots = [
-    { id: '1', field: 'football', time: '8:00', date: '2020-10-10', status: 'available' },
-    { id: '2', field: 'football', time: '9:00', date: '2020-10-10', status: 'available' },
-    { id: '3', field: 'football', time: '10:00', date: '2020-10-10', status: 'available' },
-    { id: '4', field: 'football', time: '11:00', date: '2020-10-10', status: 'available' },
-    { id: '5', field: 'football', time: '12:00', date: '2020-10-10', status: 'available' },
-    { id: '6', field: 'football', time: '13:00', date: '2020-10-10', status: 'available' },
-    { id: '7', field: 'basketball', time: '8:00', date: '2020-10-10', status: 'available' },
-    { id: '8', field: 'basketball', time: '9:00', date: '2020-10-10', status: 'available' },
-    { id: '9', field: 'basketball', time: '10:00', date: '2020-10-10', status: 'available' },
-    { id: '10', field: 'basketball', time: '11:00', date: '2020-10-10', status: 'available' },
-    { id: '11', field: 'basketball', time: '12:00', date: '2020-10-10', status: 'available' },
-    { id: '12', field: 'basketball', time: '13:00', date: '2020-10-10', status: 'available' },
-    { id: '13', field: 'badminton', time: '8:00', date: '2020-10-10', status: 'available' },
-    { id: '14', field: 'badminton', time: '9:00', date: '2020-10-10', status: 'available' },
-    { id: '15', field: 'badminton', time: '10:00', date: '2020-10-10', status: 'available' },
-    { id: '16', field: 'badminton', time: '11:00', date: '2020-10-10', status: 'available' },
-    { id: '17', field: 'badminton', time: '12:00', date: '2020-10-10', status: 'available' },
-    { id: '18', field: 'badminton', time: '13:00', date: '2020-10-10', status: 'available' },
+export const SlotsInitialValue: ISlots[] = [
+    { id: '1', start_time: '8:00', end_time: '9:00', start_time_value: 8, end_time_value: 9, is_booked: false },
+    { id: '2', start_time: '9:00', end_time: '10:00', start_time_value: 9, end_time_value: 10, is_booked: false },
+    { id: '3', start_time: '10:00', end_time: '11:00', start_time_value: 10, end_time_value: 11, is_booked: false },
+    { id: '4', start_time: '11:00', end_time: '12:00', start_time_value: 11, end_time_value: 12, is_booked: false },
+    { id: '5', start_time: '12:00', end_time: '13:00', start_time_value: 12, end_time_value: 13, is_booked: false },
+    { id: '6', start_time: '13:00', end_time: '14:00', start_time_value: 13, end_time_value: 14, is_booked: false },
+    { id: '7', start_time: '14:00', end_time: '15:00', start_time_value: 14, end_time_value: 15, is_booked: false },
+    { id: '8', start_time: '15:00', end_time: '16:00', start_time_value: 15, end_time_value: 16, is_booked: false },
+    { id: '9', start_time: '16:00', end_time: '17:00', start_time_value: 16, end_time_value: 17, is_booked: false },
+    { id: '10', start_time: '17:00', end_time: '18:00', start_time_value: 17, end_time_value: 18, is_booked: false },
 ]
 
 export const updateSlots = [

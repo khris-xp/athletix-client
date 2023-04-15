@@ -1,4 +1,5 @@
 interface IField {
+    [x: string]: any;
     _Field__id: string;
     _Field__name: string;
     _Field__description: string;
