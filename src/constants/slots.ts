@@ -1,8 +1,8 @@
 import { ISlots } from "@/interfaces/slot"
 
 export const SlotsInitialValue: ISlots[] = [
-    { id: '1', start_time: '8:00', end_time: '9:00', start_time_value: 8, end_time_value: 9, is_booked: false },
-    { id: '2', start_time: '9:00', end_time: '10:00', start_time_value: 9, end_time_value: 10, is_booked: false },
+    { id: '1', start_time: '08:00', end_time: '09:00', start_time_value: 8, end_time_value: 9, is_booked: false },
+    { id: '2', start_time: '09:00', end_time: '10:00', start_time_value: 9, end_time_value: 10, is_booked: false },
     { id: '3', start_time: '10:00', end_time: '11:00', start_time_value: 10, end_time_value: 11, is_booked: false },
     { id: '4', start_time: '11:00', end_time: '12:00', start_time_value: 11, end_time_value: 12, is_booked: false },
     { id: '5', start_time: '12:00', end_time: '13:00', start_time_value: 12, end_time_value: 13, is_booked: false },

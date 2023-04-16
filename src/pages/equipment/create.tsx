@@ -9,7 +9,6 @@ import { toast } from 'react-hot-toast';
 
 const CreateEquipment: NextPage = () => {
     const [equipment, setEquipment] = useState<IUpdateEquipment>(CreateEquipmentInitialValues);
-
     const handleCreateEquipment = async (event: React.FormEvent<HTMLFormElement>) => {
         try {
             event.preventDefault();
@@ -95,8 +94,8 @@ const CreateEquipment: NextPage = () => {
                         </div>
                     </div>
                 </div>
-            </Layout>
-        </Fragment>
+            </Layout >
+        </Fragment >
     )
 }
 

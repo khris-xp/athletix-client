@@ -13,7 +13,7 @@ interface Props {
     category: string;
 }
 
-const EquipmentTable: NextPage<Props> = ({ id, name, price, quantity }) => {
+const EquipmentTable: NextPage<Props> = ({ id, name, price, quantity, category }) => {
 
     const handleDeleteEquipment = async () => {
         try {
@@ -30,8 +30,8 @@ const EquipmentTable: NextPage<Props> = ({ id, name, price, quantity }) => {
     return (
         <Fragment>
             <tbody>
-                <tr className="bg-white border-b dark:bg-gray-800 dark:border-gray-700 text-center">
-                    <th scope="row" className="px-6 py-4 font-medium text-gray-900 whitespace-nowrap dark:text-white">
+                <tr className="bg-white border-b text-center">
+                    <th scope="row" className="px-6 py-4 font-medium text-gray-900 whitespace-nowrap uppercase">
                         {name}
                     </th>
                     <td className="px-6 py-4">
@@ -40,8 +40,8 @@ const EquipmentTable: NextPage<Props> = ({ id, name, price, quantity }) => {
                     <td className="px-6 py-4">
                         {quantity}
                     </td>
-                    <td className="px-6 py-4">
-                        Football
+                    <td className="px-6 py-4 uppercase">
+                        {category}
                     </td>
                     <td className="px-6 py-4">
                         <div className='space-x-3'>
