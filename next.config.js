@@ -7,8 +7,8 @@ const nextConfig = {
         protocol: "https",
         hostname: "**",
       },
-    ]
-  }
-}
+    ],
+  },
+};
 
-module.exports = nextConfig
+module.exports = nextConfig;

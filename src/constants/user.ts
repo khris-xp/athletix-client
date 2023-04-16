@@ -14,4 +14,5 @@ export const UserRegisterInitialValues: IUserRegister = {
 export const UserChangePassword: IUserChangePassword = {
     old_password: "",
     new_password: "",
+    confirm_new_password: ""
 }

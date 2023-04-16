@@ -1,26 +1,30 @@
-import axios, { AxiosResponse } from 'axios';
-import { ICreateNew, IUpdateNew } from '@/interfaces/news';
-import { parseCookies } from 'nookies';
-import router from 'next/router';
-import { IToken } from '@/interfaces/token';
+import axios, { AxiosResponse } from "axios";
+import { ICreateNew, IUpdateNew } from "@/interfaces/news";
+import { parseCookies } from "nookies";
+import router from "next/router";
+import { IToken } from "@/interfaces/token";
 
 export const getNewService = async () => {
   try {
-    const response: AxiosResponse = await axios.get('http://localhost:4000/news');
+    const response: AxiosResponse = await axios.get(
+      'http://localhost:4000/news'
+    );
     return response.data;
   } catch (err: unknown) {
-    throw new Error('Failed to fetch news');
+    throw new Error("Failed to fetch news");
   }
-}
+};
 
 export const getNewDetailService = async (newsId: string | undefined) => {
   try {
-    const response: AxiosResponse = await axios.get(`http://localhost:4000/news/${newsId}`);
+    const response: AxiosResponse = await axios.get(
+      `http://localhost:4000/news/${newsId}`
+    );
     return response.data;
   } catch (err: unknown) {
-    throw new Error('Failed to fetch news detail');
+    throw new Error("Failed to fetch news detail");
   }
-}
+};
 
 export const createNewService = async (news: ICreateNew) => {
   try {
@@ -32,9 +36,9 @@ export const createNewService = async (news: ICreateNew) => {
       return response.data;
     }
   } catch (err: unknown) {
-    throw new Error('Failed to create new');
+    throw new Error("Failed to create new");
   }
-}
+};
 
 export const editNewService = async (news: IUpdateNew, id: string) => {
   try {
@@ -46,9 +50,9 @@ export const editNewService = async (news: IUpdateNew, id: string) => {
       return response.data;
     }
   } catch (err) {
-    throw new Error('Failed to edit new');
+    throw new Error("Failed to edit new");
   }
-}
+};
 
 export const deleteNewService = async (id: string) => {
   try {
@@ -59,6 +63,6 @@ export const deleteNewService = async (id: string) => {
       return response.data;
     }
   } catch (err: unknown) {
-    throw new Error('Failed to delete new');
+    throw new Error("Failed to delete new");
   }
-}
+};

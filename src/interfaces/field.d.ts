@@ -7,6 +7,7 @@ interface IField {
     _Field__category: string;
     _Field__type: string;
     _Field__booking_slots: Slot[];
+    _Field_image: string;
   }
   
   interface ISlot {
@@ -22,4 +23,5 @@ export interface ICreateField {
     price_by_slot: number,
     category: string,
     type: string,
+    image: string,
 }

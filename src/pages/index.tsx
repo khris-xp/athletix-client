@@ -1,81 +1,64 @@
-import Layout from '@/layouts/Layout'
-import { GetServerSideProps, NextPage } from 'next'
-import { Hero, Card, Member } from '@/components'
-import { getFieldService } from '@/services/field.services'
-import { IField } from '@/interfaces/field'
-import Link from 'next/link'
+import Layout from "@/layouts/Layout";
+import { GetServerSideProps, NextPage } from "next";
+import { Hero, Card, Member } from "@/components";
+import { getFieldService } from "@/services/field.services";
+import { IField } from "@/interfaces/field";
+import { member } from "@/constants/member";
+import Link from "next/link";
+import { useAuth } from "@/context/auth";
 
 interface Props {
-  data: IField[]
+  data: IField[];
 }
 
 const Home: NextPage<Props> = ({ data }) => {
+  const { isAdmin } = useAuth();
   return (
     <Layout>
       <Hero />
       <section>
-        <div className='py-8 px-4 mx-auto max-w-screen-xl text-center lg:px-6 mt-10'>
-          <div className='mx-auto max-w-screen-sm'>
-            <h2
-              className='mb-4 text-4xl tracking-tight font-extrabold text-gray-900 dark:text-white'
-            >
+        <div className="py-8 px-4 mx-auto max-w-screen-xl text-center lg:px-6 mt-10">
+          <div className="mx-auto max-w-screen-sm">
+            <h2 className="mb-4 text-4xl tracking-tight font-extrabold text-gray-900 dark:text-white">
               Our Fields
             </h2>
-            <p className='font-light text-fouth-color sm:text-xl dark:text-gray-400'>
-              Lorem ipsum dolor sit, amet consectetur adipisicing elit. Neque ullam
-              minima omnis esse unde nesciunt nulla fuga reprehenderit inventore
-              corporis, aliquid laborum sed nemo eius odio asperiores! Vero, iure
-              cum.
+            <p className="font-light text-fouth-color sm:text-xl dark:text-gray-400">
+              Lorem ipsum dolor sit, amet consectetur adipisicing elit. Neque
+              ullam minima omnis esse unde nesciunt nulla fuga reprehenderit
+              inventore corporis, aliquid laborum sed nemo eius odio asperiores!
+              Vero, iure cum.
             </p>
           </div>
-
         </div>
-        <div className='container mx-auto p-5 pl-24'>
-          <Link href='/create-field'>
-            <button className='text-white bg-blue-700 hover:bg-blue-800 focus:ring-4 focus:ring-blue-300 font-medium rounded-lg text-sm px-5 py-2.5 mr-2 mb-2 dark:bg-blue-600 focus:outline-none'>+ Create</button>
-          </Link>
-        </div>
+        {isAdmin && (
+          <div className="container mx-auto p-5 pl-24">
+            <Link href="/field/create">
+              <button className="text-white bg-blue-700 hover:bg-blue-800 focus:ring-4 focus:ring-blue-300 font-medium rounded-lg text-sm px-5 py-2.5 mr-2 mb-2 dark:bg-blue-600 focus:outline-none">
+                + Create
+              </button>
+            </Link>
+          </div>
+        )}
       </section>
-      <section
-        className='container mx-auto p-10 md:p-20 grid lg:grid-cols-2 2xl:grid-cols-3 grid-cols-1 gap-y-20 transform duration-500'
-      >
+      <section className="container mx-auto p-10 md:p-20 grid lg:grid-cols-2 2xl:grid-cols-3 grid-cols-1 gap-y-20 transform duration-500">
         {data.map((field: IField) => (
           <Card
             key={field._Field__id}
             id={field._Field__id}
             title={field._Field__name}
             description={field._Field__description}
-            image='https://editorial.uefa.com/resources/025c-0f8e775cc072-f99f8b3389ab-1000/the_new_tottenham_hotspur_stadium_has_an_unusual_flexible_playing_surface.jpeg'
+            image={field._Field__image}
           />
         ))}
       </section>
-      <div
-        className='grid gap-8 lg:gap-16 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4'
-      >
-        <Member
-          name='Khris Bharmmano'
-          studentId='65010107'
-          image='https://avatars.githubusercontent.com/u/84142253?v=4'
-        />
-        <Member
-          name='Kittipod Lambangchang'
-          studentId='65010077'
-          image='https://avatars.githubusercontent.com/u/54632895?v=4'
-        />
-        <Member
-          name='Teetouch Jaknamon'
-          studentId='65010478'
-          image='https://avatars.githubusercontent.com/u/24198910?v=4'
-        />
-        <Member
-          name='Chollasak Anuwareepong'
-          studentId='65010196'
-          image='https://scontent.fbkk7-3.fna.fbcdn.net/v/t39.30808-6/316961529_1534751090321595_5539287266596493204_n.jpg?_nc_cat=100&ccb=1-7&_nc_sid=174925&_nc_eui2=AeHEuFsaTFVOoSnyjzso4XjavOYAES-GY5-85gARL4Zjn1YEJn_j2zWHUqM1n_V1xaNQaqPTexbgXCc8DDdGBKSk&_nc_ohc=h9Kv8ywaEGEAX_6zO3J&_nc_ht=scontent.fbkk7-3.fna&oh=00_AfC-GZEJ6qROYetDYRDcQHKTSUbdChdkt-0EpDrvv8SXfg&oe=64394D5D'
-        />
+      <div className="grid gap-8 lg:gap-16 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4">
+        {member.map((member) => (
+          <Member key={member.id} {...member} />
+        ))}
       </div>
-    </Layout >
-  )
-}
+    </Layout>
+  );
+};
 
 export const getServerSideProps: GetServerSideProps = async () => {
   try {
@@ -83,23 +66,22 @@ export const getServerSideProps: GetServerSideProps = async () => {
     if (data) {
       return {
         props: {
-          data
-        }
+          data,
+        },
       };
     } else {
       return {
         redirect: {
-          destination: '/login',
-          permanent: false
-        }
+          destination: "/login",
+          permanent: false,
+        },
       };
     }
   } catch (err) {
-    console.log(err);
     return {
-      props: {}
-    }
+      props: {},
+    };
   }
-}
+};
 
-export default Home
+export default Home;
