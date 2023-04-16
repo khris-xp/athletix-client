@@ -10,6 +10,7 @@ interface Props {
 }
 
 const History: NextPage<Props> = ({ historyData }) => {
+    
     return (
         <Fragment>
             <Layout>
@@ -61,16 +62,17 @@ const History: NextPage<Props> = ({ historyData }) => {
                                                     <td className="px-6 py-4">
                                                         {history._Booking__payment._Payment__amount} Bath
                                                     </td>
-                                                    <td className="px-6 py-4">
+                                                    <td className="px-6 py-4" suppressHydrationWarning>
                                                         {new Date(history._Booking__slot._SlotDate__date).toLocaleDateString(undefined, {
                                                             day: 'numeric',
                                                             month: 'short',
                                                             year: 'numeric'
                                                         })}
+
                                                     </td>
                                                     <td className="px-6 py-4">
-                                                        {new Date(history._Booking__slot._Slot__start_time).toLocaleTimeString(undefined, { hour: 'numeric', minute: 'numeric', hour12: false })} - {` `}
-                                                        {new Date(history._Booking__slot._Slot__end_time).toLocaleTimeString(undefined, { hour: 'numeric', minute: 'numeric', hour12: false })}
+                                                        {new Date(new Date(history._Booking__slot._Slot__start_time).getTime() - 7 * 60 * 60 * 1000).toLocaleTimeString('th-TH', { hour: '2-digit', minute: '2-digit' })} - {` `}
+                                                        {new Date(new Date(history._Booking__slot._Slot__end_time).getTime() - 7 * 60 * 60 * 1000).toLocaleTimeString('th-TH', { hour: '2-digit', minute: '2-digit' })}
                                                     </td>
                                                     <td className="px-6 py-4">
                                                         {history._Booking__status}

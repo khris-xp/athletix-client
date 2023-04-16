@@ -4,6 +4,7 @@ import Layout from '@/layouts/Layout';
 import { NextPage, GetServerSideProps } from 'next';
 import { getFieldService } from '@/services/field.services';
 import { IField } from '@/interfaces/field';
+import { ISlots } from '@/interfaces/slot';
 import { SlotsInitialValue } from '@/constants/slots';
 import { CreateBookingInitialValue } from '@/constants/booking';
 import { createBookingService } from '@/services/booking.services';
@@ -22,17 +23,20 @@ const Booking: NextPage<Props> = ({ data }) => {
     const [slotsId, setSlotsId] = useState<string>('');
     const [slotsClick, setSlotsClick] = useState<boolean>(false);
 
+    console.log(booking);
+
     const handleSlotsClick = (id: string): void => {
         setSlotsId(id);
         setSlotsClick(true);
-    }
+    };
 
     const handleRadioChange = (id: string): void => {
         setSelectedId(id);
     }
 
     const handleDateChange = (event: React.ChangeEvent<HTMLInputElement>) => {
-        const inputDate = event.target.value;
+        event.preventDefault();
+        const inputDate: string = event.target.value;
         setSelectedDate(inputDate);
         const dateRegex: RegExp = /^(\d{4})-(\d{2})-(\d{2})$/;
         const match = inputDate.match(dateRegex);
@@ -41,27 +45,27 @@ const Booking: NextPage<Props> = ({ data }) => {
             const year = parseInt(match[1], 10);
             const month = parseInt(match[2], 10) - 1;
             const day = parseInt(match[3], 10);
-            const date = new Date(year, month, day);
+            const date: Date = new Date(year, month, day);
             date.setUTCHours(0, 0, 0, 0);
             date.setDate(date.getUTCDate() + 1);
-            const updatedBooking = { ...booking };
-            const formattedDate = date.toISOString();
-            updatedBooking.slot.date = formattedDate;
-            setBooking(updatedBooking);
+            const formattedDate: string = date.toISOString();
+            setBooking({ ...booking, slot: { ...booking.slot, date: formattedDate } });
         } else {
             console.error("Invalid date format");
         }
     };
 
-    const handleStartTimeChange = (startTime: string, endTime: string) => {
+    const handleTimeChange = (startTime: string, endTime: string) => {
         const updatedBooking = { ...booking };
 
-        const startTimeRegex = /^([0-9]{2}):([0-9]{2})$/;
-        const startTimeMatch = startTime.match(startTimeRegex);
+        const timeRegex = /^([0-9]{2}):([0-9]{2})$/;
+
+        const startTimeMatch = startTime.match(timeRegex);
         if (!startTimeMatch) {
             console.error("Invalid startTime:", startTime);
             return;
         }
+
         const hours = parseInt(startTimeMatch[1]);
         const minutes = parseInt(startTimeMatch[2]);
 
@@ -79,12 +83,12 @@ const Booking: NextPage<Props> = ({ data }) => {
         date.setUTCHours(hours, minutes, 0, 0);
         const formattedStartTime = date.toISOString();
 
-        const endTimeRegex = /^([0-9]{2}):([0-9]{2})$/;
-        const endTimeMatch = endTime.match(endTimeRegex);
+        const endTimeMatch = endTime.match(timeRegex);
         if (!endTimeMatch) {
             console.error("Invalid endTime:", endTime);
             return;
         }
+
         const endHours = parseInt(endTimeMatch[1]);
         const endMinutes = parseInt(endTimeMatch[2]);
 
@@ -94,12 +98,14 @@ const Booking: NextPage<Props> = ({ data }) => {
         updatedBooking.slot.start_time = formattedStartTime;
         updatedBooking.slot.end_time = formattedEndTime;
         setBooking(updatedBooking);
-    }
+    };
 
     const handleCreateBooking = async (booking: IBooking) => {
         try {
             await createBookingService(booking);
             toast.success('Booking created successfully');
+            setBooking(CreateBookingInitialValue);
+            setSelectedDate('');
         } catch (err) {
             const errorMessage = (err as AxiosError)?.message;
             toast.error(errorMessage);
@@ -144,42 +150,46 @@ const Booking: NextPage<Props> = ({ data }) => {
 
                         <div>
                             <p className='my-8 text-xl font-bold text-blue-900'>Select a date</p>
-                            <div className='relative mt-4 w-56'>
-                                <input
-                                    className='peer block w-full px-4 pl-14 py-2 text-gray-800 bg-white border border-gray-300 rounded-md shadow-sm focus:outline-none focus:border-blue-500'
-                                    type='date'
-                                    name='dateInput'
-                                    value={selectedDate}
-                                    onChange={handleDateChange}
-                                    min={new Date().toISOString().split('T')[0]}
-                                />
+                            <div>
+                                <div className='relative mt-4 w-56'>
+                                    <input
+                                        className='peer block w-full px-4 pl-14 py-2 text-gray-800 bg-white border border-gray-300 rounded-md shadow-sm focus:outline-none focus:border-blue-500'
+                                        type='date'
+                                        name='dateInput'
+                                        value={selectedDate}
+                                        onChange={(e) => handleDateChange(e)}
+                                        min={new Date().toISOString().split('T')[0]}
+                                    />
+                                </div>
                             </div>
                         </div>
 
-                        <div>
-                            <p className='my-8 text-xl font-bold text-blue-900'>
-                                Select a time
-                            </p>
-                            <div className='mt-4 grid grid-cols-6 gap-2'>
-                                {SlotsInitialValue.map((Slots: any) => (
-                                    <>
-                                        {slotsClick && slotsId === Slots.id ? (
-                                            <button
-                                                className='rounded-lg bg-blue-900 px-2 py-2 font-medium text-white active:scale-95'
-                                                onClick={() => { handleSlotsClick(Slots.id); handleStartTimeChange(Slots.start_time, Slots.end_time); }}
-                                                key={Slots.id}
-                                            >{Slots.start_time} - {Slots.end_time}</button >
-                                        ) : (
-                                            <button
-                                                className='rounded-lg bg-blue-100 px-2 py-2 font-medium text-blue-900 active:scale-95'
-                                                onClick={() => { handleSlotsClick(Slots.id); handleStartTimeChange(Slots.start_time, Slots.end_time); }}
-                                                key={Slots.id}
-                                            >{Slots.start_time} - {Slots.end_time}</button>
-                                        )}
-                                    </>
-                                ))}
+                        {booking.slot.date ? (
+                            <div>
+                                <p className='my-8 text-xl font-bold text-blue-900'>
+                                    Select a time
+                                </p>
+                                <div className='mt-4 grid grid-cols-6 gap-2'>
+                                    {SlotsInitialValue.map((Slots: ISlots) => (
+                                        <>
+                                            {slotsClick && slotsId === Slots.id ? (
+                                                <button
+                                                    className='rounded-lg bg-blue-900 px-2 py-2 font-medium text-white active:scale-95'
+                                                    onClick={() => { handleSlotsClick(Slots.id); handleTimeChange(Slots.start_time, Slots.end_time); }}
+                                                    key={Slots.id}
+                                                >{Slots.start_time} - {Slots.end_time}</button >
+                                            ) : (
+                                                <button
+                                                    className='rounded-lg bg-blue-100 px-2 py-2 font-medium text-blue-900 active:scale-95'
+                                                    onClick={() => { handleSlotsClick(Slots.id); handleTimeChange(Slots.start_time, Slots.end_time); }}
+                                                    key={Slots.id}
+                                                >{Slots.start_time} - {Slots.end_time}</button>
+                                            )}
+                                        </>
+                                    ))}
+                                </div>
                             </div>
-                        </div>
+                        ) : null}
 
                         <button
                             className='mt-8 w-56 rounded-full border-8 border-blue-500 bg-blue-600 px-10 py-4 text-lg font-bold text-white transition hover:translate-y-1'
