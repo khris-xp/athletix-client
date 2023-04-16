@@ -11,14 +11,13 @@ interface Props {
     name: string;
     price_per_unit: number;
     quantity: number;
+    category: string
 }
 
-const EditEquipment: NextPage<Props> = ({ id, name, price_per_unit, quantity }) => {
-    const [equipment, setEquipment] = useState<IUpdateEquipment>({ name: name, price_per_unit: price_per_unit, quantity: quantity });
-    console.log(equipment)
+const EditEquipment: NextPage<Props> = ({ id, name, price_per_unit, quantity, category }) => {
+    const [equipment, setEquipment] = useState<IUpdateEquipment>({ name: name, price_per_unit: price_per_unit, quantity: quantity, category: category });
     const handleEditEquipment = async () => {
         try {
-            console.log(id)
             await editEquipmentService(id, equipment);
             toast.success("Equipment updated successfully");
             router.push('/equipment');
@@ -74,10 +73,16 @@ const EditEquipment: NextPage<Props> = ({ id, name, price_per_unit, quantity }) 
                                                 <label>Category</label>
                                                 <select
                                                     className="mt-1 h-10 w-full rounded border bg-gray-50 px-4"
+                                                    value={equipment.category}
+                                                    onChange={(event: React.ChangeEvent<HTMLSelectElement>) => {
+                                                        setEquipment({ ...equipment, category: event.target.value })
+                                                    }}
                                                     required
                                                 >
-                                                    <option value={"Indoor"}>Indoor</option>
-                                                    <option value={"Outdoor"}>Outdoor</option>
+                                                    <option value={"football"}>Football</option>
+                                                    <option value={"basketball"}>Basketball</option>
+                                                    <option value={"badminton"}>Badminton</option>
+                                                    <option value={"all"}>All</option>
                                                 </select>
                                             </div>
 
@@ -109,13 +114,13 @@ export const getStaticPaths: GetStaticPaths = async () => {
 
         return {
             paths,
-            fallback: false,
+            fallback: true,
         };
     } catch (err) {
         console.log(err);
         return {
             paths: [],
-            fallback: false,
+            fallback: true,
         };
     }
 }
@@ -140,6 +145,7 @@ export const getStaticProps: GetStaticProps = async ({ params }: GetStaticPropsC
                 name: equipmentItem._Equipment__name,
                 price_per_unit: equipmentItem._Equipment__price_per_unit,
                 quantity: equipmentItem._Equipment__quantity,
+                category: equipmentItem._Equipment__category
             }
         }
     } catch (err) {

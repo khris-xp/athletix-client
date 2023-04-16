@@ -3,6 +3,7 @@ import { GetServerSideProps, NextPage } from 'next'
 import { Hero, Card, Member } from '@/components'
 import { getFieldService } from '@/services/field.services'
 import { IField } from '@/interfaces/field'
+import Link from 'next/link'
 
 interface Props {
   data: IField[]
@@ -27,6 +28,12 @@ const Home: NextPage<Props> = ({ data }) => {
               cum.
             </p>
           </div>
+
+        </div>
+        <div className='container mx-auto p-5 pl-24'>
+          <Link href='/create-field'>
+            <button className='text-white bg-blue-700 hover:bg-blue-800 focus:ring-4 focus:ring-blue-300 font-medium rounded-lg text-sm px-5 py-2.5 mr-2 mb-2 dark:bg-blue-600 focus:outline-none'>+ Create</button>
+          </Link>
         </div>
       </section>
       <section
@@ -41,7 +48,6 @@ const Home: NextPage<Props> = ({ data }) => {
             image='https://editorial.uefa.com/resources/025c-0f8e775cc072-f99f8b3389ab-1000/the_new_tottenham_hotspur_stadium_has_an_unusual_flexible_playing_surface.jpeg'
           />
         ))}
-
       </section>
       <div
         className='grid gap-8 lg:gap-16 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4'

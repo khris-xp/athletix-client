@@ -130,13 +130,13 @@ export const getStaticPaths: GetStaticPaths = async () => {
 
         return {
             paths,
-            fallback: false,
+            fallback: true,
         };
     } catch (err: unknown) {
         console.log(err);
         return {
             paths: [],
-            fallback: false,
+            fallback: true,
         };
     }
 }
