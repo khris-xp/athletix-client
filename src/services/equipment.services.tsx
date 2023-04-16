@@ -4,7 +4,7 @@ import { IUpdateEquipment } from "@/interfaces/equipment";
 export const getEquipmentService = async () => {
   try {
     const response: AxiosResponse = await axios.get(
-      `${process.env.API_URL}/equipments`
+      'http://localhost:4000/equipments'
     );
     return response.data;
   } catch (err: unknown) {
@@ -15,7 +15,7 @@ export const getEquipmentService = async () => {
 export const getEquipmentByIdService = async (id: string) => {
   try {
     const response: AxiosResponse = await axios.get(
-      `${process.env.API_URL}/equipments/${id}`
+      `http://localhost:4000/equipments/${id}`
     );
     return response.data;
   } catch (err: unknown) {
