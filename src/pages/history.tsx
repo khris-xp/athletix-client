@@ -46,6 +46,9 @@ const History: NextPage<Props> = ({ historyData }) => {
                                                     Booking Time
                                                 </th>
                                                 <th scope="col" className="px-6 py-3">
+                                                    Payment Paid
+                                                </th>
+                                                <th scope="col" className="px-6 py-3">
                                                     Booking Status
                                                 </th>
                                             </tr>
@@ -76,6 +79,9 @@ const History: NextPage<Props> = ({ historyData }) => {
                                                     </td>
                                                     <td className="px-6 py-4">
                                                         {history._Booking__status}
+                                                    </td>
+                                                    <td className="px-6 py-4">
+                                                        {history._Booking__payment._Payment__is_payed ? 'Paid' : 'Not Paid'}
                                                     </td>
                                                 </tr>
                                             ))}
