@@ -41,7 +41,7 @@ const Equipment: NextPage<Props> = ({ data }) => {
                             </tr>
                         </thead>
                         {data.map((equipment: IEquipment) => (
-                            <EquipmentTable key={equipment._Equipment__id} id={equipment._Equipment__id} name={equipment._Equipment__name} price={equipment._Equipment__price_per_unit} quantity={equipment._Equipment__quantity} />
+                            <EquipmentTable key={equipment._Equipment__id} id={equipment._Equipment__id} name={equipment._Equipment__name} price={equipment._Equipment__price_per_unit} quantity={equipment._Equipment__quantity} category={equipment._Equipment__category} />
                         ))}
                     </table>
                 </div>
