@@ -27,7 +27,7 @@ export const createFieldService = async (field: ICreateField) => {
         const Cookies: IToken = parseCookies();
         if (Cookies.token) {
             axios.defaults.headers.common['Authorization'] = `Bearer ${Cookies.token}`;
-            const response: AxiosResponse = await axios.post(`${process.env.API_URL}/fields`, field);
+            const response: AxiosResponse = await axios.post('http://localhost:4000/fields', field);
             return response.data;
         }
     } catch (err: unknown) {
@@ -40,7 +40,7 @@ export const editFieldService = async (field: ICreateField, id: string) => {
         const Cookies: IToken = parseCookies();
         if (Cookies.token) {
             axios.defaults.headers.common['Authorization'] = `Bearer ${Cookies.token}`;
-            const response: AxiosResponse = await axios.patch(`${process.env.API_URL}/fields/${id}`, field);
+            const response: AxiosResponse = await axios.patch(`http://localhost:4000/fields/${id}`, field);
             router.push('/')
             return response.data;
         }
@@ -54,7 +54,7 @@ export const deleteFieldService = async (id: string) => {
         const Cookies: IToken = parseCookies();
         if (Cookies.token) {
             axios.defaults.headers.common['Authorization'] = `Bearer ${Cookies.token}`;
-            const response: AxiosResponse = await axios.delete(`${process.env.API_URL}/fields/${id}`);
+            const response: AxiosResponse = await axios.delete(`http://localhost:4000/fields/${id}`);
             return response.data;
         }
     } catch (err: unknown) {

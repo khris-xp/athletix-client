@@ -51,7 +51,7 @@ const Card: NextPage<Props> = ({ id, image, title, description }) => {
         {isAdmin && (
           <Fragment>
             <div className="p-8">
-              <Link href={`/edit-field/${id}`}>
+              <Link href={`/field/edit/${id}`}>
                 <button className="text-blue-500 mt-2 font-semibold hover:underline">
                   Edit
                 </button>

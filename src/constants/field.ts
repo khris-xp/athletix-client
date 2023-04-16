@@ -4,6 +4,7 @@ export const CreateFieldInitialValues: ICreateField = {
     name: "",
     description: "",
     price_by_slot: 0,
-    category: "",
-    type: "",
+    category: "Football",
+    type: "Indoor",
+    image: "",
 }

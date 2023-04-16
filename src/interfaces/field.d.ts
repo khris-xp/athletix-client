@@ -23,4 +23,5 @@ export interface ICreateField {
     price_by_slot: number,
     category: string,
     type: string,
+    image: string,
 }
