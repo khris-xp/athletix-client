@@ -11,6 +11,7 @@ interface Props {
 }
 
 const Equipment: NextPage<Props> = ({ data }) => {
+    console.log(data)
     return (
         <Fragment>
             <Layout>

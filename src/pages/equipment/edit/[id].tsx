@@ -36,10 +36,8 @@ const EditEquipment: NextPage<Props> = ({
     quantity: quantity,
     category: category,
   });
-  console.log(equipment);
   const handleEditEquipment = async () => {
     try {
-      console.log(id);
       await editEquipmentService(id, equipment);
       toast.success("Equipment updated successfully");
       router.push("/equipment");
@@ -129,10 +127,10 @@ const EditEquipment: NextPage<Props> = ({
                           }}
                           required
                         >
-                          <option value={"all"}>All</option>
-                          <option value={"badminton"}>Badminton</option>
-                          <option value={"football"}>Football</option>
-                          <option value={"basketball"}>Basketball</option>
+                          <option value="all">All</option>
+                          <option value="badminton">Badminton</option>
+                          <option value="football">Football</option>
+                          <option value="basketball">Basketball</option>
                         </select>
                       </div>
 

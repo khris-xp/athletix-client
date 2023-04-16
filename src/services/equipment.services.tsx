@@ -41,7 +41,7 @@ export const editEquipmentService = async (
 ) => {
   try {
     const response: AxiosResponse = await axios.patch(
-      "http://localhost:4000/equipments/${id}",
+      `http://localhost:4000/equipments/${id}`,
       equipment
     );
     return response.data;
@@ -53,7 +53,7 @@ export const editEquipmentService = async (
 export const deleteEquipmentService = async (id: string) => {
   try {
     const response: AxiosResponse = await axios.delete(
-      "http://localhost:4000/equipments/${id}"
+      `http://localhost:4000/equipments/${id}`
     );
     console.log(response.data);
     return response.data;

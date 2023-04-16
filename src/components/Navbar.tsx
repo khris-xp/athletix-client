@@ -90,7 +90,7 @@ const Navbar: NextPage = () => {
                                     (
                                         <Fragment>
                                             <button className={`flex items-center py-2 pl-3 pr-4 ${Router.pathname === '/news' ? ('text-white bg-blue-700 rounded md:bg-transparent md:text-blue-700') : ('text-gray-900 rounded hover:bg-gray-100 md:hover:bg-transparent md:hover:text-blue-700')} md:p-0`}
-                                                onClick={handleNewsMenu}>News <svg className="w-5 h-5 ml-1" aria-hidden="true" fill="currentColor" viewBox="0 0 20 20" xmlns="http://www.w3.org/2000/svg"><path fill-rule="evenodd" d="M5.293 7.293a1 1 0 011.414 0L10 10.586l3.293-3.293a1 1 0 111.414 1.414l-4 4a1 1 0 01-1.414 0l-4-4a1 1 0 010-1.414z" clipRule="evenodd"></path></svg></button>
+                                                onClick={handleNewsMenu}>News <svg className="w-5 h-5 ml-1" aria-hidden="true" fill="currentColor" viewBox="0 0 20 20" xmlns="http://www.w3.org/2000/svg"><path fillRule="evenodd" d="M5.293 7.293a1 1 0 011.414 0L10 10.586l3.293-3.293a1 1 0 111.414 1.414l-4 4a1 1 0 01-1.414 0l-4-4a1 1 0 010-1.414z" clipRule="evenodd"></path></svg></button>
                                             <div className={`relative ${newsMenu ? 'hidden' : 'block'} text-base list-none divide-y divide-gray-100 rounded-lg shadow`}>
                                                 <div className="relative">
                                                     <ul className="absolute right-0 z-10 py-2 mt-4 w-48 bg-white rounded-md shadow-lg border-2 ">
