@@ -10,6 +10,7 @@ interface Props {
     name: string;
     price: number;
     quantity: number;
+    category: string;
 }
 
 const EquipmentTable: NextPage<Props> = ({ id, name, price, quantity }) => {
@@ -44,7 +45,7 @@ const EquipmentTable: NextPage<Props> = ({ id, name, price, quantity }) => {
                     </td>
                     <td className="px-6 py-4">
                         <div className='space-x-3'>
-                            <Link href={`/edit-equipment/${id}`} className="font-medium text-blue-600 dark:text-blue-500 hover:underline">Edit</Link>
+                            <Link href={`/equipment/edit/${id}`} className="font-medium text-blue-600 dark:text-blue-500 hover:underline">Edit</Link>
                             <button className="font-medium text-red-600 dark:text-red-500 hover:underline" onClick={() => handleDeleteEquipment()}>Delete</button>
                         </div>
                     </td>

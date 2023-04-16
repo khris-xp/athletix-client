@@ -70,10 +70,15 @@ const CreateEquipment: NextPage = () => {
                                                 <label>Category</label>
                                                 <select
                                                     className="mt-1 h-10 w-full rounded border bg-gray-50 px-4"
+                                                    onChange={(event: React.ChangeEvent<HTMLSelectElement>) => {
+                                                        setEquipment({ ...equipment, category: event.target.value })
+                                                    }}
                                                     required
                                                 >
-                                                    <option value={"Indoor"}>Indoor</option>
-                                                    <option value={"Outdoor"}>Outdoor</option>
+                                                    <option value={"all"}>All</option>
+                                                    <option value={"badminton"}>Badminton</option>
+                                                    <option value={"football"}>Football</option>
+                                                    <option value={"basketball"}>Basketball</option>
                                                 </select>
                                             </div>
 
