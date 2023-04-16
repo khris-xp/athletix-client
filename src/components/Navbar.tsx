@@ -100,7 +100,7 @@ const Navbar: NextPage = () => {
                                                             </Link>
                                                         </li>
                                                         <li>
-                                                            <Link href="/create-new" className="block px-4 py-2 text-sm text-gray-700 hover:bg-gray-100" onClick={handleNewsMenu}>
+                                                            <Link href="/news/create" className="block px-4 py-2 text-sm text-gray-700 hover:bg-gray-100" onClick={handleNewsMenu}>
                                                                 Create News
                                                             </Link>
                                                         </li>
