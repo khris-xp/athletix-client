@@ -23,8 +23,6 @@ const Booking: NextPage<Props> = ({ data }) => {
     const [slotsId, setSlotsId] = useState<string>('');
     const [slotsClick, setSlotsClick] = useState<boolean>(false);
 
-    console.log(booking);
-
     const handleSlotsClick = (id: string): void => {
         setSlotsId(id);
         setSlotsClick(true);

@@ -2,6 +2,7 @@ import React, { Fragment } from 'react'
 import { NextPage } from 'next'
 import Layout from '@/layouts/Layout';
 import { useAuth } from '@/context/auth';
+import Link from 'next/link';
 
 const Profile: NextPage = () => {
     const { user } = useAuth();
@@ -62,6 +63,9 @@ const Profile: NextPage = () => {
                                         <div className="text-sm leading-normal mt-0 mb-2 text-gray-500 font-bold uppercase">
                                             <i className="fas fa-map-marker-alt mr-2 text-lg text-gray-500"></i>{" "}
                                             {user?._Person__account._Account__role}
+                                        </div>
+                                        <div className='flex justify-end font-semibold hover:underline text-blue-600 '>
+                                            <Link href="/change-password">Change Password</Link>
                                         </div>
                                     </div>
                                     <hr className="mt-6 border-b-1 border-blueGray-300" />
