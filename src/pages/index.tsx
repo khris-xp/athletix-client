@@ -4,13 +4,15 @@ import { Hero, Card, Member } from "@/components";
 import { getFieldService } from "@/services/field.services";
 import { IField } from "@/interfaces/field";
 import { member } from "@/constants/member";
-import Link from 'next/link'
+import Link from "next/link";
+import { useAuth } from "@/context/auth";
 
 interface Props {
   data: IField[];
 }
 
 const Home: NextPage<Props> = ({ data }) => {
+  const { isAdmin } = useAuth();
   return (
     <Layout>
       <Hero />
@@ -27,13 +29,16 @@ const Home: NextPage<Props> = ({ data }) => {
               Vero, iure cum.
             </p>
           </div>
-
         </div>
-        <div className='container mx-auto p-5 pl-24'>
-          <Link href='/create-field'>
-            <button className='text-white bg-blue-700 hover:bg-blue-800 focus:ring-4 focus:ring-blue-300 font-medium rounded-lg text-sm px-5 py-2.5 mr-2 mb-2 dark:bg-blue-600 focus:outline-none'>+ Create</button>
-          </Link>
-        </div>
+        {isAdmin && (
+          <div className="container mx-auto p-5 pl-24">
+            <Link href="/create-field">
+              <button className="text-white bg-blue-700 hover:bg-blue-800 focus:ring-4 focus:ring-blue-300 font-medium rounded-lg text-sm px-5 py-2.5 mr-2 mb-2 dark:bg-blue-600 focus:outline-none">
+                + Create
+              </button>
+            </Link>
+          </div>
+        )}
       </section>
       <section className="container mx-auto p-10 md:p-20 grid lg:grid-cols-2 2xl:grid-cols-3 grid-cols-1 gap-y-20 transform duration-500">
         {data.map((field: IField) => (

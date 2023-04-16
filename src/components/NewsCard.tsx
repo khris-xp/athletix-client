@@ -64,7 +64,7 @@ const NewsCard: NextPage<Props> = ({
             {" "}
             Created on: {formattedDate} at {formattedTime}
           </p>
-          {isAdmin ? (
+          {isAdmin && (
             <Fragment>
               <Link href={`/news/edit/${id}`}>
                 <button className="text-blue-500 mt-2 font-semibold hover:underline">
@@ -78,7 +78,7 @@ const NewsCard: NextPage<Props> = ({
                 Delete
               </button>
             </Fragment>
-          ) : null}
+          )}
         </div>
       </div>
     </Fragment>
