@@ -183,7 +183,7 @@ const BookingPage: NextPage<Props> = ({ data }) => {
   };
   return (
     <Fragment>
-      <Layout>
+      <Layout title="Athletix | Booking">
         <div className="w-screen mt-5">
           <Banner />
           <div className="mx-auto grid max-w-screen-lg px-6 pb-20">

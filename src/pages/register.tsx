@@ -41,7 +41,7 @@ const RegisterPage: NextPage = () => {
   };
   return (
     <Fragment>
-      <Layout>
+      <Layout title="Athletix | Register">
         <section className="bg-gray-50">
           <div className="flex flex-col items-center justify-center px-6 py-8 mx-auto min-h-screen pb-40">
             <div className="w-full bg-white rounded-lg shadow md:mt-0 sm:max-w-6xl xl:p-0">

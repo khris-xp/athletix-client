@@ -12,7 +12,7 @@ interface Props {
 const HistoryPage: NextPage<Props> = ({ historyData }) => {
   return (
     <Fragment>
-      <Layout>
+      <Layout title="Athletix | History">
         <div className="bg-white">
           <div className="max-w-7xl mx-auto py-16 px-4 sm:px-6 lg:pb-24 lg:px-8">
             <div className="max-w-xl">

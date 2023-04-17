@@ -8,7 +8,7 @@ const ProfilePage: NextPage = () => {
   const { user } = useAuth();
   return (
     <Fragment>
-      <Layout>
+      <Layout title="Athletix | Profile">
         <main className="profile-page">
           <section className="relative" style={{ height: "400px" }}>
             <div

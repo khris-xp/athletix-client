@@ -15,7 +15,7 @@ interface Props {
 const HomePage: NextPage<Props> = ({ data }) => {
   const { isAdmin } = useAuth();
   return (
-    <Layout>
+    <Layout title="Athletix | Home">
       <Hero />
       <section>
         <div className="py-8 px-4 mx-auto max-w-screen-xl text-center lg:px-6 mt-10">

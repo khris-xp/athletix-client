@@ -14,7 +14,7 @@ const EquipmentPage: NextPage<Props> = ({ data }) => {
   console.log(data);
   return (
     <Fragment>
-      <Layout>
+      <Layout title="Athletix | Equipment">
         <div className="relative overflow-auto shadow-md sm:rounded-lg mb-20">
           <div className="flex justify-end p-4">
             <Link href="/equipment/create">

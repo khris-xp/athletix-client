@@ -12,7 +12,7 @@ interface Props {
 const NewsPage: NextPage<Props> = ({ data }) => {
   return (
     <Fragment>
-      <Layout>
+      <Layout title="Athletix | News">
         <section className="text-gray-600 body-font">
           <div className="container px-5 pb-24 pt-4 mx-auto max-w-7x1">
             <div className="flex flex-wrap w-full mb-4 p-4">

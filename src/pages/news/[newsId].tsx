@@ -37,7 +37,7 @@ const NewsDetailPage: NextPage<Props> = ({
 
   return (
     <Fragment>
-      <Layout>
+      <Layout title="Athletix | News">
         <div className="my-6 px-6 mx-auto">
           <section className="mb-32 text-gray-800 text-center">
             <div className="flex flex-wrap justify-center mb-12">
