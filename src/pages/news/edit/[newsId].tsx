@@ -14,6 +14,8 @@ import {
 } from "@/services/news.services";
 import { IUpdateNew } from "@/interfaces/news";
 import { toast } from "react-hot-toast";
+import { useAuth } from "@/context/auth";
+import { Error, Loading } from '@/components';
 
 interface Props {
   news_id: any;
@@ -30,6 +32,15 @@ const EditNews: NextPage<Props> = ({ news_id, title, content, image_url }) => {
     image_url: image_url,
     draft: false,
   });
+
+  const { isLoading, isAdmin } = useAuth();
+  if (isLoading) {
+    return <Loading />
+  }
+  if (!isAdmin) {
+    return <Error />
+  }
+
   const handleEditNews = async () => {
     try {
       await editNewService(news, news_id);

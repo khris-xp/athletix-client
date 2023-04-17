@@ -14,6 +14,8 @@ import Layout from "@/layouts/Layout";
 import { updateSlots } from "@/constants/slots";
 import { toast } from "react-hot-toast";
 import Image from "next/image";
+import { useAuth } from "@/context/auth";
+import { Error, Loading } from '@/components';
 
 interface Props {
   field_id: string;
@@ -43,6 +45,14 @@ const EditField: NextPage<Props> = ({
     slot: updateSlots,
     image: image,
   });
+  const { isAuthenticated, isAdmin, isLoading } = useAuth();
+  if (isLoading) {
+    return <Loading />
+  }
+
+  if (!isAdmin) {
+    return <Error />
+  }
 
   const handleEditField = async () => {
     try {

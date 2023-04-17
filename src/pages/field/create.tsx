@@ -6,13 +6,16 @@ import { createFieldService } from "@/services/field.services";
 import router from "next/router";
 import { toast } from "react-hot-toast";
 import Image from "next/image";
+import { useAuth } from "@/context/auth";
+import { Loading, Error } from "@/components";
 
 const CreateField = () => {
   const [field, setField] = useState<ICreateField>(CreateFieldInitialValues);
+  const { isLoading, isAdmin } = useAuth();
+
   const handleCreateField = async (event: React.FormEvent<HTMLFormElement>) => {
     try {
       event.preventDefault();
-      console.log(field);
       await createFieldService(field);
       setField(CreateFieldInitialValues);
       router.push("/");
@@ -21,6 +24,15 @@ const CreateField = () => {
       toast.error("Failed to create field");
     }
   };
+
+  if (isLoading) {
+    return <Loading />
+  }
+
+  if (!isAdmin) {
+    return <Error />
+  }
+
   return (
     <Fragment>
       <Layout>
@@ -126,10 +138,10 @@ const CreateField = () => {
                           }}
                           required
                         >
-                          <option value={"Football"}>Football</option>
-                          <option value={"Basketball"}>Basketball</option>
-                          <option value={"Badminton"}>Badminton</option>
-                          <option value={"Tennis"}>Tennis</option>
+                          <option value={"football"}>Football</option>
+                          <option value={"basketball"}>Basketball</option>
+                          <option value={"badminton"}>Badminton</option>
+                          <option value={"tennis"}>Tennis</option>
                         </select>
                       </div>
 
@@ -145,8 +157,8 @@ const CreateField = () => {
                           }}
                           required
                         >
-                          <option value={"Indoor"}>Indoor</option>
-                          <option value={"Outdoor"}>Outdoor</option>
+                          <option value={"indoor"}>Indoor</option>
+                          <option value={"outdoor"}>Outdoor</option>
                         </select>
                       </div>
 

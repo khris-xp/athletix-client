@@ -6,9 +6,20 @@ import { UserChangePassword } from '@/constants/user'
 import { changeUserPasswordService } from '@/services/user.services'
 import { toast } from 'react-hot-toast'
 import router from 'next/router'
+import { Loading, Error } from '@/components';
+import { useAuth } from '@/context/auth'
 
 const ChangePassword: NextPage = () => {
     const [changePassword, setChangePassword] = useState<IUserChangePassword>(UserChangePassword)
+    const { isAuthenticated, isLoading, isCustomer } = useAuth();
+
+    if (isLoading) {
+        return <Loading />
+    }
+
+    if (!isAuthenticated && !isCustomer) {
+        return <Error />
+    }
 
     const handleChangePassword = (event: React.ChangeEvent<HTMLFormElement>) => {
         try {

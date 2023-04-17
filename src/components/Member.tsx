@@ -2,6 +2,7 @@ import { NextPage } from 'next'
 import { Fragment } from 'react'
 import Icon from './Icon'
 import Image from 'next/image'
+import Link from 'next/link'
 
 interface Props {
     image: string
@@ -23,7 +24,7 @@ const Member: NextPage<Props> = ({ image, name, studentId }) => {
                 <h3
                     className='mb-1 text-2xl font-bold tracking-tight text-gray-900 dark:text-white'
                 >
-                    <a href='#'>{name}</a>
+                    <Link href='/'>{name}</Link>
                 </h3>
                 <p>{studentId}</p>
                 <Icon />

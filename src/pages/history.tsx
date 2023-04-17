@@ -4,12 +4,23 @@ import Layout from '@/layouts/Layout'
 import { GetServerSideProps, GetServerSidePropsContext } from 'next'
 import { getUserHistoryService } from '@/services/user.services'
 import { IHistory } from '@/interfaces/history'
+import { Loading, Error } from '@/components'
+import { useAuth } from '@/context/auth'
 
 interface Props {
     historyData: IHistory[]
 }
 
 const History: NextPage<Props> = ({ historyData }) => {
+    const { isAuthenticated, isCustomer, isLoading } = useAuth();
+
+    if (isLoading) {
+        return <Loading />
+    }
+
+    if (!isCustomer && !isAuthenticated) {
+        return <Error />
+    }
 
     return (
         <Fragment>

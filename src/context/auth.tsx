@@ -67,20 +67,3 @@ export const AuthProvider = ({ children }: { children: ReactNode }) => {
 };
 
 export const useAuth = (): IAuthContext => useContext(AuthContext);
-
-export const ProtectRoute = ({ children }: ChildrenProps) => {
-    const { isAuthenticated, isLoading } = useAuth();
-    const router: NextRouter = useRouter();
-
-    if (isLoading) {
-        return <Loading />
-    }
-
-    if (!isAuthenticated && router.pathname !== '/' && router.pathname !== '/booking' && router.pathname !== '/about'
-        && router.pathname !== '/login' && router.pathname !== '/register' && router.pathname.startsWith('/news/*')
-    ) {
-        return <Error />
-    }
-
-    return <Fragment>{children}</Fragment>
-}

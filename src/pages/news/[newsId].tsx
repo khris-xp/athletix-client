@@ -10,6 +10,8 @@ import Layout from "@/layouts/Layout";
 import Image from "next/image";
 import { format } from "date-fns";
 import Link from "next/link";
+import { Loading, Error } from "@/components";
+import { useAuth } from "@/context/auth";
 
 interface Props {
   newsId: string;
@@ -25,6 +27,17 @@ const NewsDetailPages: NextPage<Props> = ({
   createdDate,
   image_url,
 }) => {
+
+  const { isAdmin, isLoading } = useAuth();
+
+  if (isLoading) {
+    return <Loading />
+  }
+
+  if (!isAdmin) {
+    return <Error />
+  }
+
   let formattedDate = "";
   let formattedTime = "";
   if (createdDate) {

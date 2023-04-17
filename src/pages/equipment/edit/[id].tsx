@@ -14,6 +14,8 @@ import {
 import { IUpdateEquipment } from "@/interfaces/equipment";
 import { toast } from "react-hot-toast";
 import router from "next/router";
+import { Loading, Error } from '@/components';
+import { useAuth } from "@/context/auth";
 
 interface Props {
   id: string;
@@ -36,6 +38,17 @@ const EditEquipment: NextPage<Props> = ({
     quantity: quantity,
     category: category,
   });
+
+  const { isAuthenticated, isAdmin, isLoading } = useAuth();
+
+  if (isLoading) {
+    return <Loading />
+  }
+
+  if (!isAdmin) {
+    return <Error />
+  }
+
   const handleEditEquipment = async () => {
     try {
       await editEquipmentService(id, equipment);

@@ -1,11 +1,20 @@
-import React, { Fragment } from "react";
+import { Fragment } from "react";
 import { NextPage } from "next";
 import Layout from "@/layouts/Layout";
 import { useAuth } from "@/context/auth";
 import Link from "next/link";
+import { Loading, Error } from '@/components';
 
 const Profile: NextPage = () => {
-  const { user } = useAuth();
+  const { isAuthenticated, isCustomer, user, isLoading } = useAuth();
+
+  if (isLoading) {
+    return <Loading />
+  }
+  if (!isCustomer && !isAuthenticated) {
+    return <Error />
+  }
+
   return (
     <Fragment>
       <Layout>

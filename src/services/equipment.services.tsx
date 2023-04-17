@@ -40,10 +40,7 @@ export const editEquipmentService = async (
   equipment: IUpdateEquipment
 ) => {
   try {
-    const response: AxiosResponse = await axios.patch(
-      `http://localhost:4000/equipments/${id}`,
-      equipment
-    );
+    const response: AxiosResponse = await axios.patch(`http://localhost:4000/equipments/${id}`, equipment);
     return response.data;
   } catch (err: unknown) {
     throw Error(err as string);
@@ -52,10 +49,7 @@ export const editEquipmentService = async (
 
 export const deleteEquipmentService = async (id: string) => {
   try {
-    const response: AxiosResponse = await axios.delete(
-      `http://localhost:4000/equipments/${id}`
-    );
-    console.log(response.data);
+    const response: AxiosResponse = await axios.delete(`http://localhost:4000/equipments/${id}`);
     return response.data;
   } catch (err: unknown) {
     throw Error(err as string);

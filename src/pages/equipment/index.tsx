@@ -5,13 +5,23 @@ import { EquipmentTable } from '@/components'
 import { getEquipmentService } from '@/services/equipment.services'
 import { IEquipment } from '@/interfaces/equipment'
 import Link from 'next/link'
+import { useAuth } from '@/context/auth'
+import { Loading, Error } from '@/components';
 
 interface Props {
     data: IEquipment[]
 }
 
 const Equipment: NextPage<Props> = ({ data }) => {
-    console.log(data)
+    const { isAuthenticated, isAdmin, isLoading } = useAuth();
+
+    if (isLoading) {
+        return <Loading />
+    }
+
+    if (!isAdmin) {
+        return <Error />
+    }
     return (
         <Fragment>
             <Layout>
