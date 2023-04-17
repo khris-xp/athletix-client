@@ -1,4 +1,4 @@
-import { ISlots } from "@/interfaces/slot"
+import { ISlots,ISlotTime } from "@/interfaces/slot"
 
 export const SlotsInitialValue: ISlots[] = [
     { id: '1', start_time: '08:00', end_time: '09:00', start_time_value: 8, end_time_value: 9, is_booked: false },
