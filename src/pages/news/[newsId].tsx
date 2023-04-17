@@ -25,9 +25,16 @@ const NewsDetailPages: NextPage<Props> = ({
   createdDate,
   image_url,
 }) => {
-  const createdFormatDate: Date = new Date(createdDate);
-  const createdAt: string = format(createdFormatDate, "dd MMM yyyy  HH:mm");
-  const [formattedDate, formattedTime]: string[] = createdAt.split("  ");
+  let formattedDate = "";
+  let formattedTime = "";
+  if (createdDate) {
+    const createdFormatDate: Date = new Date(createdDate);
+    if (!isNaN(createdFormatDate.getTime())) {
+      const createdAt: string = format(createdFormatDate, "dd MMM yyyy HH:mm");
+      [formattedDate, formattedTime] = createdAt.split("  ");
+    }
+  }
+
   return (
     <Fragment>
       <Layout>
