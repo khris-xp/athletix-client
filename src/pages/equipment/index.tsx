@@ -1,7 +1,7 @@
 import { Fragment } from 'react'
 import Layout from '@/layouts/Layout'
 import { GetServerSideProps, NextPage } from 'next'
-import EquipmentTable from '@/components/EquipmentTable'
+import { EquipmentTable } from '@/components'
 import { getEquipmentService } from '@/services/equipment.services'
 import { IEquipment } from '@/interfaces/equipment'
 import Link from 'next/link'

@@ -10,6 +10,7 @@ import { CreateBookingInitialValue } from '@/constants/booking';
 import { createBookingService, createPromptpayPayment, createCashPayment } from '@/services/booking.services';
 import { toast } from 'react-hot-toast';
 import { AxiosError } from 'axios';
+import { useAuth } from '@/context/auth';
 import { IBooking, IBookingData } from '@/interfaces/booking';
 import Image from 'next/image';
 import router from 'next/router';
@@ -28,7 +29,7 @@ const Booking: NextPage<Props> = ({ data }) => {
     const [slotsId, setSlotsId] = useState<string>('');
     const [bookingData, setBookingData] = useState<IBookingData | null>(null);
     const [slotsClick, setSlotsClick] = useState<boolean>(false);
-    console.log(bookingData);
+    const { isAuthenticated } = useAuth();
 
     const handleSlotsClick = (id: string): void => {
         setSlotsId(id);
@@ -144,7 +145,7 @@ const Booking: NextPage<Props> = ({ data }) => {
     return (
         <Fragment>
             <Layout>
-                <div className='w-screen mt-5'>
+                <div className='w-screen mt-5 pb-20'>
                     <Banner />
                     <div className='mx-auto grid max-w-screen-lg px-6 pb-20'>
                         <div>
@@ -219,10 +220,12 @@ const Booking: NextPage<Props> = ({ data }) => {
                                 </div>
                             </div>
                         ) : null}
-                        <button
-                            className='mt-8 w-56 rounded-full border-8 border-blue-500 bg-blue-600 px-10 py-4 text-lg font-bold text-white transition hover:translate-y-1'
-                            onClick={() => handleCreateBooking(booking)}
-                        >Book Now</button>
+                        {isAuthenticated ? (
+                            <button
+                                className='mt-8 w-56 rounded-full border-8 border-blue-500 bg-blue-600 px-10 py-4 text-lg font-bold text-white transition hover:translate-y-1'
+                                onClick={() => handleCreateBooking(booking)}>
+                                Book Now
+                            </button>) : null}
                     </div>
                 </div>
 
