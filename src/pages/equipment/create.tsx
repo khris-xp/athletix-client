@@ -9,7 +9,7 @@ import { toast } from "react-hot-toast";
 import { Loading, Error } from '@/components';
 import { useAuth } from "@/context/auth";
 
-const CreateEquipment: NextPage = () => {
+const CreateEquipmentPage: NextPage = () => {
   const [equipment, setEquipment] = useState<IUpdateEquipment>(
     CreateEquipmentInitialValues
   );
@@ -149,4 +149,4 @@ const CreateEquipment: NextPage = () => {
   );
 };
 
-export default CreateEquipment;
+export default CreateEquipmentPage;

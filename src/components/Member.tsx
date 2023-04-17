@@ -5,9 +5,9 @@ import Image from 'next/image'
 import Link from 'next/link'
 
 interface Props {
-    image: string
-    name: string
-    studentId: string
+  image: string;
+  name: string;
+  studentId: string;
 }
 
 const Member: NextPage<Props> = ({ image, name, studentId }) => {
@@ -33,4 +33,4 @@ const Member: NextPage<Props> = ({ image, name, studentId }) => {
     )
 }
 
-export default Member
+export default Member;

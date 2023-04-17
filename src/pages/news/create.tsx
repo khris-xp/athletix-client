@@ -9,7 +9,7 @@ import { toast } from "react-hot-toast";
 import { useAuth } from "@/context/auth";
 import { Loading, Error } from '@/components'
 
-const CreateNew: NextPage = () => {
+const CreateNewsPage: NextPage = () => {
   const [news, setNews] = useState<ICreateNew>(CreateNewInitialValues);
   const { isAdmin, isLoading } = useAuth();
 
@@ -122,4 +122,4 @@ const CreateNew: NextPage = () => {
   );
 };
 
-export default CreateNew;
+export default CreateNewsPage;

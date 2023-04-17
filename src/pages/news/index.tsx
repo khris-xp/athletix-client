@@ -9,7 +9,7 @@ interface Props {
   data: INews[];
 }
 
-const News: NextPage<Props> = ({ data }) => {
+const NewsPage: NextPage<Props> = ({ data }) => {
   return (
     <Fragment>
       <Layout>
@@ -66,4 +66,4 @@ export const getServerSideProps: GetServerSideProps = async () => {
   }
 };
 
-export default News;
+export default NewsPage

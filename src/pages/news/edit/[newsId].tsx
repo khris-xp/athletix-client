@@ -25,7 +25,12 @@ interface Props {
   image_url: string;
 }
 
-const EditNews: NextPage<Props> = ({ news_id, title, content, image_url }) => {
+const EditNewsPage: NextPage<Props> = ({
+  news_id,
+  title,
+  content,
+  image_url,
+}) => {
   const [news, setNews] = useState<IUpdateNew>({
     title: title,
     content: content,
@@ -194,4 +199,4 @@ export const getStaticProps: GetStaticProps = async ({
   }
 };
 
-export default EditNews;
+export default EditNewsPage;

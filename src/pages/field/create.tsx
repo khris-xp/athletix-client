@@ -9,7 +9,7 @@ import Image from "next/image";
 import { useAuth } from "@/context/auth";
 import { Loading, Error } from "@/components";
 
-const CreateField = () => {
+const CreateFieldPage = () => {
   const [field, setField] = useState<ICreateField>(CreateFieldInitialValues);
   const { isLoading, isAdmin } = useAuth();
 
@@ -181,4 +181,4 @@ const CreateField = () => {
   );
 };
 
-export default CreateField;
+export default CreateFieldPage;

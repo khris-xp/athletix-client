@@ -21,7 +21,7 @@ interface Props {
   image_url: string;
 }
 
-const NewsDetailPages: NextPage<Props> = ({
+const NewsDetailPage: NextPage<Props> = ({
   title,
   description,
   createdDate,
@@ -143,4 +143,4 @@ export const getStaticProps: GetStaticProps = async ({
   }
 };
 
-export default NewsDetailPages;
+export default NewsDetailPage;

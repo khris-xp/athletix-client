@@ -7,12 +7,10 @@ import { Toaster } from 'react-hot-toast';
 export default function App({ Component, pageProps }: AppProps) {
   return (
     <Fragment>
-      <Toaster
-        position="top-center"
-        reverseOrder={false}
-      />
+      <Toaster position="top-center" reverseOrder={false} />
       <AuthProvider>
         <Component {...pageProps} />
       </AuthProvider>
-    </Fragment>)
+    </Fragment>
+  );
 }

@@ -5,7 +5,7 @@ import { useAuth } from "@/context/auth";
 import Link from "next/link";
 import { Loading, Error } from '@/components';
 
-const Profile: NextPage = () => {
+const ProfilePage: NextPage = () => {
   const { isAuthenticated, isCustomer, user, isLoading } = useAuth();
 
   if (isLoading) {
@@ -226,4 +226,4 @@ const Profile: NextPage = () => {
   );
 };
 
-export default Profile;
+export default ProfilePage;
