@@ -1,7 +1,7 @@
 import { Fragment } from 'react'
 import { NextPage } from 'next'
 import Layout from '@/layouts/Layout'
-import { GetServerSidePropsContext } from 'next'
+import { GetServerSideProps, GetServerSidePropsContext } from 'next'
 import { getUserHistoryService } from '@/services/user.services'
 import { IHistory } from '@/interfaces/history'
 
@@ -10,7 +10,7 @@ interface Props {
 }
 
 const History: NextPage<Props> = ({ historyData }) => {
-    
+
     return (
         <Fragment>
             <Layout>
@@ -71,7 +71,6 @@ const History: NextPage<Props> = ({ historyData }) => {
                                                             month: 'short',
                                                             year: 'numeric'
                                                         })}
-
                                                     </td>
                                                     <td className="px-6 py-4">
                                                         {new Date(new Date(history._Booking__slot._Slot__start_time).getTime() - 7 * 60 * 60 * 1000).toLocaleTimeString('th-TH', { hour: '2-digit', minute: '2-digit' })} - {` `}
@@ -97,7 +96,7 @@ const History: NextPage<Props> = ({ historyData }) => {
     )
 }
 
-export const getServerSideProps = async (context: GetServerSidePropsContext) => {
+export const getServerSideProps: GetServerSideProps = async (context: GetServerSidePropsContext) => {
     try {
         const historyData = await getUserHistoryService(context);
         if (historyData) {
