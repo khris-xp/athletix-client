@@ -7,7 +7,7 @@ import { createEquipmentService } from "@/services/equipment.services";
 import router from "next/router";
 import { toast } from "react-hot-toast";
 
-const CreateEquipment: NextPage = () => {
+const CreateEquipmentPage: NextPage = () => {
   const [equipment, setEquipment] = useState<IUpdateEquipment>(
     CreateEquipmentInitialValues
   );
@@ -136,4 +136,4 @@ const CreateEquipment: NextPage = () => {
   );
 };
 
-export default CreateEquipment;
+export default CreateEquipmentPage;

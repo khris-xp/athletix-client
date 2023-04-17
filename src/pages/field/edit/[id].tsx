@@ -25,7 +25,7 @@ interface Props {
   image: string;
 }
 
-const EditField: NextPage<Props> = ({
+const EditFieldPage: NextPage<Props> = ({
   field_id,
   name,
   description,
@@ -263,4 +263,4 @@ export const getStaticProps: GetStaticProps = async ({
   }
 };
 
-export default EditField;
+export default EditFieldPage;

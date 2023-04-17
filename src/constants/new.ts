@@ -1,8 +1,8 @@
-import { ICreateNew } from "@/interfaces/news"
+import { ICreateNew } from "@/interfaces/news";
 
 export const CreateNewInitialValues: ICreateNew = {
-    title: "",
-    content: "",
-    image_url: "",
-    draft: true
-}
+  title: "",
+  content: "",
+  image_url: "",
+  draft: true,
+};

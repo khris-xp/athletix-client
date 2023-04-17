@@ -4,7 +4,7 @@ import Layout from "@/layouts/Layout";
 import { useAuth } from "@/context/auth";
 import Link from "next/link";
 
-const Profile: NextPage = () => {
+const ProfilePage: NextPage = () => {
   const { user } = useAuth();
   return (
     <Fragment>
@@ -217,4 +217,4 @@ const Profile: NextPage = () => {
   );
 };
 
-export default Profile;
+export default ProfilePage;

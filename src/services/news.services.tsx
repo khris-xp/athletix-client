@@ -7,7 +7,7 @@ import { IToken } from "@/interfaces/token";
 export const getNewService = async () => {
   try {
     const response: AxiosResponse = await axios.get(
-      'http://localhost:4000/news'
+      'http://127.0.0.1:4000/news'
     );
     return response.data;
   } catch (err: unknown) {
@@ -18,7 +18,7 @@ export const getNewService = async () => {
 export const getNewDetailService = async (newsId: string | undefined) => {
   try {
     const response: AxiosResponse = await axios.get(
-      `http://localhost:4000/news/${newsId}`
+      `http://127.0.0.1:4000/news/${newsId}`
     );
     return response.data;
   } catch (err: unknown) {
