@@ -50,7 +50,7 @@ export const getUserService = async () => {
         const token: string | undefined = Cookies.get('token');
         if (token) {
             axios.defaults.headers.common['Authorization'] = `Bearer ${token}`
-            const response: AxiosResponse = await axios.get('http://localhost:4000/users/profile');
+            const response: AxiosResponse = await axios.get('http://127.0.0.1:4000/users/profile');
             return response.data;
         }
     } catch (err: unknown) {
@@ -77,7 +77,7 @@ export const getUserHistoryService = async (context: GetServerSidePropsContext) 
         const CookiesToken: IToken = parseCookies(context);
         if (CookiesToken.token) {
             axios.defaults.headers.common['Authorization'] = `Bearer ${CookiesToken.token}`
-            const response: AxiosResponse = await axios.get('http://localhost:4000/booking/history');
+            const response: AxiosResponse = await axios.get('http://127.0.0.1:4000/booking/history');
             return response.data;
         }
     } catch (err: unknown) {
