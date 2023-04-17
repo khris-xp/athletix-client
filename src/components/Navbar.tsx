@@ -64,9 +64,8 @@ const Navbar = () => {
                   />
                 </button>
                 <div
-                  className={`relative ${
-                    userMenu ? "hidden" : "block"
-                  } text-base list-none divide-y divide-gray-100 rounded-lg shadow`}
+                  className={`relative ${userMenu ? "hidden" : "block"
+                    } text-base list-none divide-y divide-gray-100 rounded-lg shadow`}
                 >
                   <div className="relative">
                     <ul className="absolute right-0 z-10 py-2 mt-4 w-48 bg-white rounded-md shadow-lg border-2 ">
@@ -84,15 +83,27 @@ const Navbar = () => {
                           Dashboard
                         </Link>
                       </li>
-                      <li>
-                        <Link
-                          href="/history"
-                          className="block px-4 py-2 text-sm text-gray-700 hover:bg-gray-100"
-                          onClick={handleUserMenu}
-                        >
-                          History
-                        </Link>
-                      </li>
+                      {isAdmin ? (
+                        <li>
+                          <Link
+                            href="/admin-dashboard"
+                            className="block px-4 py-2 text-sm text-gray-700 hover:bg-gray-100"
+                            onClick={handleUserMenu}
+                          >
+                            Admin
+                          </Link>
+                        </li>
+                      ) : (
+                        <li>
+                          <Link
+                            href="/history"
+                            className="block px-4 py-2 text-sm text-gray-700 hover:bg-gray-100"
+                            onClick={handleUserMenu}
+                          >
+                            History
+                          </Link>
+                        </li>
+                      )}
                       <li>
                         <Link
                           href="/"
@@ -128,19 +139,17 @@ const Navbar = () => {
             </button>
           </div>
           <div
-            className={`items-center justify-between ${
-              navbarMenu ? "hidden" : "block"
-            } w-full md:flex md:w-auto md:order-1`}
+            className={`items-center justify-between ${navbarMenu ? "hidden" : "block"
+              } w-full md:flex md:w-auto md:order-1`}
           >
             <ul className="flex flex-col font-medium p-4 md:p-0 mt-4 border border-gray-100 rounded-lg bg-gray-50 md:flex-row md:space-x-8 md:mt-0 md:border-0 md:bg-white">
               <li>
                 <Link
                   href="/"
-                  className={`block py-2 pl-3 pr-4 ${
-                    Router.pathname === "/"
-                      ? "text-white bg-blue-700 rounded md:bg-transparent md:text-blue-700"
-                      : "text-gray-900 rounded hover:bg-gray-100 md:hover:bg-transparent md:hover:text-blue-700"
-                  } md:p-0`}
+                  className={`block py-2 pl-3 pr-4 ${Router.pathname === "/"
+                    ? "text-white bg-blue-700 rounded md:bg-transparent md:text-blue-700"
+                    : "text-gray-900 rounded hover:bg-gray-100 md:hover:bg-transparent md:hover:text-blue-700"
+                    } md:p-0`}
                 >
                   Home
                 </Link>
@@ -148,11 +157,10 @@ const Navbar = () => {
               <li>
                 <Link
                   href="/booking"
-                  className={`block py-2 pl-3 pr-4 ${
-                    Router.pathname === "/booking"
-                      ? "text-white bg-blue-700 rounded md:bg-transparent md:text-blue-700"
-                      : "text-gray-900 rounded hover:bg-gray-100 md:hover:bg-transparent md:hover:text-blue-700"
-                  } md:p-0`}
+                  className={`block py-2 pl-3 pr-4 ${Router.pathname === "/booking"
+                    ? "text-white bg-blue-700 rounded md:bg-transparent md:text-blue-700"
+                    : "text-gray-900 rounded hover:bg-gray-100 md:hover:bg-transparent md:hover:text-blue-700"
+                    } md:p-0`}
                 >
                   Booking
                 </Link>
@@ -161,11 +169,10 @@ const Navbar = () => {
                 {isAdmin ? (
                   <Fragment>
                     <button
-                      className={`flex items-center py-2 pl-3 pr-4 ${
-                        Router.pathname === "/news"
-                          ? "text-white bg-blue-700 rounded md:bg-transparent md:text-blue-700"
-                          : "text-gray-900 rounded hover:bg-gray-100 md:hover:bg-transparent md:hover:text-blue-700"
-                      } md:p-0`}
+                      className={`flex items-center py-2 pl-3 pr-4 ${Router.pathname === "/news"
+                        ? "text-white bg-blue-700 rounded md:bg-transparent md:text-blue-700"
+                        : "text-gray-900 rounded hover:bg-gray-100 md:hover:bg-transparent md:hover:text-blue-700"
+                        } md:p-0`}
                       onClick={handleNewsMenu}
                     >
                       News{" "}
@@ -183,13 +190,9 @@ const Navbar = () => {
                         ></path>
                       </svg>
                     </button>
-                    <div
-                      className={`relative ${
-                        newsMenu ? "hidden" : "block"
-                      } text-base list-none divide-y divide-gray-100 rounded-lg shadow`}
-                    >
+                    <div className={`relative ${newsMenu ? "hidden" : "block"} text-base list-none divide-y divide-gray-100 rounded-lg shadow`}>
                       <div className="relative">
-                        <ul className="absolute right-0 z-10 py-2 mt-4 w-48 bg-white rounded-md shadow-lg border-2 ">
+                        <ul className="absolute z-10 w-48 py-2 mt-2 bg-white rounded-md shadow-lg border-2">
                           <li>
                             <Link
                               href="/news"
@@ -215,11 +218,10 @@ const Navbar = () => {
                 ) : (
                   <Link
                     href="/news"
-                    className={`block py-2 pl-3 pr-4 ${
-                      Router.pathname === "/news"
-                        ? "text-white bg-blue-700 rounded md:bg-transparent md:text-blue-700"
-                        : "text-gray-900 rounded hover:bg-gray-100 md:hover:bg-transparent md:hover:text-blue-700"
-                    } md:p-0`}
+                    className={`block py-2 pl-3 pr-4 ${Router.pathname === "/news"
+                      ? "text-white bg-blue-700 rounded md:bg-transparent md:text-blue-700"
+                      : "text-gray-900 rounded hover:bg-gray-100 md:hover:bg-transparent md:hover:text-blue-700"
+                      } md:p-0`}
                   >
                     News
                   </Link>
@@ -229,11 +231,10 @@ const Navbar = () => {
                 <li>
                   <Link
                     href="/equipment"
-                    className={`block py-2 pl-3 pr-4 ${
-                      Router.pathname === "/equipment"
-                        ? "text-white bg-blue-700 rounded md:bg-transparent md:text-blue-700"
-                        : "text-gray-900 rounded hover:bg-gray-100 md:hover:bg-transparent md:hover:text-blue-700"
-                    } md:p-0`}
+                    className={`block py-2 pl-3 pr-4 ${Router.pathname === "/equipment"
+                      ? "text-white bg-blue-700 rounded md:bg-transparent md:text-blue-700"
+                      : "text-gray-900 rounded hover:bg-gray-100 md:hover:bg-transparent md:hover:text-blue-700"
+                      } md:p-0`}
                   >
                     Equipment
                   </Link>
@@ -242,11 +243,10 @@ const Navbar = () => {
               <li>
                 <Link
                   href="/about"
-                  className={`block py-2 pl-3 pr-4 ${
-                    Router.pathname === "/about"
-                      ? "text-white bg-blue-700 rounded md:bg-transparent md:text-blue-700"
-                      : "text-gray-900 rounded hover:bg-gray-100 md:hover:bg-transparent md:hover:text-blue-700"
-                  } md:p-0`}
+                  className={`block py-2 pl-3 pr-4 ${Router.pathname === "/about"
+                    ? "text-white bg-blue-700 rounded md:bg-transparent md:text-blue-700"
+                    : "text-gray-900 rounded hover:bg-gray-100 md:hover:bg-transparent md:hover:text-blue-700"
+                    } md:p-0`}
                 >
                   About
                 </Link>
@@ -254,8 +254,8 @@ const Navbar = () => {
             </ul>
           </div>
         </div>
-      </nav>
-    </Fragment>
+      </nav >
+    </Fragment >
   );
 };
 
