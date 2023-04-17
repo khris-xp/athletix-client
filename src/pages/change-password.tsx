@@ -1,7 +1,6 @@
 import { NextPage } from 'next'
 import { Fragment, useState } from 'react'
 import Layout from '@/layouts/Layout'
-import Link from 'next/link'
 import { IUserChangePassword } from '@/interfaces/user'
 import { UserChangePassword } from '@/constants/user'
 import { changeUserPasswordService } from '@/services/user.services'

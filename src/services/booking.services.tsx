@@ -2,6 +2,7 @@ import axios, { AxiosResponse } from "axios";
 import { parseCookies } from "nookies";
 import { IToken } from "@/interfaces/token";
 import { IBooking } from "@/interfaces/booking";
+import { GetServerSidePropsContext } from "next";
 
 export const createBookingService = async (booking: IBooking) => {
     try {
@@ -44,6 +45,32 @@ export const createCashPayment = async (booking_id: string | undefined, cash: nu
             axios.defaults.headers.common['Authorization'] = `Bearer ${CookiesToken.token}`;
             const response: AxiosResponse = await axios.post('http://localhost:4000/payments/pay/cash', { booking_id, cash }
             );
+            return response.data;
+        }
+    } catch (err) {
+        console.log(err);
+    }
+}
+
+export const getBookingService = async (context: GetServerSidePropsContext) => {
+    try {
+        const CookiesToken: IToken = parseCookies(context);
+        if (CookiesToken.token) {
+            axios.defaults.headers.common['Authorization'] = `Bearer ${CookiesToken.token}`;
+            const response: AxiosResponse = await axios.get('http://localhost:4000/booking/');
+            return response.data;
+        }
+    } catch (err) {
+        console.log(err);
+    }
+}
+
+export const approveBookingService = async (booking_id: string) => {
+    try {
+        const CookiesToken: IToken = parseCookies();
+        if (CookiesToken.token) {
+            axios.defaults.headers.common['Authorization'] = `Bearer ${CookiesToken.token}`;
+            const response: AxiosResponse = await axios.post('http://localhost:4000/booking/approve', { booking_id });
             return response.data;
         }
     } catch (err) {
