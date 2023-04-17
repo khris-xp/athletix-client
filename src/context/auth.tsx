@@ -2,6 +2,11 @@ import { Fragment, useState, createContext, useEffect, useContext, ReactNode } f
 import { loginService, logoutService, getUserService } from '../services/user.services';
 import { Loading, Error } from '@/components';
 import { IUser, IAuthContext } from '@/interfaces/user';
+import { NextRouter, useRouter } from 'next/router';
+
+interface ChildrenProps {
+    children: ReactNode
+}
 
 const AuthContext = createContext<IAuthContext>({
     isAuthenticated: false,
@@ -62,3 +67,20 @@ export const AuthProvider = ({ children }: { children: ReactNode }) => {
 };
 
 export const useAuth = (): IAuthContext => useContext(AuthContext);
+
+export const ProtectRoute = ({ children }: ChildrenProps) => {
+    const { isAuthenticated, isLoading } = useAuth();
+    const router: NextRouter = useRouter();
+
+    if (isLoading) {
+        return <Loading />
+    }
+
+    if (!isAuthenticated && router.pathname !== '/' && router.pathname !== '/booking' && router.pathname !== '/about'
+        && router.pathname !== '/login' && router.pathname !== '/register' && router.pathname.startsWith('/news/*')
+    ) {
+        return <Error />
+    }
+
+    return <Fragment>{children}</Fragment>
+}
