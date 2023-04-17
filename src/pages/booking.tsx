@@ -4,7 +4,7 @@ import Layout from "@/layouts/Layout";
 import { NextPage, GetServerSideProps } from "next";
 import { getFieldService } from "@/services/field.services";
 import { IField } from "@/interfaces/field";
-import { ISlots } from "@/interfaces/slot";
+import { ISlots, ISlotTime } from "@/interfaces/slot";
 import { SlotsInitialValue } from "@/constants/slots";
 import { CreateBookingInitialValue } from "@/constants/booking";
 import {
@@ -12,9 +12,11 @@ import {
   createPromptpayPayment,
   createCashPayment,
 } from "@/services/booking.services";
+import { checkSlotBookingService } from "@/services/slot.services";
 import { toast } from "react-hot-toast";
 import { AxiosError } from "axios";
 import { IBooking, IBookingData } from "@/interfaces/booking";
+import { ISearchSlots } from "@/interfaces/search";
 import Image from "next/image";
 import router from "next/router";
 
@@ -32,7 +34,7 @@ const BookingPage: NextPage<Props> = ({ data }) => {
   const [slotsId, setSlotsId] = useState<string>("");
   const [bookingData, setBookingData] = useState<IBookingData | null>(null);
   const [slotsClick, setSlotsClick] = useState<boolean>(false);
-  console.log(bookingData);
+  const [SlotCheck, setSlotCheck] = useState<ISlotTime[]>([]);
 
   const handleSlotsClick = (id: string): void => {
     setSlotsId(id);
@@ -43,9 +45,33 @@ const BookingPage: NextPage<Props> = ({ data }) => {
     setSelectedId(id);
   };
 
+  const handSlotCheck = async (slotData: ISearchSlots): Promise<void> => {
+    try {
+      const BookingCheck = await checkSlotBookingService(slotData);
+      setSlotCheck(BookingCheck);
+    } catch (err) {
+      console.log(err);
+    }
+  };
+  const handleConvertTime = (time: string) => {
+    const match = time.match(/^(\d{4})-(\d{2})-(\d{2})T(\d{2}):(\d{2}):/);
+    if(match){
+    const hours = match[4];
+    const minutes = match[5];
+    const timeStr = `${hours}:${minutes}`;
+    return timeStr
+    }
+    }
+  
   const handleDateChange = (event: React.ChangeEvent<HTMLInputElement>) => {
     event.preventDefault();
     const inputDate: string = event.target.value;
+
+    handSlotCheck({
+      field_id: booking.field_id,
+      date: inputDate + "T00:00:00.000Z",
+    } as ISearchSlots);
+
     setSelectedDate(inputDate);
     const dateRegex: RegExp = /^(\d{4})-(\d{2})-(\d{2})$/;
     const match = inputDate.match(dateRegex);
@@ -66,6 +92,7 @@ const BookingPage: NextPage<Props> = ({ data }) => {
       console.error("Invalid date format");
     }
   };
+  
 
   const handleTimeChange = (startTime: string, endTime: string) => {
     const updatedBooking = { ...booking };
@@ -154,7 +181,6 @@ const BookingPage: NextPage<Props> = ({ data }) => {
       toast.error("Payment created failed");
     }
   };
-
   return (
     <Fragment>
       <Layout>
@@ -215,42 +241,76 @@ const BookingPage: NextPage<Props> = ({ data }) => {
               </div>
             </div>
 
-            {booking.slot.date ? (
-              <div>
-                <p className="my-8 text-xl font-bold text-blue-900">
-                  Select a time
-                </p>
-                <div className="mt-4 grid grid-cols-6 gap-2">
-                  {SlotsInitialValue.map((Slots: ISlots) => (
-                    <>
-                      {slotsClick && slotsId === Slots.id ? (
-                        <button
-                          className="rounded-lg bg-blue-900 px-2 py-2 font-medium text-white active:scale-95"
-                          onClick={() => {
-                            handleSlotsClick(Slots.id);
-                            handleTimeChange(Slots.start_time, Slots.end_time);
-                          }}
-                          key={Slots.id}
-                        >
-                          {Slots.start_time} - {Slots.end_time}
-                        </button>
-                      ) : (
-                        <button
-                          className="rounded-lg bg-blue-100 px-2 py-2 font-medium text-blue-900 active:scale-95"
-                          onClick={() => {
-                            handleSlotsClick(Slots.id);
-                            handleTimeChange(Slots.start_time, Slots.end_time);
-                          }}
-                          key={Slots.id}
-                        >
-                          {Slots.start_time} - {Slots.end_time}
-                        </button>
-                      )}
-                    </>
-                  ))}
-                </div>
-              </div>
-            ) : null}
+            {booking.slot.date
+              ? (console.log(SlotCheck),
+                (
+                  <div>
+                    <p className="my-8 text-xl font-bold text-blue-900">
+                      Select a time
+                    </p>
+                    <div className="mt-4 grid grid-cols-6 gap-2">
+                      {SlotsInitialValue.map((Slots: ISlots) => (
+                        <>
+                          {slotsClick && slotsId === Slots.id ? (
+                            
+                            <button
+                              className={`rounded-lg ${
+                                SlotCheck.some(
+                                  (slot) =>
+                                  handleConvertTime(slot._Slot__start_time) === Slots.start_time &&
+                                  handleConvertTime(slot._Slot__end_time) === Slots.end_time
+                                )
+                                  ? "bg-red-500"
+                                  : "bg-blue-900"
+                              } px-2 py-2 font-medium text-white active:scale-95`}
+                              onClick={() => {
+                                handleSlotsClick(Slots.id);
+                                handleTimeChange(
+                                  Slots.start_time,
+                                  Slots.end_time
+                                );
+                              }}
+                              key={Slots.id}
+                            >
+                              {Slots.start_time} - {Slots.end_time}
+                            </button>
+                          ) : (
+                            <button
+                              className={`rounded-lg ${
+                                SlotCheck.some(
+                                  (slot) =>
+                                  handleConvertTime(slot._Slot__start_time) === Slots.start_time &&
+                                  handleConvertTime(slot._Slot__end_time) === Slots.end_time
+                                )
+                                  ? "bg-red-500"
+                                  : "bg-blue-100"
+                              } px-2 py-2 font-medium ${
+                                SlotCheck.some(
+                                  (slot) =>
+                                  handleConvertTime(slot._Slot__start_time) === Slots.start_time &&
+                                  handleConvertTime(slot._Slot__end_time) === Slots.end_time
+                                )
+                                  ? "text-white"
+                                  : "text-blue-900"
+                              } active:scale-95`}
+                              onClick={() => {
+                                handleSlotsClick(Slots.id);
+                                handleTimeChange(
+                                  Slots.start_time,
+                                  Slots.end_time
+                                );
+                              }}
+                              key={Slots.id}
+                            >
+                              {Slots.start_time} - {Slots.end_time}
+                            </button>
+                          )}
+                        </>
+                      ))}
+                    </div>
+                  </div>
+                ))
+              : null}
             <button
               className="mt-8 w-56 rounded-full border-8 border-blue-500 bg-blue-600 px-10 py-4 text-lg font-bold text-white transition hover:translate-y-1"
               onClick={() => handleCreateBooking(booking)}

@@ -1,4 +1,4 @@
-import { ISlots } from "@/interfaces/slot";
+import { ISlots,ISlotTime } from "@/interfaces/slot"
 
 export const SlotsInitialValue: ISlots[] = [
   {
