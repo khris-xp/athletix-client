@@ -1,6 +1,5 @@
 import { Fragment } from "react";
 import Image from "next/image";
-import { NextPage } from "next";
 import { useAuth } from "@/context/auth";
 import Link from "next/link";
 import { deleteFieldService } from "@/services/field.services";
@@ -14,7 +13,7 @@ interface Props {
   description: string;
 }
 
-const Card: NextPage<Props> = ({ id, image, title, description }) => {
+const Card = ({ id, image, title, description }: Props) => {
   const { isAdmin } = useAuth();
   const router: NextRouter = useRouter();
 

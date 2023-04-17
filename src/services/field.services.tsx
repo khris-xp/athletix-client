@@ -6,7 +6,7 @@ import { ICreateField } from '@/interfaces/field';
 
 export const getFieldService = async () => {
     try {
-        const response: AxiosResponse = await axios.get('http://localhost:4000/fields');
+        const response: AxiosResponse = await axios.get('http://127.0.0.1:4000/fields');
         return response.data;
     } catch (err: unknown) {
         throw Error('Failed to fetch field');
@@ -15,7 +15,7 @@ export const getFieldService = async () => {
 
 export const getFieldDetailService = async (id: string) => {
     try {
-        const response: AxiosResponse = await axios.get(`http://localhost:4000/fields/${id}`);
+        const response: AxiosResponse = await axios.get(`http://127.0.0.1:4000/fields/${id}`);
         return response.data;
     } catch (err: unknown) {
         throw Error('Failed to fetch field detail');

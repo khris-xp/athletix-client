@@ -37,6 +37,4 @@ export interface IAuthContext {
   isFrontDesk: boolean;
   isLoading: boolean;
   user: IUser | null;
-  loginService: (email: string, password: string) => Promise<void>;
-  logoutService: () => Promise<void>;
 }

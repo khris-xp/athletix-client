@@ -7,7 +7,7 @@ import { ICreateNew } from "@/interfaces/news";
 import { createNewService } from "@/services/news.services";
 import { toast } from "react-hot-toast";
 
-const CreateNew: NextPage = () => {
+const CreateNewsPage: NextPage = () => {
   const [news, setNews] = useState<ICreateNew>(CreateNewInitialValues);
 
   const handleCreateNews = async (event: React.FormEvent<HTMLFormElement>) => {
@@ -111,4 +111,4 @@ const CreateNew: NextPage = () => {
   );
 };
 
-export default CreateNew;
+export default CreateNewsPage;

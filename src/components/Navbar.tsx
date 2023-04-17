@@ -1,4 +1,3 @@
-import { NextPage } from "next";
 import { Fragment, useState } from "react";
 import Link from "next/link";
 import Image from "next/image";
@@ -6,7 +5,7 @@ import { logoutService } from "@/services/user.services";
 import { useAuth } from "@/context/auth";
 import { NextRouter, useRouter } from "next/router";
 
-const Navbar: NextPage = () => {
+const Navbar = () => {
   const [navbarMenu, setIsNavbarMenu] = useState<boolean>(true);
   const [userMenu, setIsUserMenu] = useState<boolean>(true);
   const [newsMenu, setIsNewsMenu] = useState<boolean>(true);
