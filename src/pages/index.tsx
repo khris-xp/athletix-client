@@ -12,7 +12,7 @@ interface Props {
   data: IField[];
 }
 
-const Home: NextPage<Props> = ({ data }) => {
+const HomePage: NextPage<Props> = ({ data }) => {
   const { isAdmin } = useAuth();
   return (
     <Layout>
@@ -85,4 +85,4 @@ export const getServerSideProps: GetServerSideProps = async () => {
   }
 };
 
-export default Home;
+export default HomePage;

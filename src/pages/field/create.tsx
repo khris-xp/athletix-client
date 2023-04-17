@@ -7,7 +7,7 @@ import router from "next/router";
 import { toast } from "react-hot-toast";
 import Image from "next/image";
 
-const CreateField = () => {
+const CreateFieldPage = () => {
   const [field, setField] = useState<ICreateField>(CreateFieldInitialValues);
   const handleCreateField = async (event: React.FormEvent<HTMLFormElement>) => {
     try {
@@ -169,4 +169,4 @@ const CreateField = () => {
   );
 };
 
-export default CreateField;
+export default CreateFieldPage;

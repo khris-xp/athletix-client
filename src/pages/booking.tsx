@@ -24,7 +24,7 @@ interface Props {
   data: IField[];
 }
 
-const Booking: NextPage<Props> = ({ data }) => {
+const BookingPage: NextPage<Props> = ({ data }) => {
   const [booking, setBooking] = useState<IBooking>(CreateBookingInitialValue);
   const [selectedId, setSelectedId] = useState<string | null>(null);
   const [paymentModal, setPaymentModal] = useState<boolean>(false);
@@ -54,16 +54,15 @@ const Booking: NextPage<Props> = ({ data }) => {
     }
   };
   const handleConvertTime = (time: string) => {
-
     const match = time.match(/^(\d{4})-(\d{2})-(\d{2})T(\d{2}):(\d{2}):/);
-    if (match){
-        const hours = match[4];
-        const minutes = match[5];
-        const timeStr = `${hours}:${minutes}`;
-        return timeStr;
+    if(match){
+    const hours = match[4];
+    const minutes = match[5];
+    const timeStr = `${hours}:${minutes}`;
+    return timeStr
     }
-    
-}
+    }
+  
   const handleDateChange = (event: React.ChangeEvent<HTMLInputElement>) => {
     event.preventDefault();
     const inputDate: string = event.target.value;
@@ -93,6 +92,7 @@ const Booking: NextPage<Props> = ({ data }) => {
       console.error("Invalid date format");
     }
   };
+  
 
   const handleTimeChange = (startTime: string, endTime: string) => {
     const updatedBooking = { ...booking };
@@ -181,7 +181,6 @@ const Booking: NextPage<Props> = ({ data }) => {
       toast.error("Payment created failed");
     }
   };
-
   return (
     <Fragment>
       <Layout>
@@ -481,4 +480,4 @@ export const getServerSideProps: GetServerSideProps = async () => {
   }
 };
 
-export default Booking;
+export default BookingPage;

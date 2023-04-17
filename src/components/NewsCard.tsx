@@ -1,4 +1,3 @@
-import { NextPage } from "next";
 import { Fragment } from "react";
 import Image from "next/image";
 import { format } from "date-fns";
@@ -16,13 +15,7 @@ interface Props {
   image: string;
 }
 
-const NewsCard: NextPage<Props> = ({
-  id,
-  title,
-  description,
-  createdDate,
-  image,
-}) => {
+const NewsCard = ({ id, title, description, createdDate, image }: Props) => {
   const createdFormatDate: Date = new Date(createdDate);
   const { isAdmin } = useAuth();
   const router: NextRouter = useRouter();

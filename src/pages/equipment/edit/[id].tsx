@@ -23,7 +23,7 @@ interface Props {
   category: string;
 }
 
-const EditEquipment: NextPage<Props> = ({
+const EditEquipmentPage: NextPage<Props> = ({
   id,
   name,
   price_per_unit,
@@ -168,7 +168,7 @@ export const getStaticPaths: GetStaticPaths = async () => {
 
     return {
       paths,
-      fallback: false,
+      fallback: true,
     };
   } catch (err) {
     console.log(err);
@@ -211,4 +211,4 @@ export const getStaticProps: GetStaticProps = async ({
   }
 };
 
-export default EditEquipment;
+export default EditEquipmentPage;

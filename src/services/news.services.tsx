@@ -49,7 +49,7 @@ export const editNewService = async (news: IUpdateNew, id: string) => {
       router.push('/news');
       return response.data;
     }
-  } catch (err) {
+  } catch (err: unknown) {
     throw new Error("Failed to edit new");
   }
 };

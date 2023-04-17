@@ -19,15 +19,22 @@ interface Props {
   image_url: string;
 }
 
-const NewsDetailPages: NextPage<Props> = ({
+const NewsDetailPage: NextPage<Props> = ({
   title,
   description,
   createdDate,
   image_url,
 }) => {
-  const createdFormatDate: Date = new Date(createdDate);
-  const createdAt: string = format(createdFormatDate, "dd MMM yyyy  HH:mm");
-  const [formattedDate, formattedTime]: string[] = createdAt.split("  ");
+  let formattedDate = "";
+  let formattedTime = "";
+  if (createdDate) {
+    const createdFormatDate: Date = new Date(createdDate);
+    if (!isNaN(createdFormatDate.getTime())) {
+      const createdAt: string = format(createdFormatDate, "dd MMM yyyy HH:mm");
+      [formattedDate, formattedTime] = createdAt.split("  ");
+    }
+  }
+
   return (
     <Fragment>
       <Layout>
@@ -123,4 +130,4 @@ export const getStaticProps: GetStaticProps = async ({
   }
 };
 
-export default NewsDetailPages;
+export default NewsDetailPage;

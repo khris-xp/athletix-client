@@ -3,7 +3,7 @@ import { parseCookies } from "nookies";
 import Cookies from "js-cookie";
 import { IUserChangePassword } from "@/interfaces/user";
 import { IToken } from "@/interfaces/token";
-import { GetServerSidePropsContext, GetStaticPropsContext } from "next";
+import { GetServerSidePropsContext } from "next";
 
 export const registerService = async (fullname: string, email: string, password: string, phone_number: string, address: string,
     birth_date: string, emergency_contact_fullname: string, emergency_contact_phone_number: string): Promise<void> => {
@@ -16,7 +16,7 @@ export const registerService = async (fullname: string, email: string, password:
         setTimeout(() => {
             window.location.href = '/';
         }, 400);
-    } catch (err) {
+    } catch (err: unknown) {
         throw new Error('Register Failed');
     }
 }
@@ -67,7 +67,7 @@ export const changeUserPasswordService = async (changePassword: IUserChangePassw
             const response: AxiosResponse = await axios.post('http://localhost:4000/users/change-password', changePassword);
             return response.data;
         }
-    } catch (err) {
+    } catch (err: unknown) {
         throw new Error('Failed to change password');
     }
 }
@@ -80,7 +80,7 @@ export const getUserHistoryService = async (context: GetServerSidePropsContext) 
             const response: AxiosResponse = await axios.get('http://localhost:4000/booking/history');
             return response.data;
         }
-    } catch (err) {
+    } catch (err: unknown) {
         console.log(err);
     }
 }
