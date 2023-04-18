@@ -76,11 +76,11 @@ const ProfilePage: NextPage = () => {
                   </div>
                   <div className="text-center">
                     <h3 className="text-4xl font-semibold leading-normal text-gray-800 mb-2">
-                      {user?._Person__fullname}
+                      {user?.fullname}
                     </h3>
                     <div className="text-sm leading-normal mt-0 mb-2 text-gray-500 font-bold uppercase">
                       <i className="fas fa-map-marker-alt mr-2 text-lg text-gray-500"></i>{" "}
-                      {user?._Person__account._Account__role}
+                      {user?.account.role}
                     </div>
                     <div className="flex justify-end font-semibold hover:underline text-blue-600 ">
                       <Link href="/change-password">Change Password</Link>
@@ -105,7 +105,7 @@ const ProfilePage: NextPage = () => {
                                     Fullname
                                   </label>
                                   <p className="py-2 px-1">
-                                    {user?._Person__fullname}
+                                    {user?.fullname}
                                   </p>
                                 </div>
                               </div>
@@ -118,7 +118,7 @@ const ProfilePage: NextPage = () => {
                                     Email address
                                   </label>
                                   <p className="py-2 px-1">
-                                    {user?._Person__email}
+                                    {user?.email}
                                   </p>
                                 </div>
                               </div>
@@ -131,7 +131,7 @@ const ProfilePage: NextPage = () => {
                                     Birth Date
                                   </label>
                                   <p className="py-2 px-1">
-                                    {user?._Person__birth_date}
+                                    {user?.birth_date}
                                   </p>
                                 </div>
                               </div>
@@ -144,7 +144,7 @@ const ProfilePage: NextPage = () => {
                                     Role
                                   </label>
                                   <p className="py-2 px-1">
-                                    {user?._Person__account._Account__role}
+                                    {user?.account.role}
                                   </p>
                                 </div>
                               </div>
@@ -165,7 +165,7 @@ const ProfilePage: NextPage = () => {
                                     Address
                                   </label>
                                   <p className="py-2 px-1">
-                                    {user?._Person__address}
+                                    {user?.address}
                                   </p>
                                 </div>
                               </div>
@@ -178,7 +178,7 @@ const ProfilePage: NextPage = () => {
                                     Phone Number
                                   </label>
                                   <p className="py-2 px-1">
-                                    {user?._Person__phone_number}
+                                    {user?.phone_number}
                                   </p>
                                 </div>
                               </div>
@@ -191,7 +191,7 @@ const ProfilePage: NextPage = () => {
                                     Emergency Contact Fullname
                                   </label>
                                   <p className="p-3">
-                                    {user?._Person__emergency_contact_fullname}
+                                    {user?.emergency_contact_fullname}
                                   </p>
                                 </div>
                               </div>
@@ -205,7 +205,7 @@ const ProfilePage: NextPage = () => {
                                   </label>
                                   <p className="p-3">
                                     {
-                                      user?._Person__emergency_contact_phone_number
+                                      user?.emergency_contact_phone_number
                                     }
                                   </p>
                                 </div>

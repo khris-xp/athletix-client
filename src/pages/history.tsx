@@ -1,15 +1,18 @@
-import { Fragment, useState } from 'react'
-import { NextPage } from 'next'
-import Layout from '@/layouts/Layout'
-import { GetServerSideProps, GetServerSidePropsContext } from 'next'
-import { getUserHistoryService } from '@/services/user.services'
-import { IHistory } from '@/interfaces/history'
-import { Loading, Error } from '@/components'
-import { useAuth } from '@/context/auth'
-import Image from 'next/image'
-import { createCashPayment, createPromptpayPayment } from '@/services/booking.services'
-import { toast } from 'react-hot-toast';
-import router from 'next/router';
+import { Fragment, useState } from "react";
+import { NextPage } from "next";
+import Layout from "@/layouts/Layout";
+import { GetServerSideProps, GetServerSidePropsContext } from "next";
+import { getUserHistoryService } from "@/services/user.services";
+import { IHistory } from "@/interfaces/history";
+import { Loading, Error } from "@/components";
+import { useAuth } from "@/context/auth";
+import Image from "next/image";
+import {
+  createCashPayment,
+  createPromptpayPayment,
+} from "@/services/booking.services";
+import { toast } from "react-hot-toast";
+import router from "next/router";
 
 interface Props {
   historyData: IHistory[];
@@ -22,24 +25,23 @@ const HistoryPage: NextPage<Props> = ({ historyData }) => {
   const { isCustomer, isLoading } = useAuth();
 
   if (isLoading) {
-    return <Loading />
+    return <Loading />;
   }
 
   if (!isCustomer) {
-    return <Error />
+    return <Error />;
   }
 
   const handlePaymentModal = () => {
     setPaymentModal(true);
-  }
+  };
 
-  const handlePromptPayMethod = async (booking_id: string, payment_id: string): Promise<void> => {
+  const handlePromptPayMethod = async (
+    booking_id: string,
+    payment_id: string
+  ): Promise<void> => {
     try {
-      await createPromptpayPayment(
-        booking_id,
-        payment_id,
-        promptPayData
-      );
+      await createPromptpayPayment(booking_id, payment_id, promptPayData);
       toast.success("Payment created successfully");
       setPaymentModal(false);
       router.push("/history");
@@ -48,12 +50,12 @@ const HistoryPage: NextPage<Props> = ({ historyData }) => {
     }
   };
 
-  const handleCashMethod = async (booking_id: string, payment_amount: number): Promise<void> => {
+  const handleCashMethod = async (
+    booking_id: string,
+    payment_amount: number
+  ): Promise<void> => {
     try {
-      await createCashPayment(
-        booking_id,
-        payment_amount
-      );
+      await createCashPayment(booking_id, payment_amount);
       toast.success("Payment created successfully");
       setPaymentModal(false);
       router.push("/history");
@@ -64,7 +66,7 @@ const HistoryPage: NextPage<Props> = ({ historyData }) => {
 
   return (
     <Fragment>
-      <Layout title="Athletix | History"> 
+      <Layout title="Athletix | History">
         <div className="bg-white">
           <div className="max-w-7xl mx-auto py-16 px-4 sm:px-6 lg:pb-24 lg:px-8">
             <div className="max-w-xl">
@@ -115,63 +117,69 @@ const HistoryPage: NextPage<Props> = ({ historyData }) => {
                     </thead>
                     <tbody>
                       {historyData.map((history: IHistory) => (
-                        <><tr
-                          className="bg-white border-b hover:bg-gray-50 text-center"
-                          key={history._Booking__id}
-                        >
-                          <td className="px-6 py-4">{history._Booking__id}</td>
-                          <td className="px-6 py-4">
-                            {history._Booking__equipments.length === 0
-                              ? "No Equipment"
-                              : history._Booking__equipments}
-                          </td>
-                          <td className="px-6 py-4">
-                            {history._Booking__payment._Payment__amount} Bath
-                          </td>
-                          <td className="px-6 py-4" suppressHydrationWarning>
-                            {new Date(
-                              history._Booking__slot._SlotDate__date
-                            ).toLocaleDateString(undefined, {
-                              day: "numeric",
-                              month: "short",
-                              year: "numeric",
-                            })}
-                          </td>
-                          <td className="px-6 py-4">
-                            {new Date(
-                              new Date(
-                                history._Booking__slot._Slot__start_time
-                              ).getTime() -
-                              7 * 60 * 60 * 1000
-                            ).toLocaleTimeString("th-TH", {
-                              hour: "2-digit",
-                              minute: "2-digit",
-                            })}{" "}
-                            - {` `}
-                            {new Date(
-                              new Date(
-                                history._Booking__slot._Slot__end_time
-                              ).getTime() -
-                              7 * 60 * 60 * 1000
-                            ).toLocaleTimeString("th-TH", {
-                              hour: "2-digit",
-                              minute: "2-digit",
-                            })}
-                          </td>
-                          <td className="px-6 py-4">
-                            {history._Booking__status}
-                          </td>
-                          <td className="px-6 py-4">
-                            {history._Booking__payment._Payment__is_payed
-                              ? "Paid"
-                              : "Not Paid"}
-                          </td>
-                          <td className="px-6 py-4">
-                            <button className='text-blue-600 hover:underline font-semibold' onClick={() => handlePaymentModal()}>Paid</button>
-                          </td>
-                        </tr><div>
+                        <>
+                          <tr
+                            className="bg-white border-b hover:bg-gray-50 text-center"
+                            key={history.id}
+                          >
+                            <td className="px-6 py-4">{history.id}</td>
+                            <td className="px-6 py-4">
+                              {history.equipments.length === 0
+                                ? "No Equipment"
+                                : history.equipments.map((equipment) => (
+                                    <div key={equipment.id}>
+                                      {equipment.name}
+                                    </div>
+                                  ))}
+                            </td>
+                            <td className="px-6 py-4">
+                              {history.payment.amount} Bath
+                            </td>
+                            <td className="px-6 py-4" suppressHydrationWarning>
+                              {new Date(history.slot.date).toLocaleDateString(
+                                undefined,
+                                {
+                                  day: "numeric",
+                                  month: "short",
+                                  year: "numeric",
+                                }
+                              )}
+                            </td>
+                            <td className="px-6 py-4">
+                              {new Date(
+                                new Date(history.slot.start_time).getTime() -
+                                  7 * 60 * 60 * 1000
+                              ).toLocaleTimeString("th-TH", {
+                                hour: "2-digit",
+                                minute: "2-digit",
+                              })}{" "}
+                              - {` `}
+                              {new Date(
+                                new Date(history.slot.end_time).getTime() -
+                                  7 * 60 * 60 * 1000
+                              ).toLocaleTimeString("th-TH", {
+                                hour: "2-digit",
+                                minute: "2-digit",
+                              })}
+                            </td>
+                            <td className="px-6 py-4">{history.status}</td>
+                            <td className="px-6 py-4">
+                              {history.payment.is_payed ? "Paid" : "Not Paid"}
+                            </td>
+                            <td className="px-6 py-4">
+                              <button
+                                className="text-blue-600 hover:underline font-semibold"
+                                onClick={() => handlePaymentModal()}
+                              >
+                                Paid
+                              </button>
+                            </td>
+                          </tr>
+                          <div>
                             <div
-                              className={`fixed top-0 left-0 right-0 z-50 w-full p-4 overflow-x-hidden overflow-y-auto md:inset-0 h-[calc(100%-1rem)] max-h-full ${paymentModal ? "flex" : "hidden"} items-center justify-center bg-opacity-50 bg-black`}
+                              className={`fixed top-0 left-0 right-0 z-50 w-full p-4 overflow-x-hidden overflow-y-auto md:inset-0 h-[calc(100%-1rem)] max-h-full ${
+                                paymentModal ? "flex" : "hidden"
+                              } items-center justify-center bg-opacity-50 bg-black`}
                             >
                               <div className="relative w-full max-w-2xl max-h-full">
                                 <div className="relative bg-white rounded-lg shadow">
@@ -216,13 +224,17 @@ const HistoryPage: NextPage<Props> = ({ historyData }) => {
                                             className="form-radio h-5 w-5 text-indigo-500"
                                             name="type"
                                             id="type1"
-                                            onClick={() => setPaymentMethod("promptpay")} />
+                                            onClick={() =>
+                                              setPaymentMethod("promptpay")
+                                            }
+                                          />
                                           <Image
                                             src="https://www.ceochannels.com/wp-content/uploads/2017/10/PromptPay.jpg"
                                             alt="payment-image"
                                             width={32}
                                             height={32}
-                                            className="ml-3" />
+                                            className="ml-3"
+                                          />
                                         </label>
                                       </div>
                                       <div className="px-2">
@@ -235,13 +247,17 @@ const HistoryPage: NextPage<Props> = ({ historyData }) => {
                                             className="form-radio h-5 w-5 text-indigo-500"
                                             name="type"
                                             id="type2"
-                                            onClick={() => setPaymentMethod("cash")} />
+                                            onClick={() =>
+                                              setPaymentMethod("cash")
+                                            }
+                                          />
                                           <Image
                                             src="https://cdn-icons-png.flaticon.com/512/2371/2371970.png"
                                             alt="payment-image"
                                             height={32}
                                             width={32}
-                                            className="ml-3" />
+                                            className="ml-3"
+                                          />
                                         </label>
                                       </div>
                                     </div>
@@ -257,7 +273,10 @@ const HistoryPage: NextPage<Props> = ({ historyData }) => {
                                               className="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 my-4"
                                               placeholder="Your Slip URL"
                                               required
-                                              onChange={(e) => setPromptPayData(e.target.value)} />
+                                              onChange={(e) =>
+                                                setPromptPayData(e.target.value)
+                                              }
+                                            />
                                           </div>
                                         </div>
                                       </div>
@@ -266,8 +285,7 @@ const HistoryPage: NextPage<Props> = ({ historyData }) => {
                                         <div className="px-2 w-full">
                                           <label className="font-bold text-sm mb-2 ml-1">
                                             Your Payment Amount{" "}
-                                            {history._Booking__payment._Payment__amount} is
-                                            Bath
+                                            {history.payment.amount} is Bath
                                           </label>
                                         </div>
                                       </div>
@@ -276,16 +294,28 @@ const HistoryPage: NextPage<Props> = ({ historyData }) => {
                                       {paymentMethod === "promptpay" ? (
                                         <button
                                           className="block w-full max-w-xs mx-auto bg-indigo-500 hover:bg-indigo-700 focus:bg-indigo-700 text-white rounded-lg px-3 py-3 font-semibold"
-                                          onClick={() => handlePromptPayMethod(history?._Booking__id, history._Booking__payment._PromptPayPayment__slip_image)}
+                                          onClick={() =>
+                                            handlePromptPayMethod(
+                                              history?.id,
+                                              history.payment.slip_image
+                                            )
+                                          }
                                         >
-                                          <i className="mdi mdi-lock-outline mr-1"></i> PAY NOW
+                                          <i className="mdi mdi-lock-outline mr-1"></i>{" "}
+                                          PAY NOW
                                         </button>
                                       ) : (
                                         <button
                                           className="block w-full max-w-xs mx-auto bg-indigo-500 hover:bg-indigo-700 focus:bg-indigo-700 text-white rounded-lg px-3 py-3 font-semibold"
-                                          onClick={() => handleCashMethod(history._Booking__id, history._Booking__payment._Payment__amount)}
+                                          onClick={() =>
+                                            handleCashMethod(
+                                              history.id,
+                                              history.payment.amount
+                                            )
+                                          }
                                         >
-                                          <i className="mdi mdi-lock-outline mr-1"></i> PAY NOW
+                                          <i className="mdi mdi-lock-outline mr-1"></i>{" "}
+                                          PAY NOW
                                         </button>
                                       )}
                                     </div>
@@ -293,17 +323,18 @@ const HistoryPage: NextPage<Props> = ({ historyData }) => {
                                 </div>
                               </div>
                             </div>
-                          </div></>
+                          </div>
+                        </>
                       ))}
                     </tbody>
                   </table>
                 </div>
               </div>
-            </div >
-          </div >
-        </div >
-      </Layout >
-    </Fragment >
+            </div>
+          </div>
+        </div>
+      </Layout>
+    </Fragment>
   );
 };
 

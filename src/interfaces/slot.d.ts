@@ -8,8 +8,8 @@ export interface ISlots {
 }
 
 export interface ISlotTime {
-    _SlotDate__date: string,
-    _Slot__end_time: string,
-    _Slot__is_booked: boolean,
-    _Slot__start_time: string
+    date: string,
+    end_time: string,
+    is_booked: boolean,
+    start_time: string
 }

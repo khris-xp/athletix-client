@@ -61,52 +61,52 @@ const AdminDashboard: NextPage<Props> = ({ data }) => {
                         </thead>
                         <tbody>
                             {data.map((booking: IBookingData) => (
-                                <tr className="bg-white border-b dark:bg-gray-800 dark:border-gray-700 hover:bg-gray-50 dark:hover:bg-gray-600" key={booking._Booking__id}>
+                                <tr className="bg-white border-b dark:bg-gray-800 dark:border-gray-700 hover:bg-gray-50 dark:hover:bg-gray-600" key={booking.id}>
                                     <td className="px-6 py-4">
-                                        {booking._Booking__id}
+                                        {booking.id}
                                     </td>
                                     <td className="px-6 py-4" suppressHydrationWarning>
-                                        {new Date(booking._Booking__slot._SlotDate__date).toLocaleDateString(undefined, {
+                                        {new Date(booking.slot.date).toLocaleDateString(undefined, {
                                             day: "numeric",
                                             month: "short",
                                             year: "numeric"
                                         })}
                                     </td>
                                     <td className="px-6 py-4">
-                                        {new Date(new Date(booking._Booking__slot._Slot__start_time).getTime() - 7 * 60 * 60 * 1000).toLocaleTimeString("th-TH", { hour: "2-digit", minute: "2-digit" })} - {` `}
-                                        {new Date(new Date(booking._Booking__slot._Slot__end_time).getTime() - 7 * 60 * 60 * 1000).toLocaleTimeString("th-TH", { hour: "2-digit", minute: "2-digit" })}
+                                        {new Date(new Date(booking.slot.start_time).getTime() - 7 * 60 * 60 * 1000).toLocaleTimeString("th-TH", { hour: "2-digit", minute: "2-digit" })} - {` `}
+                                        {new Date(new Date(booking.slot.end_time).getTime() - 7 * 60 * 60 * 1000).toLocaleTimeString("th-TH", { hour: "2-digit", minute: "2-digit" })}
                                     </td>
                                     <td className="px-6 py-4">
-                                        {booking._Booking__customer_id}
+                                        {booking.customer.fullname}
                                     </td>
                                     <td className="px-6 py-4">
-                                        {booking._Booking__field_id}
+                                        {booking.field.name}
                                     </td>
                                     <td className="px-6 py-4">
-                                        {booking._Booking__payment._Payment__amount} Bath
+                                        {booking.payment.amount} Bath
                                     </td>
                                     <td className="px-6 py-4">
-                                        {booking._Booking__payment._PromptPayPayment__slip_image !== null ? (
-                                            <Link href={booking._Booking__payment._PromptPayPayment__slip_image}>
-                                                {booking._Booking__payment._PromptPayPayment__slip_image}
+                                        {booking.payment.slip_image ? (
+                                            <Link href={booking.payment.slip_image}>
+                                                {booking.payment.slip_image}
                                             </Link>
                                         ) : "No Slip"}
                                     </td>
                                     <td className="px-6 py-4">
-                                        {booking._Booking__status === "pending" ? (
+                                        {booking.status === "pending" ? (
                                             <div className="flex items-center uppercase">
                                                 <div className="h-2.5 w-2.5 rounded-full bg-yellow-500 mr-2"></div>
-                                                {booking._Booking__status}
+                                                {booking.status}
                                             </div>
                                         ) : (
                                             <div className="flex items-center uppercase">
                                                 <div className="h-2.5 w-2.5 rounded-full bg-green-500 mr-2"></div>
-                                                {booking._Booking__status}
+                                                {booking.status}
                                             </div>
                                         )}
                                     </td>
                                     <td className="px-6 py-4">
-                                        <button className="text-blue-700 font-semibold hover:underline" onClick={() => handleApproveBooking(booking._Booking__id)}>
+                                        <button className="text-blue-700 font-semibold hover:underline" onClick={() => handleApproveBooking(booking.id)}>
                                             Approve
                                         </button>
                                     </td>

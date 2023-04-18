@@ -171,8 +171,8 @@ const BookingPage: NextPage<Props> = ({ data }) => {
   const handlePromptPayMethod = async (): Promise<void> => {
     try {
       await createPromptpayPayment(
-        bookingData?._Booking__id,
-        bookingData?._Booking__payment?._Payment__id,
+        bookingData?.id,
+        bookingData?.payment?.id,
         promptPayData
       );
       toast.success("Payment created successfully");
@@ -186,8 +186,8 @@ const BookingPage: NextPage<Props> = ({ data }) => {
   const handleCashMethod = async (): Promise<void> => {
     try {
       await createCashPayment(
-        bookingData?._Booking__id,
-        bookingData?._Booking__payment._Payment__amount
+        bookingData?.id,
+        bookingData?.payment.amount
       );
       toast.success("Payment created successfully");
       setPaymentModal(false);
@@ -209,18 +209,18 @@ const BookingPage: NextPage<Props> = ({ data }) => {
               <div className="mt-4 grid max-w-3xl gap-x-4 gap-y-3 sm:grid-cols-2 md:grid-cols-3">
                 {data.map((field: IField) => (
                     
-                  <div className="relative" key={field._Field__id}>
+                  <div className="relative" key={field.id}>
                     <input
                       className="peer hidden"
-                      id={field._Field__id}
+                      id={field.id}
                       type="radio"
                       name="radio"
-                      checked={selectedId === field._Field__id}
+                      checked={selectedId === field.id}
                       onChange={() => {
-                        handleRadioChange(field._Field__id),
+                        handleRadioChange(field.id),
                         setBooking({
                             ...booking,
-                            field_id: field._Field__id,
+                            field_id: field.id,
                             slot: { ...booking.slot, date: booking.slot.date },
                           });
                       }}
@@ -229,10 +229,10 @@ const BookingPage: NextPage<Props> = ({ data }) => {
 
                     <label
                       className="flex h-full cursor-pointer flex-col rounded-lg p-4 shadow-lg shadow-slate-100 peer-checked:bg-blue-600 peer-checked:text-white"
-                      htmlFor={field._Field__id}
+                      htmlFor={field.id}
                     >
                       <span className="mt-2 font-medium">
-                        {field._Field__name}
+                        {field.name}
                       </span>
                     </label>
                   </div>
@@ -272,8 +272,8 @@ const BookingPage: NextPage<Props> = ({ data }) => {
                             <button
                               className={`rounded-lg ${SlotCheck.some(
                                 (slot) =>
-                                  handleConvertTime(slot._Slot__start_time) === Slots.start_time &&
-                                  handleConvertTime(slot._Slot__end_time) === Slots.end_time
+                                  handleConvertTime(slot.start_time) === Slots.start_time &&
+                                  handleConvertTime(slot.end_time) === Slots.end_time
                               )
                                 ? "bg-red-500"
                                 : "bg-blue-900"
@@ -293,15 +293,15 @@ const BookingPage: NextPage<Props> = ({ data }) => {
                             <button
                               className={`rounded-lg ${SlotCheck.some(
                                 (slot) =>
-                                  handleConvertTime(slot._Slot__start_time) === Slots.start_time &&
-                                  handleConvertTime(slot._Slot__end_time) === Slots.end_time
+                                  handleConvertTime(slot.start_time) === Slots.start_time &&
+                                  handleConvertTime(slot.end_time) === Slots.end_time
                               )
                                 ? "bg-red-500"
                                 : "bg-blue-100"
                                 } px-2 py-2 font-medium ${SlotCheck.some(
                                   (slot) =>
-                                    handleConvertTime(slot._Slot__start_time) === Slots.start_time &&
-                                    handleConvertTime(slot._Slot__end_time) === Slots.end_time
+                                    handleConvertTime(slot.start_time) === Slots.start_time &&
+                                    handleConvertTime(slot.end_time) === Slots.end_time
                                 )
                                   ? "text-white"
                                   : "text-blue-900"
@@ -457,7 +457,7 @@ const BookingPage: NextPage<Props> = ({ data }) => {
                     <div className="px-2 w-full">
                       <label className="font-bold text-sm mb-2 ml-1">
                         Your Payment Amount{" "}
-                        {bookingData?._Booking__payment?._Payment__amount} is
+                        {bookingData?.payment?.amount} is
                         Bath
                       </label>
                     </div>
