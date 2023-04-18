@@ -87,9 +87,7 @@ const AdminDashboard: NextPage<Props> = ({ data }) => {
                                     </td>
                                     <td className="px-6 py-4">
                                         {booking._Booking__payment._PromptPayPayment__slip_image !== null ? (
-                                            <Link href={booking._Booking__payment._PromptPayPayment__slip_image}>
-                                                {booking._Booking__payment._PromptPayPayment__slip_image}
-                                            </Link>
+                                            <div>{`${process.env.NEXT_PUBLIC_BACKEND}${booking._Booking__payment._PromptPayPayment__slip_image}`}</div>
                                         ) : "No Slip"}
                                     </td>
                                     <td className="px-6 py-4">
