@@ -71,7 +71,7 @@ const Navbar = () => {
                     <ul className="absolute right-0 z-10 py-2 mt-4 w-48 bg-white rounded-md shadow-lg border-2 ">
                       <li>
                         <p className="block px-4 py-2 text-base text-gray-700 hover:bg-gray-100 uppercase border-b-2">
-                          {user?._Person__fullname}
+                          {user?.fullname}
                         </p>
                       </li>
                       <li>

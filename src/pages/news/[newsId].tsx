@@ -18,14 +18,14 @@ interface Props {
   title: string;
   description: string;
   createdDate: string;
-  image_url: string;
+  imageUrl: string;
 }
 
 const NewsDetailPage: NextPage<Props> = ({
   title,
   description,
   createdDate,
-  image_url,
+  imageUrl,
 }) => {
 
   const { isLoading } = useAuth();
@@ -46,14 +46,14 @@ const NewsDetailPage: NextPage<Props> = ({
 
   return (
     <Fragment>
-      <Layout>
+      <Layout title="Athletix | News">
         <div className="my-6 px-6 mx-auto">
           <section className="mb-32 text-gray-800 text-center">
             <div className="flex flex-wrap justify-center mb-12">
               <div className="grow-0 shrink-0 basis-auto w-full md:w-10/12 px-3">
                 <div className="relative mx-auto mb-6 max-w-screen-lg overflow-hidden rounded-xl py-32 text-center shadow-xl shadow-gray-300">
                   <Image
-                    src={`${image_url}`}
+                    src={`${imageUrl}`}
                     alt="banner-image"
                     className="absolute top-0 left-0 -z-10 h-full w-full object-cover"
                     height={1000}
@@ -90,8 +90,8 @@ const NewsDetailPage: NextPage<Props> = ({
 export const getStaticPaths: GetStaticPaths = async () => {
   try {
     const newsItems = await getNewService();
-    const paths = newsItems.map((newsItem: { _News__id: string }) => ({
-      params: { newsId: newsItem._News__id },
+    const paths = newsItems.map((newsItem: { id: string }) => ({
+      params: { newsId: newsItem.id },
     }));
 
     return {
@@ -126,10 +126,10 @@ export const getStaticProps: GetStaticProps = async ({
     return {
       props: {
         newsId,
-        title: newsItem._News__title,
-        description: newsItem._News__content,
-        createdDate: newsItem._News__created_at,
-        image_url: newsItem._News__image_url,
+        title: newsItem.title,
+        description: newsItem.content,
+        createdDate: newsItem.created_at,
+        imageUrl: newsItem.image_url,
       },
     };
   } catch (err: unknown) {

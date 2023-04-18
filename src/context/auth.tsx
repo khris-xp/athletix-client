@@ -29,13 +29,13 @@ export const AuthProvider = ({ children }: { children: ReactNode }) => {
       try {
         const response = await getUserService();
         setUser(response);
-        if (user?._Person__account._Account__role === "admin") {
+        if (user?.account.role === "admin") {
           setIsAdmin(true);
         }
-        if (user?._Person__account._Account__role === "frontdesk") {
+        if (user?.account.role === "frontdesk") {
           setIsFrontDesk(true);
         }
-        if (user?._Person__account._Account__role === "customer") {
+        if (user?.account.role === "customer") {
           setIsCustomer(true);
         }
         setIsLoading(false);
@@ -44,7 +44,7 @@ export const AuthProvider = ({ children }: { children: ReactNode }) => {
       }
     };
     fetchUser();
-  }, [user?._Person__account._Account__role]);
+  }, [user?.account.role]);
 
   return (
     <AuthContext.Provider
