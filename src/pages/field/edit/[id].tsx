@@ -65,7 +65,7 @@ const EditFieldPage: NextPage<Props> = ({
 
   return (
     <Fragment>
-      <Layout>
+      <Layout title="Athletix | Edit Field">
         <div className="min-h-screen p-6 bg-gray-100 flex items-center justify-center">
           <div className="container max-w-screen-lg mx-auto">
             <div className="bg-white rounded shadow-lg p-4 px-4 md:p-8 mb-36">
@@ -222,8 +222,8 @@ const EditFieldPage: NextPage<Props> = ({
 export const getStaticPaths: GetStaticPaths = async () => {
   try {
     const fieldItems = await getFieldService();
-    const paths = fieldItems.map((fieldItem: { _Field__id: string }) => ({
-      params: { id: fieldItem._Field__id },
+    const paths = fieldItems.map((fieldItem: { id: string }) => ({
+      params: { id: fieldItem.id },
     }));
 
     return {
@@ -257,13 +257,13 @@ export const getStaticProps: GetStaticProps = async ({
     }
     return {
       props: {
-        field_id: fieldItem._Field__id,
-        name: fieldItem._Field__name,
-        description: fieldItem._Field__description,
-        price_by_slot: fieldItem._Field__price_by_slot,
-        category: fieldItem._Field__category,
-        type: fieldItem._Field__type,
-        image: fieldItem._Field__image,
+        field_id: fieldItem.id,
+        name: fieldItem.name,
+        description: fieldItem.description,
+        price_by_slot: fieldItem.price_by_slot,
+        category: fieldItem.category,
+        type: fieldItem.type,
+        image: fieldItem.image,
       },
     };
   } catch (err) {

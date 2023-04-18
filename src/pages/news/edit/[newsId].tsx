@@ -18,7 +18,7 @@ import { useAuth } from "@/context/auth";
 import { Error, Loading } from '@/components';
 
 interface Props {
-  news_id: any;
+  news_id: string;
   title: string;
   content: string;
   createdDate: string;
@@ -57,7 +57,7 @@ const EditNewsPage: NextPage<Props> = ({
 
   return (
     <Fragment>
-      <Layout>
+      <Layout title="Athletix | Edit News">
         <div className="min-h-screen p-6 bg-gray-100 flex items-center justify-center">
           <div className="container max-w-screen-lg mx-auto pb-20">
             <div className="bg-white rounded shadow-lg p-4 px-4 md:p-8 mb-6">
@@ -150,8 +150,8 @@ const EditNewsPage: NextPage<Props> = ({
 export const getStaticPaths: GetStaticPaths = async () => {
   try {
     const newsItems = await getNewService();
-    const paths = newsItems.map((newsItem: { _News__id: string }) => ({
-      params: { newsId: newsItem._News__id },
+    const paths = newsItems.map((newsItem: { id: string }) => ({
+      params: { newsId: newsItem.id },
     }));
 
     return {
@@ -185,11 +185,11 @@ export const getStaticProps: GetStaticProps = async ({
     }
     return {
       props: {
-        news_id: newsItem._News__id,
-        title: newsItem._News__title,
-        content: newsItem._News__content,
-        createdDate: newsItem._News__created_at,
-        image_url: newsItem._News__image_url,
+        news_id: newsItem.id,
+        title: newsItem.title,
+        content: newsItem.content,
+        createdDate: newsItem.created_at,
+        image_url: newsItem.image_url,
       },
     };
   } catch (err: unknown) {

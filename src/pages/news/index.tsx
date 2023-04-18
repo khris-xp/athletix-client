@@ -12,7 +12,7 @@ interface Props {
 const NewsPage: NextPage<Props> = ({ data }) => {
   return (
     <Fragment>
-      <Layout>
+      <Layout title="Athletix | News">
         <section className="text-gray-600 body-font">
           <div className="container px-5 pb-24 pt-4 mx-auto max-w-7x1">
             <div className="flex flex-wrap w-full mb-4 p-4">
@@ -26,12 +26,12 @@ const NewsPage: NextPage<Props> = ({ data }) => {
             <div className="flex flex-wrap -m-4">
               {data.map((news: INews) => (
                 <NewsCard
-                  key={news._News__id}
-                  id={news._News__id}
-                  title={news._News__title}
-                  description={news._News__content}
-                  createdDate={news._News__created_at}
-                  image={news._News__image_url}
+                  key={news.id}
+                  id={news.id}
+                  title={news.title}
+                  description={news.content}
+                  createdDate={news.created_at}
+                  image={news.image_url}
                 />
               ))}
             </div>
