@@ -6,7 +6,7 @@ import { ICreateField } from '@/interfaces/field';
 
 export const getFieldService = async () => {
     try {
-        const response: AxiosResponse = await axios.get('http://127.0.0.1:4000/fields');
+        const response: AxiosResponse = await axios.get(`${process.env.NEXT_PUBLIC_GET_API}/fields`);
         return response.data;
     } catch (err: unknown) {
         throw Error('Failed to fetch field');
@@ -15,7 +15,7 @@ export const getFieldService = async () => {
 
 export const getFieldDetailService = async (id: string) => {
     try {
-        const response: AxiosResponse = await axios.get(`http://127.0.0.1:4000/fields/${id}`);
+        const response: AxiosResponse = await axios.get(`${process.env.NEXT_PUBLIC_GET_API}/fields/${id}`);
         return response.data;
     } catch (err: unknown) {
         throw Error('Failed to fetch field detail');
@@ -27,7 +27,7 @@ export const createFieldService = async (field: ICreateField) => {
         const Cookies: IToken = parseCookies();
         if (Cookies.token) {
             axios.defaults.headers.common['Authorization'] = `Bearer ${Cookies.token}`;
-            const response: AxiosResponse = await axios.post('http://localhost:4000/fields', field);
+            const response: AxiosResponse = await axios.post(`${process.env.NEXT_PUBLIC_POST_PUT_DELETE_API}/fields`, field);
             return response.data;
         }
     } catch (err: unknown) {
@@ -40,7 +40,7 @@ export const editFieldService = async (field: ICreateField, id: string) => {
         const Cookies: IToken = parseCookies();
         if (Cookies.token) {
             axios.defaults.headers.common['Authorization'] = `Bearer ${Cookies.token}`;
-            const response: AxiosResponse = await axios.patch(`http://localhost:4000/fields/${id}`, field);
+            const response: AxiosResponse = await axios.patch(`${process.env.NEXT_PUBLIC_POST_PUT_DELETE_API}/fields/${id}`, field);
             router.push('/')
             return response.data;
         }
@@ -54,7 +54,7 @@ export const deleteFieldService = async (id: string) => {
         const Cookies: IToken = parseCookies();
         if (Cookies.token) {
             axios.defaults.headers.common['Authorization'] = `Bearer ${Cookies.token}`;
-            const response: AxiosResponse = await axios.delete(`http://localhost:4000/fields/${id}`);
+            const response: AxiosResponse = await axios.delete(`${process.env.NEXT_PUBLIC_POST_PUT_DELETE_API}/fields/${id}`);
             return response.data;
         }
     } catch (err: unknown) {

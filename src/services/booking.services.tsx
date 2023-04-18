@@ -9,7 +9,7 @@ export const createBookingService = async (booking: IBooking) => {
         const CookiesToken: IToken = parseCookies();
         if (CookiesToken.token) {
             axios.defaults.headers.common['Authorization'] = `Bearer ${CookiesToken.token}`;
-            const response: AxiosResponse = await axios.post('http://localhost:4000/booking', booking);
+            const response: AxiosResponse = await axios.post(`${process.env.NEXT_PUBLIC_GET_API}/booking`, booking);
             return response.data;
         }
     } catch (err) {
@@ -26,7 +26,7 @@ export const createPromptpayPayment = async (booking_id: string | undefined, pay
         const CookiesToken: IToken = parseCookies();
         if (CookiesToken.token) {
             axios.defaults.headers.common['Authorization'] = `Bearer ${CookiesToken.token}`;
-            const response: AxiosResponse = await axios.post('http://localhost:4000/payments/pay/promptpay', { booking_id, payment_id, slip_image }
+            const response: AxiosResponse = await axios.post(`${process.env.NEXT_PUBLIC_POST_PUT_DELETE_API}/payments/pay/promptpay`, { booking_id, payment_id, slip_image }
             );
             return response.data;
         }
@@ -40,7 +40,7 @@ export const createCashPayment = async (booking_id: string | undefined, cash: nu
         const CookiesToken: IToken = parseCookies();
         if (CookiesToken.token) {
             axios.defaults.headers.common['Authorization'] = `Bearer ${CookiesToken.token}`;
-            const response: AxiosResponse = await axios.post('http://localhost:4000/payments/pay/cash', { booking_id, cash }
+            const response: AxiosResponse = await axios.post(`${process.env.NEXT_PUBLIC_POST_PUT_DELETE_API}/payments/pay/cash`, { booking_id, cash }
             );
             return response.data;
         }
@@ -54,7 +54,7 @@ export const getBookingService = async (context: GetServerSidePropsContext) => {
         const CookiesToken: IToken = parseCookies(context);
         if (CookiesToken.token) {
             axios.defaults.headers.common['Authorization'] = `Bearer ${CookiesToken.token}`;
-            const response: AxiosResponse = await axios.get('http://localhost:4000/booking/');
+            const response: AxiosResponse = await axios.get(`${process.env.NEXT_PUBLIC_GET_API}/booking/`);
             return response.data;
         }
     } catch (err) {
@@ -67,7 +67,7 @@ export const approveBookingService = async (booking_id: string) => {
         const CookiesToken: IToken = parseCookies();
         if (CookiesToken.token) {
             axios.defaults.headers.common['Authorization'] = `Bearer ${CookiesToken.token}`;
-            const response: AxiosResponse = await axios.post('http://localhost:4000/booking/approve', { booking_id });
+            const response: AxiosResponse = await axios.post(`${process.env.NEXT_PUBLIC_POST_PUT_DELETE_API}/booking/approve`, { booking_id });
             return response.data;
         }
     } catch (err) {

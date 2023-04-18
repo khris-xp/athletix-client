@@ -28,14 +28,10 @@ const NewsDetailPage: NextPage<Props> = ({
   image_url,
 }) => {
 
-  const { isAdmin, isLoading } = useAuth();
+  const { isLoading } = useAuth();
 
   if (isLoading) {
     return <Loading />
-  }
-
-  if (!isAdmin) {
-    return <Error />
   }
 
   let formattedDate = "";
