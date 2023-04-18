@@ -32,24 +32,25 @@ const Card = ({ id, image, title, description }: Props) => {
   return (
     <Fragment>
       <div className="shadow-md mx-auto max-w-sm transform hover:-translate-y-1 duration-300 hover:shadow-xl cursor-pointer">
-        <div className="max-h-140 overflow-hidden">''
-        {((image[0] as string) != "h") ? (
-          <img
-            className="w-full h-60"
-            src={`http://localhost:4000/${image}`}
-            alt="field-image"
-            width={1000}
-            height={1000}
-          />
-        ) : (
-          <Image
-            className="w-full h-60"
-            src={image}
-            alt="field-image"
-            width={1000}
-            height={1000}
-          />
-        )};
+        <div className="max-h-140 overflow-hidden">
+          {(image[0] as string) != "h" ? (
+            <Image
+              className="w-full h-60"
+              src={`http://127.0.0.1:4000/${image}`}
+              alt="field-image"
+              width={1000}
+              height={1000}
+            />
+          ) : (
+            <Image
+              className="w-full h-60"
+              src={image}
+              alt="field-image"
+              width={1000}
+              height={1000}
+            />
+          )}
+          ;
         </div>
         <div className="p-7 my-auto">
           <h1 className="text-2xl font-semibold text-gray-700">{title}</h1>
