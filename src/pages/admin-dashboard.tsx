@@ -11,19 +11,18 @@ interface Props {
     data: IBookingData[]
 }
 
-const handleApproveBooking = async (bookingId: string) => {
-    try {
-        await approveBookingService(bookingId);
-        toast.success("Booking approved");
-        setTimeout(() => {
-            router.reload();
-        }, 300);
-    } catch (err) {
-        toast.error("Failed to approve booking");
-    }
-}
-
 const AdminDashboard: NextPage<Props> = ({ data }) => {
+    const handleApproveBooking = async (bookingId: string) => {
+        try {
+            await approveBookingService(bookingId);
+            toast.success("Booking approved");
+            setTimeout(() => {
+                router.reload();
+            }, 300);
+        } catch (err) {
+            toast.error("Failed to approve booking");
+        }
+    }
     return (
         <Fragment>
             <Layout title="Athletix | Admin Dashboard">

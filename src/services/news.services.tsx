@@ -6,9 +6,7 @@ import { IToken } from "@/interfaces/token";
 
 export const getNewService = async () => {
   try {
-    const response: AxiosResponse = await axios.get(
-      'http://127.0.0.1:4000/news'
-    );
+    const response: AxiosResponse = await axios.get(`${process.env.NEXT_PUBLIC_GET_API}/news`);
     return response.data;
   } catch (err: unknown) {
     throw new Error("Failed to fetch news");
@@ -17,9 +15,7 @@ export const getNewService = async () => {
 
 export const getNewDetailService = async (newsId: string | undefined) => {
   try {
-    const response: AxiosResponse = await axios.get(
-      `http://127.0.0.1:4000/news/${newsId}`
-    );
+    const response: AxiosResponse = await axios.get(`${process.env.NEXT_PUBLIC_GET_API}/news/${newsId}`);
     return response.data;
   } catch (err: unknown) {
     throw new Error("Failed to fetch news detail");
@@ -31,7 +27,7 @@ export const createNewService = async (news: ICreateNew) => {
     const Cookies: IToken = parseCookies();
     if (Cookies.token) {
       axios.defaults.headers.common['Authorization'] = `Bearer ${Cookies.token}`;
-      const response: AxiosResponse = await axios.post('http://localhost:4000/news', news);
+      const response: AxiosResponse = await axios.post(`${process.env.NEXT_PUBLIC_POST_PUT_DELETE_API}/news`, news);
       router.push('/news');
       return response.data;
     }
@@ -45,7 +41,7 @@ export const editNewService = async (news: IUpdateNew, id: string) => {
     const Cookies: IToken = parseCookies();
     if (Cookies.token) {
       axios.defaults.headers.common['Authorization'] = `Bearer ${Cookies.token}`;
-      const response: AxiosResponse = await axios.patch(`http://localhost:4000/news/${id}`, news);
+      const response: AxiosResponse = await axios.patch(`${process.env.NEXT_PUBLIC_POST_PUT_DELETE_API}/news/${id}`, news);
       router.push('/news');
       return response.data;
     }
@@ -59,7 +55,7 @@ export const deleteNewService = async (id: string) => {
     const Cookies: IToken = parseCookies();
     if (Cookies.token) {
       axios.defaults.headers.common['Authorization'] = `Bearer ${Cookies.token}`;
-      const response: AxiosResponse = await axios.delete(`http://localhost:4000/news/${id}`);
+      const response: AxiosResponse = await axios.delete(`${process.env.NEXT_PUBLIC_POST_PUT_DELETE_API}/news/${id}`);
       return response.data;
     }
   } catch (err: unknown) {

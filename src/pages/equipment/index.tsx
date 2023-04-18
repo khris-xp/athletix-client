@@ -1,10 +1,12 @@
-import { Fragment } from "react";
-import Layout from "@/layouts/Layout";
-import { GetServerSideProps, NextPage } from "next";
-import EquipmentTable from "@/components/EquipmentTable";
-import { getEquipmentService } from "@/services/equipment.services";
-import { IEquipment } from "@/interfaces/equipment";
-import Link from "next/link";
+import { Fragment } from 'react'
+import Layout from '@/layouts/Layout'
+import { GetServerSideProps, NextPage } from 'next'
+import { EquipmentTable } from '@/components'
+import { getEquipmentService } from '@/services/equipment.services'
+import { IEquipment } from '@/interfaces/equipment'
+import Link from 'next/link'
+import { useAuth } from '@/context/auth'
+import { Loading, Error } from '@/components';
 
 interface Props {
   data: IEquipment[];
@@ -61,28 +63,28 @@ const EquipmentPage: NextPage<Props> = ({ data }) => {
 };
 
 export const getServerSideProps: GetServerSideProps = async () => {
-  try {
-    const data: IEquipment = await getEquipmentService();
-    if (data) {
-      return {
-        props: {
-          data,
-        },
-      };
-    } else {
-      return {
-        redirect: {
-          destination: "/",
-          permanent: false,
-        },
-      };
+    try {
+        const data: IEquipment = await getEquipmentService();
+        if (data) {
+            return {
+                props: {
+                    data
+                }
+            };
+        } else {
+            return {
+                redirect: {
+                    destination: '/',
+                    permanent: false
+                }
+            };
+        }
+    } catch (err: unknown) {
+        console.log(err);
+        return {
+            props: {}
+        };
     }
-  } catch (err: unknown) {
-    console.log(err);
-    return {
-      props: {},
-    };
-  }
 };
 
 export default EquipmentPage;

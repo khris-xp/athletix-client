@@ -6,11 +6,24 @@ import { CreateEquipmentInitialValues } from "@/constants/equipment";
 import { createEquipmentService } from "@/services/equipment.services";
 import router from "next/router";
 import { toast } from "react-hot-toast";
+import { Loading, Error } from '@/components';
+import { useAuth } from "@/context/auth";
 
 const CreateEquipmentPage: NextPage = () => {
   const [equipment, setEquipment] = useState<IUpdateEquipment>(
     CreateEquipmentInitialValues
   );
+
+  const { isAuthenticated, isAdmin, isLoading } = useAuth();
+
+  if (isLoading) {
+    return <Loading />
+  }
+
+  if (!isAdmin) {
+    return <Error />
+  }
+
   const handleCreateEquipment = async (
     event: React.FormEvent<HTMLFormElement>
   ) => {

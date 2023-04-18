@@ -37,7 +37,7 @@ const BookingPage: NextPage<Props> = ({ data }) => {
   const [bookingData, setBookingData] = useState<IBookingData | null>(null);
   const [slotsClick, setSlotsClick] = useState<boolean>(false);
   const [SlotCheck, setSlotCheck] = useState<ISlotTime[]>([]);
-
+  
   const handleSlotsClick = (id: string): void => {
     setSlotsId(id);
     setSlotsClick(true);
@@ -70,14 +70,14 @@ const BookingPage: NextPage<Props> = ({ data }) => {
   };
   const handleConvertTime = (time: string) => {
     const match = time.match(/^(\d{4})-(\d{2})-(\d{2})T(\d{2}):(\d{2}):/);
-    if(match){
-    const hours = match[4];
-    const minutes = match[5];
-    const timeStr = `${hours}:${minutes}`;
-    return timeStr
+    if (match) {
+      const hours = match[4];
+      const minutes = match[5];
+      const timeStr = `${hours}:${minutes}`;
+      return timeStr
     }
-    }
-  
+  }
+
   const handleDateChange = (event: React.ChangeEvent<HTMLInputElement>) => {
     event.preventDefault();
     const inputDate: string = event.target.value;
@@ -107,7 +107,7 @@ const BookingPage: NextPage<Props> = ({ data }) => {
       console.error("Invalid date format");
     }
   };
-  
+
 
   const handleTimeChange = (startTime: string, endTime: string) => {
     const updatedBooking = { ...booking };
@@ -269,17 +269,15 @@ const BookingPage: NextPage<Props> = ({ data }) => {
                       {SlotsInitialValue.map((Slots: ISlots) => (
                         <>
                           {slotsClick && slotsId === Slots.id ? (
-                            
                             <button
-                              className={`rounded-lg ${
-                                SlotCheck.some(
-                                  (slot) =>
+                              className={`rounded-lg ${SlotCheck.some(
+                                (slot) =>
                                   handleConvertTime(slot._Slot__start_time) === Slots.start_time &&
                                   handleConvertTime(slot._Slot__end_time) === Slots.end_time
-                                )
-                                  ? "bg-red-500"
-                                  : "bg-blue-900"
-                              } px-2 py-2 font-medium text-white active:scale-95`}
+                              )
+                                ? "bg-red-500"
+                                : "bg-blue-900"
+                                } px-2 py-2 font-medium text-white active:scale-95`}
                               onClick={() => {
                                 handleSlotsClick(Slots.id);
                                 handleTimeChange(
@@ -293,24 +291,21 @@ const BookingPage: NextPage<Props> = ({ data }) => {
                             </button>
                           ) : (
                             <button
-                              className={`rounded-lg ${
-                                SlotCheck.some(
-                                  (slot) =>
+                              className={`rounded-lg ${SlotCheck.some(
+                                (slot) =>
                                   handleConvertTime(slot._Slot__start_time) === Slots.start_time &&
                                   handleConvertTime(slot._Slot__end_time) === Slots.end_time
-                                )
-                                  ? "bg-red-500"
-                                  
-                                  : "bg-blue-100"
-                              } px-2 py-2 font-medium ${
-                                SlotCheck.some(
+                              )
+                                ? "bg-red-500"
+                                : "bg-blue-100"
+                                } px-2 py-2 font-medium ${SlotCheck.some(
                                   (slot) =>
-                                  handleConvertTime(slot._Slot__start_time) === Slots.start_time &&
-                                  handleConvertTime(slot._Slot__end_time) === Slots.end_time
+                                    handleConvertTime(slot._Slot__start_time) === Slots.start_time &&
+                                    handleConvertTime(slot._Slot__end_time) === Slots.end_time
                                 )
                                   ? "text-white"
                                   : "text-blue-900"
-                              } active:scale-95`}
+                                } active:scale-95`}
                               onClick={() => {
                                 handleSlotsClick(Slots.id);
                                 handleTimeChange(
@@ -350,9 +345,8 @@ const BookingPage: NextPage<Props> = ({ data }) => {
         </div>
 
         <div
-          className={`fixed top-0 left-0 right-0 z-50 w-full p-4 overflow-x-hidden overflow-y-auto md:inset-0 h-[calc(100%-1rem)] max-h-full ${
-            paymentModal ? "flex" : "hidden"
-          } items-center justify-center bg-opacity-50 bg-black`}
+          className={`fixed top-0 left-0 right-0 z-50 w-full p-4 overflow-x-hidden overflow-y-auto md:inset-0 h-[calc(100%-1rem)] max-h-full ${paymentModal ? "flex" : "hidden"
+            } items-center justify-center bg-opacity-50 bg-black`}
         >
           <div className="relative w-full max-w-2xl max-h-full">
             <div className="relative bg-white rounded-lg shadow">
