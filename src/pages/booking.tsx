@@ -35,7 +35,7 @@ const BookingPage: NextPage<Props> = ({ data }) => {
   const [bookingData, setBookingData] = useState<IBookingData | null>(null);
   const [slotsClick, setSlotsClick] = useState<boolean>(false);
   const [SlotCheck, setSlotCheck] = useState<ISlotTime[]>([]);
-
+  
   const handleSlotsClick = (id: string): void => {
     setSlotsId(id);
     setSlotsClick(true);

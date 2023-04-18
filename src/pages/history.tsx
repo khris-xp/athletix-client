@@ -19,13 +19,13 @@ const HistoryPage: NextPage<Props> = ({ historyData }) => {
   const [paymentModal, setPaymentModal] = useState<boolean>(false);
   const [paymentMethod, setPaymentMethod] = useState<string>("");
   const [promptPayData, setPromptPayData] = useState<string>("");
-  const { isAuthenticated, isCustomer, isLoading } = useAuth();
+  const { isCustomer, isLoading } = useAuth();
 
   if (isLoading) {
     return <Loading />
   }
 
-  if (!isCustomer && !isAuthenticated) {
+  if (!isCustomer) {
     return <Error />
   }
 
