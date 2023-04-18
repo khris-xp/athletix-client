@@ -8,7 +8,7 @@ import { GetServerSidePropsContext } from "next";
 export const registerService = async (fullname: string, email: string, password: string, phone_number: string, address: string,
     birth_date: string, emergency_contact_fullname: string, emergency_contact_phone_number: string): Promise<void> => {
     try {
-        const response: AxiosResponse = await axios.post('http://localhost:4000/auth/register', {
+        const response: AxiosResponse = await axios.post(`${process.env.NEXT_PUBLIC_POST_PUT_DELETE_API}/auth/register`, {
             fullname, email, password, phone_number, address, birth_date, emergency_contact_fullname, emergency_contact_phone_number
         })
         const token: string = response.headers.authorization;
@@ -23,7 +23,7 @@ export const registerService = async (fullname: string, email: string, password:
 
 export const loginService = async (email: string, password: string): Promise<void> => {
     try {
-        const response: AxiosResponse = await axios.post('http://localhost:4000/auth/login', { email, password });
+        const response: AxiosResponse = await axios.post(`${process.env.NEXT_PUBLIC_POST_PUT_DELETE_API}/auth/login`, { email, password });
         const token: string = response.headers.authorization;
         Cookies.set('token', token);
         setTimeout(() => {
@@ -50,7 +50,7 @@ export const getUserService = async () => {
         const token: string | undefined = Cookies.get('token');
         if (token) {
             axios.defaults.headers.common['Authorization'] = `Bearer ${token}`
-            const response: AxiosResponse = await axios.get('http://127.0.0.1:4000/users/profile');
+            const response: AxiosResponse = await axios.get(`${process.env.NEXT_PUBLIC_GET_API}/users/profile`);
             return response.data;
         }
     } catch (err: unknown) {
@@ -64,7 +64,7 @@ export const changeUserPasswordService = async (changePassword: IUserChangePassw
         const token: string = CookiesToken.token;
         if (token) {
             axios.defaults.headers.common['Authorization'] = `Bearer ${token}`
-            const response: AxiosResponse = await axios.post('http://localhost:4000/users/change-password', changePassword);
+            const response: AxiosResponse = await axios.post(`${process.env.NEXT_PUBLIC_POST_PUT_DELETE_API}/users/change-password`, changePassword);
             return response.data;
         }
     } catch (err: unknown) {
@@ -77,7 +77,7 @@ export const getUserHistoryService = async (context: GetServerSidePropsContext) 
         const CookiesToken: IToken = parseCookies(context);
         if (CookiesToken.token) {
             axios.defaults.headers.common['Authorization'] = `Bearer ${CookiesToken.token}`
-            const response: AxiosResponse = await axios.get('http://127.0.0.1:4000/booking/history');
+            const response: AxiosResponse = await axios.get(`${process.env.NEXT_PUBLIC_GET_API}/booking/history`);
             return response.data;
         }
     } catch (err: unknown) {

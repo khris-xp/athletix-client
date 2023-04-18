@@ -14,7 +14,7 @@ export interface IHistory {
         _Payment__amount: number;
         _Payment__is_payed: boolean;
         _Payment__created_at: string;
-        _PromptPayPayment__slip_image: string | null;
+        _PromptPayPayment__slip_image: string;
     };
     _Booking__status: string;
     _Booking__created_at: string;

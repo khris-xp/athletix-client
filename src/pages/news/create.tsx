@@ -6,9 +6,20 @@ import { CreateNewInitialValues } from "@/constants/new";
 import { ICreateNew } from "@/interfaces/news";
 import { createNewService } from "@/services/news.services";
 import { toast } from "react-hot-toast";
+import { useAuth } from "@/context/auth";
+import { Loading, Error } from '@/components'
 
 const CreateNewsPage: NextPage = () => {
   const [news, setNews] = useState<ICreateNew>(CreateNewInitialValues);
+  const { isAdmin, isLoading } = useAuth();
+
+  if (isLoading) {
+    return <Loading />
+  }
+
+  if (!isAdmin) {
+    return <Error />
+  }
 
   const handleCreateNews = async (event: React.FormEvent<HTMLFormElement>) => {
     try {
