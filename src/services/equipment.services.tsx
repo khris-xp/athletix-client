@@ -19,13 +19,13 @@ export const getEquipmentByIdService = async (id: string) => {
   }
 };
 
-export const getEquipmentByCategory = async (category: string) => {
+export const getEquipmentByCategory = async (category: any) => {
   try {
-    const response: AxiosResponse = await axios.get(`${process.env.NEXT_PUBLIC_GET_API}/equipments/search/category`, { params: { category } });
-  return response.data;
-} catch (err) {
-  console.log(err);
-}
+    const response: any = await axios.get(`${process.env.NEXT_PUBLIC_GET_API}/equipments/search/category`, category);
+    return response.data;
+  } catch (err) {
+    console.log(err);
+  }
 }
 
 export const createEquipmentService = async (equipment: IUpdateEquipment) => {
