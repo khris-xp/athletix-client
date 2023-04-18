@@ -12,6 +12,7 @@ import {
   createPromptpayPayment,
   createCashPayment,
 } from "@/services/booking.services";
+import { uploadImageService } from "@/services/file.services";
 import { checkSlotBookingService } from "@/services/slot.services";
 import { toast } from "react-hot-toast";
 import { AxiosError } from "axios";
@@ -19,6 +20,7 @@ import { IBooking, IBookingData } from "@/interfaces/booking";
 import { ISearchSlots } from "@/interfaces/search";
 import Image from "next/image";
 import router from "next/router";
+import { File,Blob } from "buffer";
 
 interface Props {
   data: IField[];
@@ -26,11 +28,11 @@ interface Props {
 
 const BookingPage: NextPage<Props> = ({ data }) => {
   const [booking, setBooking] = useState<IBooking>(CreateBookingInitialValue);
-  const [selectedId, setSelectedId] = useState<string | null>(null);
+  const [selectedId, setSelectedId] = useState<string>("");
   const [paymentModal, setPaymentModal] = useState<boolean>(false);
   const [paymentMethod, setPaymentMethod] = useState<string>("");
   const [selectedDate, setSelectedDate] = useState<string>("");
-  const [promptPayData, setPromptPayData] = useState<string>("");
+  const [promptPayData, setPromptPayData] = useState<string>("");;
   const [slotsId, setSlotsId] = useState<string>("");
   const [bookingData, setBookingData] = useState<IBookingData | null>(null);
   const [slotsClick, setSlotsClick] = useState<boolean>(false);
@@ -39,14 +41,27 @@ const BookingPage: NextPage<Props> = ({ data }) => {
   const handleSlotsClick = (id: string): void => {
     setSlotsId(id);
     setSlotsClick(true);
+    
   };
 
-  const handleRadioChange = (id: string): void => {
+  const handleRadioChange = (id: string) => {
     setSelectedId(id);
+    setBooking({
+      ...booking,
+      slot: { ...booking.slot, date: booking.slot.date },
+    });
+    handSlotCheck({
+      field_id: id,
+      date: booking.slot.date,
+    } as ISearchSlots);
+    setSelectedId(id);
+
+    //console.log(selectedId);
   };
 
-  const handSlotCheck = async (slotData: ISearchSlots): Promise<void> => {
+  const handSlotCheck = async (slotData: ISearchSlots) => {
     try {
+      console.log(slotData);
       const BookingCheck = await checkSlotBookingService(slotData);
       setSlotCheck(BookingCheck);
     } catch (err) {
@@ -68,7 +83,7 @@ const BookingPage: NextPage<Props> = ({ data }) => {
     const inputDate: string = event.target.value;
 
     handSlotCheck({
-      field_id: booking.field_id,
+      field_id: selectedId,
       date: inputDate + "T00:00:00.000Z",
     } as ISearchSlots);
 
@@ -193,6 +208,7 @@ const BookingPage: NextPage<Props> = ({ data }) => {
               </p>
               <div className="mt-4 grid max-w-3xl gap-x-4 gap-y-3 sm:grid-cols-2 md:grid-cols-3">
                 {data.map((field: IField) => (
+                    
                   <div className="relative" key={field._Field__id}>
                     <input
                       className="peer hidden"
@@ -202,9 +218,10 @@ const BookingPage: NextPage<Props> = ({ data }) => {
                       checked={selectedId === field._Field__id}
                       onChange={() => {
                         handleRadioChange(field._Field__id),
-                          setBooking({
+                        setBooking({
                             ...booking,
                             field_id: field._Field__id,
+                            slot: { ...booking.slot, date: booking.slot.date },
                           });
                       }}
                     />
@@ -242,7 +259,7 @@ const BookingPage: NextPage<Props> = ({ data }) => {
             </div>
 
             {booking.slot.date
-              ? (console.log(SlotCheck),
+              ? (console.log(booking),
                 (
                   <div>
                     <p className="my-8 text-xl font-bold text-blue-900">
@@ -307,12 +324,23 @@ const BookingPage: NextPage<Props> = ({ data }) => {
                   </div>
                 ))
               : null}
-            <button
-              className="mt-8 w-56 rounded-full border-8 border-blue-500 bg-blue-600 px-10 py-4 text-lg font-bold text-white transition hover:translate-y-1"
-              onClick={() => handleCreateBooking(booking)}
-            >
-              Book Now
-            </button>
+              {booking.slot.date != "" && booking.field_id != "" ? (
+                <button
+                className="mt-8 w-56 rounded-full border-8 border-blue-500 bg-blue-600 px-10 py-4 text-lg font-bold text-white transition hover:translate-y-1"
+                onClick={() => handleCreateBooking(booking)}
+              >
+                Book Now
+              </button>) : <button
+                className="mt-8 w-56 rounded-full border-8 border-gray-500 bg-gray-600 px-10 py-4 text-lg font-bold text-white"
+                onClick={() => handleCreateBooking(booking)}
+                disabled
+              >
+                Book Now
+
+              </button>
+              }
+            
+            
           </div>
         </div>
 
@@ -404,11 +432,22 @@ const BookingPage: NextPage<Props> = ({ data }) => {
                       </label>
                       <div>
                         <input
-                          type="text"
+                          type="file"
+                          id="file_input"
                           className="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 my-4"
                           placeholder="Your Slip URL"
                           required
-                          onChange={(e) => setPromptPayData(e.target.value)}
+                            onChange={async (event
+                              ) =>  {
+                                if (!event.target.files) return;
+                                const fileData = new FormData();
+                                fileData.append('file', event.target.files[0], event.target.files[0]["name"])
+                                console.log(fileData)
+                                const name = await  uploadImageService(fileData)
+                                console.log(name)
+                                setPromptPayData(name.filename as string)
+                            }
+                        }
                         />
                       </div>
                     </div>
