@@ -30,7 +30,7 @@ const CreateFieldPage = () => {
   }
 
   if (!isAdmin) {
-    return <Error />
+    return <Error title="401"/>
   }
 
   return (

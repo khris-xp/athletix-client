@@ -6,12 +6,23 @@ import { IBookingData } from "@/interfaces/booking"
 import { toast } from "react-hot-toast"
 import router from "next/router"
 import Link from "next/link"
+import { useAuth } from "@/context/auth"
+import { Error, Loading } from "@/components"
 
 interface Props {
     data: IBookingData[]
 }
 
 const AdminDashboard: NextPage<Props> = ({ data }) => {
+    const { isAdmin, isLoading } = useAuth();
+
+    if (isLoading) {
+    return <Loading />
+    }
+
+    if (!isAdmin) {
+    return <Error title="401"/>
+}
     const handleApproveBooking = async (bookingId: string) => {
         try {
             await approveBookingService(bookingId);

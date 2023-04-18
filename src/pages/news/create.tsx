@@ -18,7 +18,7 @@ const CreateNewsPage: NextPage = () => {
   }
 
   if (!isAdmin) {
-    return <Error />
+    return <Error title="401"/>
   }
 
   const handleCreateNews = async (event: React.FormEvent<HTMLFormElement>) => {

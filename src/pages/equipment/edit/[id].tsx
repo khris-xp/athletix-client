@@ -46,7 +46,7 @@ const EditEquipmentPage: NextPage<Props> = ({
   }
 
   if (!isAdmin) {
-    return <Error />
+    return <Error title="401"/>
   }
 
   const handleEditEquipment = async () => {

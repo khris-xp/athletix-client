@@ -51,7 +51,7 @@ const EditFieldPage: NextPage<Props> = ({
   }
 
   if (!isAdmin) {
-    return <Error />
+    return <Error title="401"/>
   }
 
   const handleEditField = async () => {

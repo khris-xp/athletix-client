@@ -43,7 +43,7 @@ const EditNewsPage: NextPage<Props> = ({
     return <Loading />
   }
   if (!isAdmin) {
-    return <Error />
+    return <Error title="401"/>
   }
 
   const handleEditNews = async () => {

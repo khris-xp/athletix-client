@@ -29,7 +29,7 @@ const HistoryPage: NextPage<Props> = ({ historyData }) => {
   }
 
   if (!isCustomer) {
-    return <Error />;
+    return <Error title="401"/>;
   }
 
   const handlePaymentModal = () => {

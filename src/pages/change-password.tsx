@@ -18,7 +18,7 @@ const ChangePasswordPage: NextPage = () => {
     }
 
     if (!isAuthenticated && !isCustomer) {
-        return <Error />
+        return <Error title='401' />
     }
 
   const handleChangePassword = (event: React.ChangeEvent<HTMLFormElement>) => {
