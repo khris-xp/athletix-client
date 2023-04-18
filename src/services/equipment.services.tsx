@@ -21,7 +21,7 @@ export const getEquipmentByIdService = async (id: string) => {
 
 export const getEquipmentByCategory = async (category: any) => {
   try {
-    const response: any = await axios.get(`${process.env.NEXT_PUBLIC_GET_API}/equipments/search/category`, category);
+    const response: AxiosResponse = await axios.get(`http://localhost:4000/equipments/search/category`, { data: category });
     return response.data;
   } catch (err) {
     console.log(err);
