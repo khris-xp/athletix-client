@@ -6,16 +6,13 @@ import { createFieldService } from "@/services/field.services";
 import router from "next/router";
 import { toast } from "react-hot-toast";
 import Image from "next/image";
-import { useAuth } from "@/context/auth";
-import { Loading, Error } from "@/components";
-
+import { uploadImageService } from "@/services/file.services";
 const CreateFieldPage = () => {
   const [field, setField] = useState<ICreateField>(CreateFieldInitialValues);
-  const { isLoading, isAdmin } = useAuth();
-
   const handleCreateField = async (event: React.FormEvent<HTMLFormElement>) => {
     try {
       event.preventDefault();
+      console.log(field);
       await createFieldService(field);
       setField(CreateFieldInitialValues);
       router.push("/");
@@ -24,15 +21,7 @@ const CreateFieldPage = () => {
       toast.error("Failed to create field");
     }
   };
-
-  if (isLoading) {
-    return <Loading />
-  }
-
-  if (!isAdmin) {
-    return <Error />
-  }
-
+  
   return (
     <Fragment>
       <Layout title="Athletix | Create Field">
@@ -52,14 +41,15 @@ const CreateFieldPage = () => {
                       width={1000}
                     />
                   ) : (
-                    <Image
-                      src={field.image}
+                    <img 
+                      src={"http://localhost:4000/"+field.image}
                       alt="banner-image"
                       className="mt-6 px-5 lg:px-2 lg:pr-10"
                       height={1000}
                       width={1000}
                     />
-                  )}
+                  )
+                  }
                 </div>
                 <div className="lg:col-span-2">
                   <form onSubmit={handleCreateField}>
@@ -95,15 +85,24 @@ const CreateFieldPage = () => {
                       <div className="md:col-span-5">
                         <label>Field Image Url</label>
                         <input
-                          type="text"
-                          className="h-10 border mt-1 rounded px-4 w-full bg-gray-50"
-                          onChange={(
-                            event: React.ChangeEvent<HTMLInputElement>
-                          ) => {
-                            setField({ ...field, image: event.target.value });
-                          }}
-                          required
-                        />
+                            type="file"
+                            id="file_input"
+                            className="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 my-4"
+                            placeholder="Your Slip URL"
+                            required
+                              onChange={async (event
+                                ) =>  {
+                                  if (!event.target.files) return;
+                                  const fileData = new FormData();
+                                  fileData.append('file', event.target.files[0], event.target.files[0]["name"])
+                                  console.log(fileData)
+                                  const name = await  uploadImageService(fileData)
+                                  console.log(name)
+                                  setField({ ...field, image: name.filename });
+                                  
+                              }
+                          }
+                          />
                       </div>
 
                       <div className="md:col-span-2">
@@ -138,10 +137,10 @@ const CreateFieldPage = () => {
                           }}
                           required
                         >
-                          <option value={"football"}>Football</option>
-                          <option value={"basketball"}>Basketball</option>
-                          <option value={"badminton"}>Badminton</option>
-                          <option value={"tennis"}>Tennis</option>
+                          <option value={"Football"}>Football</option>
+                          <option value={"Basketball"}>Basketball</option>
+                          <option value={"Badminton"}>Badminton</option>
+                          <option value={"Tennis"}>Tennis</option>
                         </select>
                       </div>
 
@@ -157,8 +156,8 @@ const CreateFieldPage = () => {
                           }}
                           required
                         >
-                          <option value={"indoor"}>Indoor</option>
-                          <option value={"outdoor"}>Outdoor</option>
+                          <option value={"Indoor"}>Indoor</option>
+                          <option value={"Outdoor"}>Outdoor</option>
                         </select>
                       </div>
 
