@@ -16,7 +16,7 @@ import { IUpdateNew } from "@/interfaces/news";
 import { toast } from "react-hot-toast";
 
 interface Props {
-  news_id: any;
+  news_id: string;
   title: string;
   content: string;
   createdDate: string;
@@ -139,8 +139,8 @@ const EditNewsPage: NextPage<Props> = ({
 export const getStaticPaths: GetStaticPaths = async () => {
   try {
     const newsItems = await getNewService();
-    const paths = newsItems.map((newsItem: { _News__id: string }) => ({
-      params: { newsId: newsItem._News__id },
+    const paths = newsItems.map((newsItem: { id: string }) => ({
+      params: { newsId: newsItem.id },
     }));
 
     return {
@@ -174,11 +174,11 @@ export const getStaticProps: GetStaticProps = async ({
     }
     return {
       props: {
-        news_id: newsItem._News__id,
-        title: newsItem._News__title,
-        content: newsItem._News__content,
-        createdDate: newsItem._News__created_at,
-        image_url: newsItem._News__image_url,
+        news_id: newsItem.id,
+        title: newsItem.title,
+        content: newsItem.content,
+        createdDate: newsItem.created_at,
+        image_url: newsItem.image_url,
       },
     };
   } catch (err: unknown) {

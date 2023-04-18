@@ -26,12 +26,12 @@ const NewsPage: NextPage<Props> = ({ data }) => {
             <div className="flex flex-wrap -m-4">
               {data.map((news: INews) => (
                 <NewsCard
-                  key={news._News__id}
-                  id={news._News__id}
-                  title={news._News__title}
-                  description={news._News__content}
-                  createdDate={news._News__created_at}
-                  image={news._News__image_url}
+                  key={news.id}
+                  id={news.id}
+                  title={news.title}
+                  description={news.content}
+                  createdDate={news.created_at}
+                  image={news.image_url}
                 />
               ))}
             </div>
