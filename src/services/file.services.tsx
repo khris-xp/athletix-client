@@ -1,19 +1,13 @@
 import axios, { AxiosResponse } from "axios";
 import { parseCookies } from "nookies";
 import { IToken } from "@/interfaces/token";
-import { File } from "buffer";
 
 export const uploadImageService = async (file: FormData) => {
     try {
         const CookiesToken: IToken = parseCookies();
         if (CookiesToken.token) {
             axios.defaults.headers.common['Authorization'] = `Bearer ${CookiesToken.token}`;
-
-            console.log(file);
-            const response: AxiosResponse = await axios.post(
-                `http://localhost:4000/upload/`,
-                file
-            );
+            const response: AxiosResponse = await axios.post(`${process.env.NEXT_PUBLIC_POST_PUT_DELETE_API}/upload/`, file);
             return response.data;
         }
     } catch (err) {
