@@ -20,13 +20,16 @@ import { IBooking, IBookingData } from "@/interfaces/booking";
 import { ISearchSlots } from "@/interfaces/search";
 import Image from "next/image";
 import router from "next/router";
-import { File,Blob } from "buffer";
+import { getEquipmentService } from "@/services/equipment.services";
+import { IEquipment } from "@/interfaces/equipment";
+import { useAuth } from "@/context/auth";
 
 interface Props {
   data: IField[];
+  equipmentData: any;
 }
 
-const BookingPage: NextPage<Props> = ({ data }) => {
+const BookingPage: NextPage<Props> = ({ data, equipmentData }) => {
   const [booking, setBooking] = useState<IBooking>(CreateBookingInitialValue);
   const [selectedId, setSelectedId] = useState<string>("");
   const [paymentModal, setPaymentModal] = useState<boolean>(false);
@@ -37,11 +40,16 @@ const BookingPage: NextPage<Props> = ({ data }) => {
   const [bookingData, setBookingData] = useState<IBookingData | null>(null);
   const [slotsClick, setSlotsClick] = useState<boolean>(false);
   const [SlotCheck, setSlotCheck] = useState<ISlotTime[]>([]);
-  
+  const [equipmentModal, setEquipmentModal] = useState<boolean>(false);
+
+  const { isAuthenticated } = useAuth();
+
+  console.log(booking.equipments)
+
   const handleSlotsClick = (id: string): void => {
     setSlotsId(id);
     setSlotsClick(true);
-    
+
   };
 
   const handleRadioChange = (id: string) => {
@@ -204,11 +212,11 @@ const BookingPage: NextPage<Props> = ({ data }) => {
           <div className="mx-auto grid max-w-screen-lg px-6 pb-20">
             <div>
               <p className="text-xl font-bold text-blue-900">
-                Select a service
+                Select a field
               </p>
               <div className="mt-4 grid max-w-3xl gap-x-4 gap-y-3 sm:grid-cols-2 md:grid-cols-3">
                 {data.map((field: IField) => (
-                    
+
                   <div className="relative" key={field.id}>
                     <input
                       className="peer hidden"
@@ -218,7 +226,7 @@ const BookingPage: NextPage<Props> = ({ data }) => {
                       checked={selectedId === field.id}
                       onChange={() => {
                         handleRadioChange(field.id),
-                        setBooking({
+                          setBooking({
                             ...booking,
                             field_id: field.id,
                             slot: { ...booking.slot, date: booking.slot.date },
@@ -257,7 +265,6 @@ const BookingPage: NextPage<Props> = ({ data }) => {
                 </div>
               </div>
             </div>
-
             {booking.slot.date
               ? (console.log(booking),
                 (
@@ -312,6 +319,7 @@ const BookingPage: NextPage<Props> = ({ data }) => {
                                   Slots.start_time,
                                   Slots.end_time
                                 );
+                                setEquipmentModal(true);
                               }}
                               key={Slots.id}
                             >
@@ -324,8 +332,8 @@ const BookingPage: NextPage<Props> = ({ data }) => {
                   </div>
                 ))
               : null}
-              {booking.slot.date != "" && booking.field_id != "" ? (
-                <button
+            {isAuthenticated && booking.slot.date != "" && booking.field_id != "" ? (
+              <button
                 className="mt-8 w-56 rounded-full border-8 border-blue-500 bg-blue-600 px-10 py-4 text-lg font-bold text-white transition hover:translate-y-1"
                 onClick={() => handleCreateBooking(booking)}
               >
@@ -335,12 +343,91 @@ const BookingPage: NextPage<Props> = ({ data }) => {
                 onClick={() => handleCreateBooking(booking)}
                 disabled
               >
-                Book Now
+              Book Now
 
+            </button>
+            }
+
+
+          </div>
+        </div>
+        <div
+          className={`fixed top-0 left-0 right-0 z-50 w-full p-4 overflow-x-hidden overflow-y-auto md:inset-0 h-[calc(100%-1rem)] max-h-full ${equipmentModal ? "flex" : "hidden"
+            } items-center justify-center bg-opacity-50 bg-black`}
+        >
+          <div className="relative w-full max-w-2xl max-h-full">
+            <div className="relative bg-white rounded-lg shadow">
+              <button
+                type="button"
+                className="text-gray-400 bg-transparent hover:text-gray-900 rounded-lg text-sm p-4 ml-auto flex justify-end"
+                onClick={() => setEquipmentModal(false)}
+              >
+                <svg
+                  aria-hidden="true"
+                  className="w-6 h-6"
+                  fill="currentColor"
+                  viewBox="0 0 20 20"
+                  xmlns="http://www.w3.org/2000/svg"
+                >
+                  <path
+                    fillRule="evenodd"
+                    d="M4.293 4.293a1 1 0 011.414 0L10 8.586l4.293-4.293a1 1 0 111.414 1.414L11.414 10l4.293 4.293a1 1 0 01-1.414 1.414L10 11.414l-4.293 4.293a1 1 0 01-1.414-1.414L8.586 10 4.293 5.707a1 1 0 010-1.414z"
+                    clipRule="evenodd"
+                  ></path>
+                </svg>
               </button>
-              }
-            
-            
+              <div className="relative overflow-x-auto shadow-md sm:rounded-lg pb-2 px-10">
+                <table className="w-full text-sm text-left text-gray-500">
+                  <thead className="text-xs text-gray-700 uppercase bg-gray-50">
+                    <tr>
+                      <th scope="col" className="px-6 py-3"></th>
+                      <th scope="col" className="px-6 py-3">
+                        Equipment
+                      </th>
+                      <th scope="col" className="px-6 py-3">
+                        Quantity
+                      </th>
+                      <th scope="col" className="px-6 py-3">
+                        Price
+                      </th>
+                    </tr>
+                  </thead>
+                  <tbody>
+                    {equipmentData.map((equipment: IEquipment) => (
+                      <tr className="bg-white border-b dark:bg-gray-800 dark:border-gray-700 hover:bg-gray-50 dark:hover:bg-gray-600" key={equipment.id}>
+                        <td className="w-4 p-4">
+                          <div className="flex items-center">
+                            <input
+                              type="checkbox"
+                              className="w-4 h-4 text-blue-600 bg-gray-100 border-gray-300 rounded focus:ring-blue-500 dark:focus:ring-blue-600"
+                            />
+                          </div>
+                        </td>
+                        <td className="px-6 py-4 font-semibold text-gray-900 dark:text-white uppercase">
+                          {equipment.name}
+                        </td>
+                        <td className="px-6 py-4">
+                          <div className="flex items-center space-x-3">
+                            <button className="inline-flex items-center p-1 text-sm font-medium text-gray-500 bg-white border border-gray-300 rounded-full focus:outline-none hover:bg-gray-100 focus:ring-4 focus:ring-gray-200 dark:bg-gray-800 dark:text-gray-400 dark:border-gray-600 dark:hover:bg-gray-700 dark:hover:border-gray-600 dark:focus:ring-gray-700" type="button">
+                              <svg className="w-4 h-4" aria-hidden="true" fill="currentColor" viewBox="0 0 20 20" xmlns="http://www.w3.org/2000/svg"><path fill-rule="evenodd" d="M3 10a1 1 0 011-1h12a1 1 0 110 2H4a1 1 0 01-1-1z" clip-rule="evenodd"></path></svg>
+                            </button>
+                            <div>
+                              <input type="number" id="first_product" className="bg-gray-50 w-14 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block px-2.5 py-1 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500" placeholder="1" required />
+                            </div>
+                            <button className="inline-flex items-center p-1 text-sm font-medium text-gray-500 bg-white border border-gray-300 rounded-full focus:outline-none hover:bg-gray-100 focus:ring-4 focus:ring-gray-200 dark:bg-gray-800 dark:text-gray-400 dark:border-gray-600 dark:hover:bg-gray-700 dark:hover:border-gray-600 dark:focus:ring-gray-700" type="button">
+                              <svg className="w-4 h-4" aria-hidden="true" fill="currentColor" viewBox="0 0 20 20" xmlns="http://www.w3.org/2000/svg"><path fill-rule="evenodd" d="M10 5a1 1 0 011 1v3h3a1 1 0 110 2h-3v3a1 1 0 11-2 0v-3H6a1 1 0 110-2h3V6a1 1 0 011-1z" clip-rule="evenodd"></path></svg>
+                            </button>
+                          </div>
+                        </td>
+                        <td className="px-6 py-4 font-semibold text-gray-900 dark:text-white">
+                          {equipment.price_per_unit} Bath
+                        </td>
+                      </tr>
+                    ))}
+                  </tbody>
+                </table>
+              </div>
+            </div>
           </div>
         </div>
 
@@ -437,17 +524,17 @@ const BookingPage: NextPage<Props> = ({ data }) => {
                           className="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 my-4"
                           placeholder="Your Slip URL"
                           required
-                            onChange={async (event
-                              ) =>  {
-                                if (!event.target.files) return;
-                                const fileData = new FormData();
-                                fileData.append('file', event.target.files[0], event.target.files[0]["name"])
-                                console.log(fileData)
-                                const name = await  uploadImageService(fileData)
-                                console.log(name)
-                                setPromptPayData(name.filename as string)
-                            }
-                        }
+                          onChange={async (event
+                          ) => {
+                            if (!event.target.files) return;
+                            const fileData = new FormData();
+                            fileData.append('file', event.target.files[0], event.target.files[0]["name"])
+                            console.log(fileData)
+                            const name = await uploadImageService(fileData)
+                            console.log(name)
+                            setPromptPayData(name.filename as string)
+                          }
+                          }
                         />
                       </div>
                     </div>
@@ -492,10 +579,11 @@ const BookingPage: NextPage<Props> = ({ data }) => {
 export const getServerSideProps: GetServerSideProps = async () => {
   try {
     const data = await getFieldService();
-    if (data) {
+    const equipmentData = await getEquipmentService();
+    if (data && equipmentData) {
       return {
         props: {
-          data,
+          data, equipmentData
         },
       };
     } else {
