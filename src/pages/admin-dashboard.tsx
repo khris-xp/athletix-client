@@ -5,7 +5,6 @@ import { getBookingService, approveBookingService } from "@/services/booking.ser
 import { IBookingData } from "@/interfaces/booking"
 import { toast } from "react-hot-toast"
 import router from "next/router"
-import Link from "next/link"
 import { useAuth } from "@/context/auth"
 import { Error, Loading } from "@/components"
 

@@ -14,8 +14,9 @@ import Layout from "@/layouts/Layout";
 import { updateSlots } from "@/constants/slots";
 import { toast } from "react-hot-toast";
 import Image from "next/image";
-import { useAuth } from "@/context/auth";
-import { Error, Loading } from '@/components';
+import { uploadImageService } from "@/services/file.services";
+import { useAuth } from '@/context/auth';
+import { Loading, Error } from "@/components";
 
 interface Props {
   field_id: string;
@@ -45,13 +46,13 @@ const EditFieldPage: NextPage<Props> = ({
     slot: updateSlots,
     image: image,
   });
-  const { isAuthenticated, isAdmin, isLoading } = useAuth();
+  const { isAdmin, isLoading } = useAuth();
   if (isLoading) {
     return <Loading />
   }
 
   if (!isAdmin) {
-    return <Error title="401"/>
+    return <Error title="401" />
   }
 
   const handleEditField = async () => {
@@ -73,23 +74,23 @@ const EditFieldPage: NextPage<Props> = ({
                 <div className="text-gray-600">
                   <p className="font-medium text-lg">Edit Field</p>
                   <p>Please fill out all the fields.</p>
-                  {!field.image ? (
-                    <Image
-                      src="https://wipelectric.com/wp-content/uploads/2021/06/Ref-Trinoi1-1024x679.jpg"
-                      alt="banner-image"
-                      className="mt-6 px-5 lg:px-2 lg:pr-10"
-                      height={1000}
+                  {((image[0] as string) != "h") ? ( //eiei :D
+                    <img
+                      className="w-full h-60"
+                      src={`http://localhost:4000/${image}`}
+                      alt="field-image"
                       width={1000}
+                      height={1000}
                     />
                   ) : (
                     <Image
-                      src={field.image}
-                      alt="banner-image"
-                      className="mt-6 px-5 lg:px-2 lg:pr-10"
-                      height={1000}
+                      className="w-full h-60"
+                      src={image}
+                      alt="field-image"
                       width={1000}
+                      height={1000}
                     />
-                  )}
+                  )};
                 </div>
                 <div className="lg:col-span-2">
                   <form>
@@ -127,15 +128,23 @@ const EditFieldPage: NextPage<Props> = ({
                       <div className="md:col-span-5">
                         <label>Field Image Url</label>
                         <input
-                          type="text"
-                          className="h-10 border mt-1 rounded px-4 w-full bg-gray-50"
-                          value={field.image}
-                          onChange={(
-                            event: React.ChangeEvent<HTMLInputElement>
-                          ) => {
-                            setField({ ...field, image: event.target.value });
-                          }}
+                          type="file"
+                          id="file_input"
+                          className="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 my-4"
+                          placeholder="Your Slip URL"
                           required
+                          onChange={async (event
+                          ) => {
+                            if (!event.target.files) return;
+                            const fileData = new FormData();
+                            fileData.append('file', event.target.files[0], event.target.files[0]["name"])
+                            console.log(fileData)
+                            const name = await uploadImageService(fileData)
+                            console.log(name)
+                            setField({ ...field, image: name.filename });
+
+                          }
+                          }
                         />
                       </div>
 
@@ -222,8 +231,8 @@ const EditFieldPage: NextPage<Props> = ({
 export const getStaticPaths: GetStaticPaths = async () => {
   try {
     const fieldItems = await getFieldService();
-    const paths = fieldItems.map((fieldItem: { id: string }) => ({
-      params: { id: fieldItem.id },
+    const paths = fieldItems.map((fieldItem: { _Field__id: string }) => ({
+      params: { id: fieldItem._Field__id },
     }));
 
     return {
@@ -257,13 +266,13 @@ export const getStaticProps: GetStaticProps = async ({
     }
     return {
       props: {
-        field_id: fieldItem.id,
-        name: fieldItem.name,
-        description: fieldItem.description,
-        price_by_slot: fieldItem.price_by_slot,
-        category: fieldItem.category,
-        type: fieldItem.type,
-        image: fieldItem.image,
+        field_id: fieldItem._Field__id,
+        name: fieldItem._Field__name,
+        description: fieldItem._Field__description,
+        price_by_slot: fieldItem._Field__price_by_slot,
+        category: fieldItem._Field__category,
+        type: fieldItem._Field__type,
+        image: fieldItem._Field__image,
       },
     };
   } catch (err) {
