@@ -1,6 +1,6 @@
 import { Fragment } from "react";
 import Link from "next/link";
-import { deleteEquipmentService } from "@/services/equipment.services";
+import { deleteEquipmentService } from "@/services";
 import { toast } from "react-hot-toast";
 import router from "next/router";
 

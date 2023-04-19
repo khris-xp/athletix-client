@@ -1,10 +1,9 @@
 import React, { Fragment, useState } from "react";
 import { NextPage } from "next";
 import Layout from "@/layouts/Layout";
-import { loginService } from "@/services/user.services";
+import { loginService } from "@/services";
 import Link from "next/link";
 import { toast } from "react-hot-toast";
-import router from "next/router";
 
 interface LoginProps {
   email: string;

@@ -3,7 +3,7 @@ import Image from "next/image";
 import { format } from "date-fns";
 import Link from "next/link";
 import { useAuth } from "@/context/auth";
-import { deleteNewService } from "@/services/news.services";
+import { deleteNewService } from "@/services";
 import { NextRouter, useRouter } from "next/router";
 import { toast } from "react-hot-toast";
 

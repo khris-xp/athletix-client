@@ -2,12 +2,11 @@ import React, { Fragment, useState } from "react";
 import Layout from "@/layouts/Layout";
 import { ICreateField } from "@/interfaces/field";
 import { CreateFieldInitialValues } from "@/constants/field";
-import { createFieldService } from "@/services/field.services";
+import { Loading, Error } from '@/components';
+import { createFieldService, uploadImageService } from "@/services";
 import router from "next/router";
 import { toast } from "react-hot-toast";
 import Image from "next/image";
-import { uploadImageService } from "@/services/file.services";
-import { Loading, Error } from '@/components';
 import { useAuth } from "@/context/auth";
 
 const CreateFieldPage = () => {
@@ -25,13 +24,13 @@ const CreateFieldPage = () => {
     }
   };
 
-  const { isLoading, isAdmin } = useAuth();
+  const { isAuthenticated, isLoading, isAdmin } = useAuth();
 
   if (isLoading) {
     return <Loading />
   }
 
-  if (!isAdmin) {
+  if (!isAdmin && !isAuthenticated) {
     return <Error title="401" />
   }
 

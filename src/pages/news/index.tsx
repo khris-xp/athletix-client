@@ -1,6 +1,6 @@
 import { Fragment } from "react";
-import { GetServerSideProps, GetServerSidePropsContext, NextPage } from "next";
-import { getNewService } from "@/services/news.services";
+import { GetServerSideProps, NextPage } from "next";
+import { getNewService } from "@/services";
 import Layout from "@/layouts/Layout";
 import { NewsCard } from "@/components";
 import { INews } from "@/interfaces/news";

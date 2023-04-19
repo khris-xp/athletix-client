@@ -11,14 +11,14 @@ import { Loading, Error } from '@/components'
 
 const CreateNewsPage: NextPage = () => {
   const [news, setNews] = useState<ICreateNew>(CreateNewInitialValues);
-  const { isAdmin, isLoading } = useAuth();
+  const { isAuthenticated, isAdmin, isLoading } = useAuth();
 
   if (isLoading) {
     return <Loading />
   }
 
-  if (!isAdmin) {
-    return <Error title="401"/>
+  if (!isAdmin && !isAuthenticated) {
+    return <Error title="401" />
   }
 
   const handleCreateNews = async (event: React.FormEvent<HTMLFormElement>) => {

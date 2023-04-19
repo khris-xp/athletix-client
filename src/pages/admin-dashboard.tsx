@@ -1,27 +1,27 @@
 import { Fragment } from "react"
 import { GetServerSideProps, GetServerSidePropsContext, NextPage } from "next"
 import Layout from "@/layouts/Layout"
-import { getBookingService, approveBookingService } from "@/services/booking.services"
+import { Error, Loading } from "@/components"
+import { getBookingService, approveBookingService } from "@/services"
 import { IBookingData } from "@/interfaces/booking"
 import { toast } from "react-hot-toast"
 import router from "next/router"
 import { useAuth } from "@/context/auth"
-import { Error, Loading } from "@/components"
 
 interface Props {
     data: IBookingData[]
 }
 
 const AdminDashboard: NextPage<Props> = ({ data }) => {
-    const { isAdmin, isLoading } = useAuth();
+    const { isAuthenticated, isAdmin, isLoading } = useAuth();
 
     if (isLoading) {
-    return <Loading />
+        return <Loading />
     }
 
-    if (!isAdmin) {
-    return <Error title="401"/>
-}
+    if (!isAdmin && !isAuthenticated) {
+        return <Error title="401" />
+    }
     const handleApproveBooking = async (bookingId: string) => {
         try {
             await approveBookingService(bookingId);
@@ -36,7 +36,7 @@ const AdminDashboard: NextPage<Props> = ({ data }) => {
     return (
         <Fragment>
             <Layout title="Athletix | Admin Dashboard">
-                <div className="relative overflow-x-auto shadow-md sm:rounded-lg">
+                <div className="relative overflow-x-auto shadow-md sm:rounded-lg mt-5 mb-16">
                     <table className="w-full text-sm text-left text-gray-500 dark:text-gray-400">
                         <thead className="text-xs text-gray-700 uppercase bg-gray-50 dark:bg-gray-700 dark:text-gray-400">
                             <tr>

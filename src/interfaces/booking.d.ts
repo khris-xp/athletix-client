@@ -28,10 +28,10 @@ export interface IBookingData {
     equipments: string[];
     payment: {
         id: string;
-        amount: number ;
+        amount: number;
         is_payed: boolean;
         created_at: string;
-        slip_image: string ;
+        slip_image: string;
     };
     status: string;
     created_at: string;

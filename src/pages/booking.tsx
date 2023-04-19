@@ -2,31 +2,31 @@ import React, { Fragment, useState } from "react";
 import { Banner } from "@/components";
 import Layout from "@/layouts/Layout";
 import { NextPage, GetServerSideProps } from "next";
-import { getFieldService } from "@/services/field.services";
 import { IField } from "@/interfaces/field";
 import { ISlots, ISlotTime } from "@/interfaces/slot";
 import { SlotsInitialValue } from "@/constants/slots";
 import { CreateBookingInitialValue } from "@/constants/booking";
 import {
+  getFieldService,
+  uploadImageService,
+  checkSlotBookingService,
+  getEquipmentService,
   createBookingService,
   createPromptpayPayment,
-  createCashPayment,
-} from "@/services/booking.services";
-import { uploadImageService } from "@/services/file.services";
-import { checkSlotBookingService } from "@/services/slot.services";
+  createCashPayment
+} from "@/services";
 import { toast } from "react-hot-toast";
 import { AxiosError } from "axios";
 import { IBooking, IBookingData } from "@/interfaces/booking";
 import { ISearchSlots } from "@/interfaces/search";
 import Image from "next/image";
 import router from "next/router";
-import { getEquipmentService } from "@/services/equipment.services";
 import { IEquipment } from "@/interfaces/equipment";
 import { useAuth } from "@/context/auth";
 
 interface Props {
   data: IField[];
-  equipmentData: any;
+  equipmentData: IEquipment[];
 }
 
 const BookingPage: NextPage<Props> = ({ data, equipmentData }) => {
@@ -162,6 +162,7 @@ const BookingPage: NextPage<Props> = ({ data, equipmentData }) => {
       const bookingData = await createBookingService(booking);
       setBookingData(bookingData);
       setPaymentModal(true);
+      setShowBookingDetail(true);
       toast.success("Booking created successfully");
       setBooking(CreateBookingInitialValue);
       setSelectedDate("");
@@ -382,7 +383,7 @@ const BookingPage: NextPage<Props> = ({ data, equipmentData }) => {
                       </div>
                       <div className="w-full md:w-1/2 px-3">
                         <label className="block uppercase tracking-wide text-gray-700 text-xs font-bold mb-2">
-                          Field Id
+                          Field Name
                         </label>
                         <p className="text-gray-500 text-base">{bookingData?.field.name}</p>
                       </div>
@@ -390,7 +391,7 @@ const BookingPage: NextPage<Props> = ({ data, equipmentData }) => {
                     <div className="flex flex-wrap -mx-3 mb-6">
                       <div className="w-full md:w-1/2 px-3 mb-6 md:mb-0">
                         <label className="block uppercase tracking-wide text-gray-700 text-xs font-bold mb-2">
-                          Customer Id
+                          Customer Name
                         </label>
                         <p className="text-gray-500 text-base">{bookingData?.customer.fullname}</p>
                       </div>
@@ -406,37 +407,38 @@ const BookingPage: NextPage<Props> = ({ data, equipmentData }) => {
                         <label className="block uppercase tracking-wide text-gray-700 text-xs font-bold mb-2">
                           Booking Date
                         </label>
-                        <p className="text-gray-500 text-base" suppressHydrationWarning> {new Date(
-                          booking.slot.date
-                        ).toLocaleDateString(undefined, {
-                          day: "numeric",
-                          month: "short",
-                          year: "numeric",
-                        })}</p>
+                        <p className="text-gray-500 text-base">
+                          {bookingData?.slot.date && new Date(bookingData.slot.date).toLocaleDateString(
+                            undefined,
+                            {
+                              day: "numeric",
+                              month: "short",
+                              year: "numeric",
+                            }
+                          )}
+                        </p>
                       </div>
                       <div className="w-full md:w-1/2 px-3">
                         <label className="block uppercase tracking-wide text-gray-700 text-xs font-bold mb-2">
                           Booking Time
                         </label>
-                        <p className="text-gray-500 text-base"> {new Date(
-                          new Date(
-                            booking.slot.start_time
-                          ).getTime() -
-                          7 * 60 * 60 * 1000
-                        ).toLocaleTimeString("th-TH", {
-                          hour: "2-digit",
-                          minute: "2-digit",
-                        })}{" "}
-                          - {` `}
-                          {new Date(
-                            new Date(
-                              booking.slot.end_time
-                            ).getTime() -
+                        <p className="text-gray-500 text-base">
+                          {bookingData?.slot.start_time && new Date(
+                            new Date(bookingData?.slot.start_time).getTime() -
                             7 * 60 * 60 * 1000
                           ).toLocaleTimeString("th-TH", {
                             hour: "2-digit",
                             minute: "2-digit",
-                          })}</p>
+                          })}{" "}
+                          - {` `}
+                          {bookingData?.slot.start_time && new Date(
+                            new Date(bookingData?.slot.end_time).getTime() -
+                            7 * 60 * 60 * 1000
+                          ).toLocaleTimeString("th-TH", {
+                            hour: "2-digit",
+                            minute: "2-digit",
+                          })}
+                        </p>
                       </div>
                     </div>
                     <button
@@ -662,147 +664,6 @@ const BookingPage: NextPage<Props> = ({ data, equipmentData }) => {
                     ))}
                   </tbody>
                 </table>
-              </div>
-            </div>
-          </div>
-        </div>
-
-        <div
-          className={`fixed top-0 left-0 right-0 z-50 w-full p-4 overflow-x-hidden overflow-y-auto md:inset-0 h-[calc(100%-1rem)] max-h-full ${paymentModal ? "flex" : "hidden"
-            } items-center justify-center bg-opacity-50 bg-black`}
-        >
-          <div className="relative w-full max-w-2xl max-h-full">
-            <div className="relative bg-white rounded-lg shadow">
-              <button
-                type="button"
-                className="text-gray-400 bg-transparent hover:text-gray-900 rounded-lg text-sm p-4 ml-auto flex justify-end"
-                onClick={() => setPaymentModal(false)}
-              >
-                <svg
-                  aria-hidden="true"
-                  className="w-6 h-6"
-                  fill="currentColor"
-                  viewBox="0 0 20 20"
-                  xmlns="http://www.w3.org/2000/svg"
-                >
-                  <path
-                    fillRule="evenodd"
-                    d="M4.293 4.293a1 1 0 011.414 0L10 8.586l4.293-4.293a1 1 0 111.414 1.414L11.414 10l4.293 4.293a1 1 0 01-1.414 1.414L10 11.414l-4.293 4.293a1 1 0 01-1.414-1.414L8.586 10 4.293 5.707a1 1 0 010-1.414z"
-                    clipRule="evenodd"
-                  ></path>
-                </svg>
-              </button>
-              <div className="w-full mx-auto rounded-lg bg-white shadow-lg p-5 text-gray-700">
-                <div className="w-full pt-1 pb-5">
-                  <div className="bg-indigo-500 text-white overflow-hidden rounded-full w-20 h-20 -mt-24 mx-auto shadow-lg flex justify-center items-center">
-                    <i className="mdi mdi-credit-card-outline text-3xl"></i>
-                  </div>
-                </div>
-                <div className="mb-10">
-                  <h1 className="text-center font-bold text-xl uppercase">
-                    Secure payment info
-                  </h1>
-                </div>
-                <div className="mb-3 flex -mx-2">
-                  <div className="px-2">
-                    <label
-                      htmlFor="type1"
-                      className="flex items-center cursor-pointer"
-                    >
-                      <input
-                        type="radio"
-                        className="form-radio h-5 w-5 text-indigo-500"
-                        name="type"
-                        id="type1"
-                        onClick={() => setPaymentMethod("promptpay")}
-                      />
-                      <Image
-                        src="https://www.ceochannels.com/wp-content/uploads/2017/10/PromptPay.jpg"
-                        alt="payment-image"
-                        width={32}
-                        height={32}
-                        className="ml-3"
-                      />
-                    </label>
-                  </div>
-                  <div className="px-2">
-                    <label
-                      htmlFor="type2"
-                      className="flex items-center cursor-pointer"
-                    >
-                      <input
-                        type="radio"
-                        className="form-radio h-5 w-5 text-indigo-500"
-                        name="type"
-                        id="type2"
-                        onClick={() => setPaymentMethod("cash")}
-                      />
-                      <Image
-                        src="https://cdn-icons-png.flaticon.com/512/2371/2371970.png"
-                        alt="payment-image"
-                        height={32}
-                        width={32}
-                        className="ml-3"
-                      />
-                    </label>
-                  </div>
-                </div>
-                {paymentMethod === "promptpay" ? (
-                  <div className="mb-3 -mx-2 flex items-end">
-                    <div className="px-2 w-full">
-                      <label className="font-bold text-sm mb-2 ml-1">
-                        Your Promptpay Slip
-                      </label>
-                      <div>
-                        <input
-                          type="file"
-                          id="file_input"
-                          className="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 my-4"
-                          placeholder="Your Slip URL"
-                          required
-                          onChange={async (event
-                          ) => {
-                            if (!event.target.files) return;
-                            const fileData = new FormData();
-                            fileData.append('file', event.target.files[0], event.target.files[0]["name"])
-                            console.log(fileData)
-                            const name = await uploadImageService(fileData)
-                            console.log(name)
-                            setPromptPayData(name.filename as string)
-                          }
-                          }
-                        />
-                      </div>
-                    </div>
-                  </div>
-                ) : (
-                  <div className="mb-3 -mx-2 flex items-end">
-                    <div className="px-2 w-full">
-                      <label className="font-bold text-sm mb-2 ml-1">
-                        Your Payment Amount{" "}
-                        {bookingData?.payment?.amount} is
-                        Bath
-                      </label>
-                    </div>
-                  </div>
-                )}
-                <div>
-                  {paymentMethod === "promptpay" ? (
-                    <button
-                      className="block w-full max-w-xs mx-auto bg-indigo-500 hover:bg-indigo-700 focus:bg-indigo-700 text-white rounded-lg px-3 py-3 font-semibold"
-                      onClick={() => handlePromptPayMethod()}
-                    >
-                      <i className="mdi mdi-lock-outline mr-1"></i> PAY NOW
-                    </button>
-                  ) : (
-                    <button
-                      className="block w-full max-w-xs mx-auto bg-indigo-500 hover:bg-indigo-700 focus:bg-indigo-700 text-white rounded-lg px-3 py-3 font-semibold"
-                      onClick={() => handleCashMethod()}
-                    >
-                      <i className="mdi mdi-lock-outline mr-1"></i> PAY NOW
-                    </button>
-                  )}
-                </div>
               </div>
             </div>
           </div>

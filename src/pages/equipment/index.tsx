@@ -2,7 +2,7 @@ import { Fragment } from 'react'
 import Layout from '@/layouts/Layout'
 import { GetServerSideProps, NextPage } from 'next'
 import { EquipmentTable } from '@/components'
-import { getEquipmentService } from '@/services/equipment.services'
+import { getEquipmentService } from '@/services'
 import { IEquipment } from '@/interfaces/equipment'
 import Link from 'next/link'
 import { useAuth } from '@/context/auth'
@@ -13,6 +13,16 @@ interface Props {
 }
 
 const EquipmentPage: NextPage<Props> = ({ data }) => {
+
+  const { isAuthenticated, isAdmin, isLoading } = useAuth();
+
+  if (isLoading) {
+    return <Loading />;
+  }
+
+  if (!isAdmin && !isAuthenticated) {
+    return <Error title="401" />
+  }
 
   return (
     <Fragment>
@@ -63,28 +73,28 @@ const EquipmentPage: NextPage<Props> = ({ data }) => {
 };
 
 export const getServerSideProps: GetServerSideProps = async () => {
-    try {
-        const data: IEquipment = await getEquipmentService();
-        if (data) {
-            return {
-                props: {
-                    data
-                }
-            };
-        } else {
-            return {
-                redirect: {
-                    destination: '/',
-                    permanent: false
-                }
-            };
+  try {
+    const data: IEquipment = await getEquipmentService();
+    if (data) {
+      return {
+        props: {
+          data
         }
-    } catch (err: unknown) {
-        console.log(err);
-        return {
-            props: {}
-        };
+      };
+    } else {
+      return {
+        redirect: {
+          destination: '/',
+          permanent: false
+        }
+      };
     }
+  } catch (err: unknown) {
+    console.log(err);
+    return {
+      props: {}
+    };
+  }
 };
 
 export default EquipmentPage;

@@ -2,7 +2,7 @@ import Layout from "@/layouts/Layout";
 import { NextPage } from "next";
 import { Fragment, useState } from "react";
 import Link from "next/link";
-import { registerService } from "@/services/user.services";
+import { registerService } from "@/services";
 import { UserRegisterInitialValues } from "@/constants/user";
 import { IUserRegister } from "@/interfaces/user";
 import { toast } from "react-hot-toast";

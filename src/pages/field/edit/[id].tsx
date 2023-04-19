@@ -46,12 +46,12 @@ const EditFieldPage: NextPage<Props> = ({
     slot: updateSlots,
     image: image,
   });
-  const { isAdmin, isLoading } = useAuth();
+  const { isAuthenticated, isAdmin, isLoading } = useAuth();
   if (isLoading) {
     return <Loading />
   }
 
-  if (!isAdmin) {
+  if (!isAdmin && isAuthenticated) {
     return <Error title="401" />
   }
 
@@ -231,8 +231,8 @@ const EditFieldPage: NextPage<Props> = ({
 export const getStaticPaths: GetStaticPaths = async () => {
   try {
     const fieldItems = await getFieldService();
-    const paths = fieldItems.map((fieldItem: { _Field__id: string }) => ({
-      params: { id: fieldItem._Field__id },
+    const paths = fieldItems.map((fieldItem: { id: string }) => ({
+      params: { id: fieldItem.id },
     }));
 
     return {
@@ -266,13 +266,13 @@ export const getStaticProps: GetStaticProps = async ({
     }
     return {
       props: {
-        field_id: fieldItem._Field__id,
-        name: fieldItem._Field__name,
-        description: fieldItem._Field__description,
-        price_by_slot: fieldItem._Field__price_by_slot,
-        category: fieldItem._Field__category,
-        type: fieldItem._Field__type,
-        image: fieldItem._Field__image,
+        field_id: fieldItem.id,
+        name: fieldItem.name,
+        description: fieldItem.description,
+        price_by_slot: fieldItem.price_by_slot,
+        category: fieldItem.category,
+        type: fieldItem.type,
+        image: fieldItem.image,
       },
     };
   } catch (err) {

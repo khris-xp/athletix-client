@@ -11,8 +11,8 @@ const ProfilePage: NextPage = () => {
   if (isLoading) {
     return <Loading />
   }
-  if (!isCustomer) {
-    return <Error title="401"/>
+  if (!isCustomer && !isAuthenticated) {
+    return <Error title="401" />
   }
 
   return (
