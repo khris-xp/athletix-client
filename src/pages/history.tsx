@@ -90,6 +90,9 @@ const HistoryPage: NextPage<Props> = ({ historyData }) => {
                     <thead className="text-xs text-gray-700 uppercase bg-gray-50">
                       <tr>
                         <th scope="col" className="px-6 py-3">
+                          Booking Status
+                        </th>
+                        <th scope="col" className="px-6 py-3">
                           Booking Id
                         </th>
                         <th scope="col" className="px-6 py-3">
@@ -111,22 +114,29 @@ const HistoryPage: NextPage<Props> = ({ historyData }) => {
                           Payment Paid
                         </th>
                         <th scope="col" className="px-6 py-3">
-                          Booking Status
-                        </th>
-                        <th scope="col" className="px-6 py-3">
                           Action
                         </th>
                       </tr>
                     </thead>
                     <tbody>
                       {historyData.map((history: IHistory) => (
-                        <>
-                          <tr
-                            className="bg-white border-b hover:bg-gray-50 text-center"
-                            key={history.id}
-                          >
+                        <Fragment key={history.id}>
+                          <tr className="bg-white border-b hover:bg-gray-50 text-center">
+                            <td className="px-6 py-4">
+                              {history.status === "pending" ? (
+                                <div className="flex items-center uppercase">
+                                  <div className="h-2.5 w-2.5 rounded-full bg-yellow-500 mr-2"></div>
+                                  {history.status}
+                                </div>
+                              ) : (
+                                <div className="flex items-center uppercase">
+                                  <div className="h-2.5 w-2.5 rounded-full bg-green-500 mr-2"></div>
+                                  {history.status}
+                                </div>
+                              )}
+                            </td>
                             <td className="px-6 py-4">{history.id}</td>
-                            <td className="px-6 py-4">{history.customer.fullname}</td>
+                            <td className="px-6 py-4">{history.field.name}</td>
                             <td className="px-6 py-4">
                               {history.equipments.length === 0
                                 ? "No Equipment"
@@ -169,27 +179,19 @@ const HistoryPage: NextPage<Props> = ({ historyData }) => {
                             <td className="px-6 py-4">
                               {history.payment.is_payed ? "Paid" : "Not Paid"}
                             </td>
-                            <td className="px-6 py-4">
-                              {history.status === "pending" ? (
-                                <div className="flex items-center uppercase">
-                                  <div className="h-2.5 w-2.5 rounded-full bg-yellow-500 mr-2"></div>
-                                  {history.status}
-                                </div>
-                              ) : (
-                                <div className="flex items-center uppercase">
-                                  <div className="h-2.5 w-2.5 rounded-full bg-green-500 mr-2"></div>
-                                  {history.status}
-                                </div>
-                              )}
-                            </td>
-                            <td className="px-6 py-4">
-                              <button
-                                className="text-blue-600 hover:underline font-semibold"
-                                onClick={() => handlePaymentModal()}
-                              >
-                                Paid
-                              </button>
-                            </td>
+                            {!history.payment.is_payed ? (
+                              <td className="px-6 py-4">
+                                <button
+                                  className="text-blue-600 hover:underline font-semibold"
+                                  onClick={() => handlePaymentModal()}
+                                >
+                                  Paid
+                                </button>
+                              </td>) : (
+                              <td className="px-6 py-4">
+                                <p className="text-green-600 font-semibold">Already Paid</p>
+                              </td>
+                            )}
                           </tr>
                           <div>
                             <div
@@ -339,7 +341,7 @@ const HistoryPage: NextPage<Props> = ({ historyData }) => {
                               </div>
                             </div>
                           </div>
-                        </>
+                        </Fragment>
                       ))}
                     </tbody>
                   </table>

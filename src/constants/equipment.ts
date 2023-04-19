@@ -6,3 +6,8 @@ export const CreateEquipmentInitialValues: IUpdateEquipment = {
   quantity: 0,
   category: "all",
 };
+
+export const EquipmentInitialValues = {
+  id: "",
+  quantity: 1,
+}

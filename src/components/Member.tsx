@@ -5,12 +5,15 @@ import Image from 'next/image'
 import Link from 'next/link'
 
 interface Props {
-  image: string;
-  name: string;
-  studentId: string;
+    image: string;
+    name: string;
+    studentId: string;
+    facebook_url: string;
+    instagram_url: string;
+    github_url: string;
 }
 
-const Member: NextPage<Props> = ({ image, name, studentId }) => {
+const Member: NextPage<Props> = ({ image, name, studentId, facebook_url, instagram_url, github_url }) => {
     return (
         <Fragment>
             <div className='text-center text-gray-500 dark:text-gray-400 mb-32'>
@@ -27,7 +30,7 @@ const Member: NextPage<Props> = ({ image, name, studentId }) => {
                     <Link href='/'>{name}</Link>
                 </h3>
                 <p>{studentId}</p>
-                <Icon />
+                <Icon facebook_url={facebook_url} instagram_url={instagram_url} github_url={github_url} />
             </div>
         </Fragment>
     )
