@@ -5,7 +5,7 @@ import {
   useContext,
   ReactNode,
 } from "react";
-import { getUserService } from "../services/user.services";
+import { getUserService } from "@/services";
 import { IUser, IAuthContext } from "@/interfaces/user";
 
 const AuthContext = createContext<IAuthContext>({

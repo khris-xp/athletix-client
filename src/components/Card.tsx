@@ -2,7 +2,7 @@ import { Fragment } from "react";
 import Image from "next/image";
 import { useAuth } from "@/context/auth";
 import Link from "next/link";
-import { deleteFieldService } from "@/services/field.services";
+import { deleteFieldService } from "@/services";
 import { NextRouter, useRouter } from "next/router";
 import { toast } from "react-hot-toast";
 
@@ -32,7 +32,7 @@ const Card = ({ id, image, title, description }: Props) => {
   return (
     <Fragment>
       <div className="shadow-md mx-auto max-w-sm transform hover:-translate-y-1 duration-300 hover:shadow-xl cursor-pointer">
-        <div className="max-h-140 overflow-hidden">''
+        <div className="max-h-140 overflow-hidden">
         {((image[0] as string) != "h") ? (
           <img
             className="w-full h-60"

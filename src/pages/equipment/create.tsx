@@ -3,7 +3,7 @@ import Layout from "@/layouts/Layout";
 import { NextPage } from "next";
 import { IUpdateEquipment } from "@/interfaces/equipment";
 import { CreateEquipmentInitialValues } from "@/constants/equipment";
-import { createEquipmentService } from "@/services/equipment.services";
+import { createEquipmentService } from "@/services";
 import router from "next/router";
 import { toast } from "react-hot-toast";
 import { Loading, Error } from '@/components';
@@ -20,8 +20,8 @@ const CreateEquipmentPage: NextPage = () => {
     return <Loading />
   }
 
-  if (!isAdmin) {
-    return <Error />
+  if (!isAdmin && !isAuthenticated) {
+    return <Error title="401" />
   }
 
   const handleCreateEquipment = async (

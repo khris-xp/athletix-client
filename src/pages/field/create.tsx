@@ -2,11 +2,13 @@ import React, { Fragment, useState } from "react";
 import Layout from "@/layouts/Layout";
 import { ICreateField } from "@/interfaces/field";
 import { CreateFieldInitialValues } from "@/constants/field";
-import { createFieldService } from "@/services/field.services";
+import { Loading, Error } from '@/components';
+import { createFieldService, uploadImageService } from "@/services";
 import router from "next/router";
 import { toast } from "react-hot-toast";
 import Image from "next/image";
-import { uploadImageService } from "@/services/file.services";
+import { useAuth } from "@/context/auth";
+
 const CreateFieldPage = () => {
   const [field, setField] = useState<ICreateField>(CreateFieldInitialValues);
   const handleCreateField = async (event: React.FormEvent<HTMLFormElement>) => {
@@ -21,7 +23,17 @@ const CreateFieldPage = () => {
       toast.error("Failed to create field");
     }
   };
-  
+
+  const { isAuthenticated, isLoading, isAdmin } = useAuth();
+
+  if (isLoading) {
+    return <Loading />
+  }
+
+  if (!isAdmin && !isAuthenticated) {
+    return <Error title="401" />
+  }
+
   return (
     <Fragment>
       <Layout title="Athletix | Create Field">
@@ -41,8 +53,8 @@ const CreateFieldPage = () => {
                       width={1000}
                     />
                   ) : (
-                    <img 
-                      src={"http://localhost:4000/"+field.image}
+                    <img
+                      src={"http://localhost:4000/" + field.image}
                       alt="banner-image"
                       className="mt-6 px-5 lg:px-2 lg:pr-10"
                       height={1000}
@@ -85,24 +97,24 @@ const CreateFieldPage = () => {
                       <div className="md:col-span-5">
                         <label>Field Image Url</label>
                         <input
-                            type="file"
-                            id="file_input"
-                            className="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 my-4"
-                            placeholder="Your Slip URL"
-                            required
-                              onChange={async (event
-                                ) =>  {
-                                  if (!event.target.files) return;
-                                  const fileData = new FormData();
-                                  fileData.append('file', event.target.files[0], event.target.files[0]["name"])
-                                  console.log(fileData)
-                                  const name = await  uploadImageService(fileData)
-                                  console.log(name)
-                                  setField({ ...field, image: name.filename });
-                                  
-                              }
+                          type="file"
+                          id="file_input"
+                          className="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 my-4"
+                          placeholder="Your Slip URL"
+                          required
+                          onChange={async (event
+                          ) => {
+                            if (!event.target.files) return;
+                            const fileData = new FormData();
+                            fileData.append('file', event.target.files[0], event.target.files[0]["name"])
+                            console.log(fileData)
+                            const name = await uploadImageService(fileData)
+                            console.log(name)
+                            setField({ ...field, image: name.filename });
+
                           }
-                          />
+                          }
+                        />
                       </div>
 
                       <div className="md:col-span-2">

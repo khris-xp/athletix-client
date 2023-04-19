@@ -3,7 +3,11 @@ import Image from "next/image";
 import Link from "next/link";
 import { NextPage } from "next";
 
-const Error: NextPage = () => {
+interface Props {
+  title: string,
+}
+
+const Error: NextPage<Props> = ({title}) => {
   return (
     <Fragment>
       <div className="bg-indigo-900 relative overflow-hidden h-screen">
@@ -21,7 +25,7 @@ const Error: NextPage = () => {
               You are all alone here
             </h1>
             <p className="font-extrabold my-14 text-4xl text-white animate-bounce">
-              404
+              {title}
             </p>
             <Link href="/">
               <p className="font-extrabold my-14 text-4xl text-white animate-bounce">

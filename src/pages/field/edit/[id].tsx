@@ -15,6 +15,8 @@ import { updateSlots } from "@/constants/slots";
 import { toast } from "react-hot-toast";
 import Image from "next/image";
 import { uploadImageService } from "@/services/file.services";
+import { useAuth } from '@/context/auth';
+import { Loading, Error } from "@/components";
 
 interface Props {
   field_id: string;
@@ -44,6 +46,14 @@ const EditFieldPage: NextPage<Props> = ({
     slot: updateSlots,
     image: image,
   });
+  const { isAuthenticated, isAdmin, isLoading } = useAuth();
+  if (isLoading) {
+    return <Loading />
+  }
+
+  if (!isAdmin && isAuthenticated) {
+    return <Error title="401" />
+  }
 
   const handleEditField = async () => {
     try {
@@ -65,22 +75,22 @@ const EditFieldPage: NextPage<Props> = ({
                   <p className="font-medium text-lg">Edit Field</p>
                   <p>Please fill out all the fields.</p>
                   {((image[0] as string) != "h") ? ( //eiei :D
-                  <img
-                    className="w-full h-60"
-                    src={`http://localhost:4000/${image}`}
-                    alt="field-image"
-                    width={1000}
-                    height={1000}
-                  />
-                ) : (
-                  <Image
-                    className="w-full h-60"
-                    src={image}
-                    alt="field-image"
-                    width={1000}
-                    height={1000}
-                  />
-                )};
+                    <img
+                      className="w-full h-60"
+                      src={`http://localhost:4000/${image}`}
+                      alt="field-image"
+                      width={1000}
+                      height={1000}
+                    />
+                  ) : (
+                    <Image
+                      className="w-full h-60"
+                      src={image}
+                      alt="field-image"
+                      width={1000}
+                      height={1000}
+                    />
+                  )};
                 </div>
                 <div className="lg:col-span-2">
                   <form>
@@ -118,24 +128,24 @@ const EditFieldPage: NextPage<Props> = ({
                       <div className="md:col-span-5">
                         <label>Field Image Url</label>
                         <input
-                            type="file"
-                            id="file_input"
-                            className="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 my-4"
-                            placeholder="Your Slip URL"
-                            required
-                              onChange={async (event
-                                ) =>  {
-                                  if (!event.target.files) return;
-                                  const fileData = new FormData();
-                                  fileData.append('file', event.target.files[0], event.target.files[0]["name"])
-                                  console.log(fileData)
-                                  const name = await  uploadImageService(fileData)
-                                  console.log(name)
-                                  setField({ ...field, image: name.filename });
-                                  
-                              }
+                          type="file"
+                          id="file_input"
+                          className="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 my-4"
+                          placeholder="Your Slip URL"
+                          required
+                          onChange={async (event
+                          ) => {
+                            if (!event.target.files) return;
+                            const fileData = new FormData();
+                            fileData.append('file', event.target.files[0], event.target.files[0]["name"])
+                            console.log(fileData)
+                            const name = await uploadImageService(fileData)
+                            console.log(name)
+                            setField({ ...field, image: name.filename });
+
                           }
-                          />
+                          }
+                        />
                       </div>
 
                       <div className="md:col-span-2">
@@ -221,8 +231,8 @@ const EditFieldPage: NextPage<Props> = ({
 export const getStaticPaths: GetStaticPaths = async () => {
   try {
     const fieldItems = await getFieldService();
-    const paths = fieldItems.map((fieldItem: { _Field__id: string }) => ({
-      params: { id: fieldItem._Field__id },
+    const paths = fieldItems.map((fieldItem: { id: string }) => ({
+      params: { id: fieldItem.id },
     }));
 
     return {
@@ -256,13 +266,13 @@ export const getStaticProps: GetStaticProps = async ({
     }
     return {
       props: {
-        field_id: fieldItem._Field__id,
-        name: fieldItem._Field__name,
-        description: fieldItem._Field__description,
-        price_by_slot: fieldItem._Field__price_by_slot,
-        category: fieldItem._Field__category,
-        type: fieldItem._Field__type,
-        image: fieldItem._Field__image,
+        field_id: fieldItem.id,
+        name: fieldItem.name,
+        description: fieldItem.description,
+        price_by_slot: fieldItem.price_by_slot,
+        category: fieldItem.category,
+        type: fieldItem.type,
+        image: fieldItem.image,
       },
     };
   } catch (err) {

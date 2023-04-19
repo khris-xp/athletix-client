@@ -22,14 +22,14 @@ const HistoryPage: NextPage<Props> = ({ historyData }) => {
   const [paymentModal, setPaymentModal] = useState<boolean>(false);
   const [paymentMethod, setPaymentMethod] = useState<string>("");
   const [promptPayData, setPromptPayData] = useState<string>("");
-  const { isCustomer, isLoading } = useAuth();
+  const { isAuthenticated, isCustomer, isLoading } = useAuth();
 
   if (isLoading) {
     return <Loading />;
   }
 
-  if (!isCustomer) {
-    return <Error />;
+  if (!isCustomer && !isAuthenticated) {
+    return <Error title="401" />;
   }
 
   const handlePaymentModal = () => {
@@ -93,6 +93,9 @@ const HistoryPage: NextPage<Props> = ({ historyData }) => {
                           Booking Id
                         </th>
                         <th scope="col" className="px-6 py-3">
+                          Booking Field
+                        </th>
+                        <th scope="col" className="px-6 py-3">
                           Booking Equipment
                         </th>
                         <th scope="col" className="px-6 py-3">
@@ -123,14 +126,15 @@ const HistoryPage: NextPage<Props> = ({ historyData }) => {
                             key={history.id}
                           >
                             <td className="px-6 py-4">{history.id}</td>
+                            <td className="px-6 py-4">{history.customer.fullname}</td>
                             <td className="px-6 py-4">
                               {history.equipments.length === 0
                                 ? "No Equipment"
                                 : history.equipments.map((equipment) => (
-                                    <div key={equipment.id}>
-                                      {equipment.name}
-                                    </div>
-                                  ))}
+                                  <div key={equipment.id}>
+                                    {equipment.name}
+                                  </div>
+                                ))}
                             </td>
                             <td className="px-6 py-4">
                               {history.payment.amount} Bath
@@ -148,7 +152,7 @@ const HistoryPage: NextPage<Props> = ({ historyData }) => {
                             <td className="px-6 py-4">
                               {new Date(
                                 new Date(history.slot.start_time).getTime() -
-                                  7 * 60 * 60 * 1000
+                                7 * 60 * 60 * 1000
                               ).toLocaleTimeString("th-TH", {
                                 hour: "2-digit",
                                 minute: "2-digit",
@@ -156,15 +160,27 @@ const HistoryPage: NextPage<Props> = ({ historyData }) => {
                               - {` `}
                               {new Date(
                                 new Date(history.slot.end_time).getTime() -
-                                  7 * 60 * 60 * 1000
+                                7 * 60 * 60 * 1000
                               ).toLocaleTimeString("th-TH", {
                                 hour: "2-digit",
                                 minute: "2-digit",
                               })}
                             </td>
-                            <td className="px-6 py-4">{history.status}</td>
                             <td className="px-6 py-4">
                               {history.payment.is_payed ? "Paid" : "Not Paid"}
+                            </td>
+                            <td className="px-6 py-4">
+                              {history.status === "pending" ? (
+                                <div className="flex items-center uppercase">
+                                  <div className="h-2.5 w-2.5 rounded-full bg-yellow-500 mr-2"></div>
+                                  {history.status}
+                                </div>
+                              ) : (
+                                <div className="flex items-center uppercase">
+                                  <div className="h-2.5 w-2.5 rounded-full bg-green-500 mr-2"></div>
+                                  {history.status}
+                                </div>
+                              )}
                             </td>
                             <td className="px-6 py-4">
                               <button
@@ -177,9 +193,8 @@ const HistoryPage: NextPage<Props> = ({ historyData }) => {
                           </tr>
                           <div>
                             <div
-                              className={`fixed top-0 left-0 right-0 z-50 w-full p-4 overflow-x-hidden overflow-y-auto md:inset-0 h-[calc(100%-1rem)] max-h-full ${
-                                paymentModal ? "flex" : "hidden"
-                              } items-center justify-center bg-opacity-50 bg-black`}
+                              className={`fixed top-0 left-0 right-0 z-50 w-full p-4 overflow-x-hidden overflow-y-auto md:inset-0 h-[calc(100%-1rem)] max-h-full ${paymentModal ? "flex" : "hidden"
+                                } items-center justify-center bg-opacity-50 bg-black`}
                             >
                               <div className="relative w-full max-w-2xl max-h-full">
                                 <div className="relative bg-white rounded-lg shadow">

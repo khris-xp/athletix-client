@@ -11,7 +11,7 @@ import {
   getNewService,
   getNewDetailService,
   editNewService,
-} from "@/services/news.services";
+} from "@/services";
 import { IUpdateNew } from "@/interfaces/news";
 import { toast } from "react-hot-toast";
 import { useAuth } from "@/context/auth";
@@ -38,12 +38,12 @@ const EditNewsPage: NextPage<Props> = ({
     draft: false,
   });
 
-  const { isLoading, isAdmin } = useAuth();
+  const { isAuthenticated, isLoading, isAdmin } = useAuth();
   if (isLoading) {
     return <Loading />
   }
-  if (!isAdmin) {
-    return <Error />
+  if (!isAdmin && !isAuthenticated) {
+    return <Error title="401" />
   }
 
   const handleEditNews = async () => {
