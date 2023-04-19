@@ -34,7 +34,7 @@ const Card = ({ id, image, title, description }: Props) => {
       <div className="shadow-md mx-auto max-w-sm transform hover:-translate-y-1 duration-300 hover:shadow-xl cursor-pointer">
         <div className="max-h-140 overflow-hidden">
         {((image[0] as string) != "h") ? (
-          <img
+          <Image
             className="w-full h-60"
             src={`http://localhost:4000/${image}`}
             alt="field-image"
@@ -49,7 +49,7 @@ const Card = ({ id, image, title, description }: Props) => {
             width={1000}
             height={1000}
           />
-        )};
+        )}
         </div>
         <div className="p-7 my-auto">
           <h1 className="text-2xl font-semibold text-gray-700">{title}</h1>

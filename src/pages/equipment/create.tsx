@@ -20,9 +20,11 @@ const CreateEquipmentPage: NextPage = () => {
     return <Loading />
   }
 
-  if (!isAdmin && !isAuthenticated) {
-    return <Error title="401" />
-  }
+  setTimeout(() => {
+    if (!isAdmin && !isAuthenticated) {
+      return <Error title="401" />
+    }
+  }, 200)
 
   const handleCreateEquipment = async (
     event: React.FormEvent<HTMLFormElement>

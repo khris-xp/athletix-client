@@ -75,7 +75,7 @@ const EditFieldPage: NextPage<Props> = ({
                   <p className="font-medium text-lg">Edit Field</p>
                   <p>Please fill out all the fields.</p>
                   {((image[0] as string) != "h") ? ( //eiei :D
-                    <img
+                    <Image
                       className="w-full h-60"
                       src={`http://localhost:4000/${image}`}
                       alt="field-image"
@@ -90,7 +90,7 @@ const EditFieldPage: NextPage<Props> = ({
                       width={1000}
                       height={1000}
                     />
-                  )};
+                  )}
                 </div>
                 <div className="lg:col-span-2">
                   <form>
@@ -128,9 +128,8 @@ const EditFieldPage: NextPage<Props> = ({
                       <div className="md:col-span-5">
                         <label>Field Image Url</label>
                         <input
+                          className="mt-2 relative m-0 block w-full min-w-0 flex-auto rounded border border-solid border-neutral-300 bg-clip-padding px-3 py-[0.32rem] text-sm font-normal text-neutral-700 transition duration-300 ease-in-out file:-mx-3 file:-my-[0.32rem] file:overflow-hidden file:rounded-none file:border-0 file:border-solid file:border-inherit file:bg-neutral-100 file:px-3 file:py-[0.32rem] file:text-neutral-700 file:transition file:duration-150 file:ease-in-out file:[border-inline-end-width:1px] file:[margin-inline-end:0.75rem] hover:file:bg-neutral-200 focus:border-primary focus:text-neutral-700 focus:shadow-te-primary focus:outline-none dark:border-neutral-600 dark:text-neutral-200 dark:file:bg-neutral-700 dark:file:text-neutral-100 dark:focus:border-primary"
                           type="file"
-                          id="file_input"
-                          className="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 my-4"
                           placeholder="Your Slip URL"
                           required
                           onChange={async (event
@@ -138,13 +137,9 @@ const EditFieldPage: NextPage<Props> = ({
                             if (!event.target.files) return;
                             const fileData = new FormData();
                             fileData.append('file', event.target.files[0], event.target.files[0]["name"])
-                            console.log(fileData)
                             const name = await uploadImageService(fileData)
-                            console.log(name)
                             setField({ ...field, image: name.filename });
-
-                          }
-                          }
+                          }}
                         />
                       </div>
 

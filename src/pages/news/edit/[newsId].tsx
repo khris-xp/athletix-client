@@ -95,7 +95,7 @@ const EditNewsPage: NextPage<Props> = ({
                           onChange={(
                             event: React.ChangeEvent<HTMLInputElement>
                           ) => {
-                            setNews({ ...news, title: event.target.value });
+                            setNews({ ...news, title: event.target.value })
                           }}
                         />
                       </div>
