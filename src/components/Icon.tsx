@@ -1,13 +1,20 @@
 import { Fragment } from "react";
 import Image from "next/image";
+import Link from "next/link";
 
-const Icon = () => {
+interface Props {
+  facebook_url: string;
+  instagram_url: string;
+  github_url: string;
+}
+
+const Icon = ({ facebook_url, instagram_url, github_url }: Props) => {
   return (
     <Fragment>
       <ul className="flex justify-center mt-4 space-x-4">
         <li>
-          <a
-            href="#"
+          <Link
+            href={facebook_url}
             className="text-[#39569c] hover:text-gray-900 dark:hover:text-white"
           >
             <svg
@@ -22,11 +29,11 @@ const Icon = () => {
                 clipRule="evenodd"
               ></path>
             </svg>
-          </a>
+          </Link>
         </li>
         <li>
-          <a
-            href="#"
+          <Link
+            href={instagram_url}
             className="text-[#00acee] hover:text-gray-900 dark:hover:text-white"
           >
             <Image
@@ -36,11 +43,11 @@ const Icon = () => {
               height={1000}
               width={1000}
             />
-          </a>
+          </Link>
         </li>
         <li>
-          <a
-            href="#"
+          <Link
+            href={github_url}
             className="text-gray-900 hover:text-gray-900 dark:hover:text-white dark:text-gray-300"
           >
             <svg
@@ -55,7 +62,7 @@ const Icon = () => {
                 clipRule="evenodd"
               ></path>
             </svg>
-          </a>
+          </Link>
         </li>
       </ul>
     </Fragment>

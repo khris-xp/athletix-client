@@ -53,7 +53,7 @@ const CreateFieldPage = () => {
                       width={1000}
                     />
                   ) : (
-                    <img
+                    <Image
                       src={"http://localhost:4000/" + field.image}
                       alt="banner-image"
                       className="mt-6 px-5 lg:px-2 lg:pr-10"

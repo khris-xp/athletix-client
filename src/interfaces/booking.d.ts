@@ -5,7 +5,7 @@ export interface IBooking {
         end_time: string;
         date: string;
     }
-    equipments: string[];
+    equipments: any[];
     payment_method: string;
 }
 
