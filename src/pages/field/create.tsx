@@ -30,7 +30,7 @@ const CreateFieldPage = () => {
     return <Loading />
   }
 
-  if (!isAdmin && !isAuthenticated) {
+  if (!isAdmin) {
     return <Error title="401" />
   }
 
