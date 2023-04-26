@@ -137,12 +137,12 @@ const HistoryPage: NextPage<Props> = ({ historyData }) => {
                             </td>
                             <td className="px-6 py-4">{history.id}</td>
                             <td className="px-6 py-4">{history.field.name}</td>
-                            <td className="px-6 py-4">
+                            <td className="px-10 py-4">
                               {history.equipments.length === 0
                                 ? "No Equipment"
                                 : history.equipments.map((equipment) => (
-                                  <div key={equipment.id}>
-                                    {equipment.name}
+                                  <div key={equipment.id} className="w-full">
+                                    {equipment.name} {equipment.quantity} piece
                                   </div>
                                 ))}
                             </td>

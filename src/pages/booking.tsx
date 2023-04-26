@@ -39,44 +39,49 @@ const BookingPage: NextPage<Props> = ({ data, equipmentData }) => {
   const [promptPayData, setPromptPayData] = useState<string>("");;
   const [slotsId, setSlotsId] = useState<string>("");
   const [bookingData, setBookingData] = useState<IBookingData | null>(null);
+  const [fieldCategory, setFieldCategory] = useState<string>("");
   const [slotsClick, setSlotsClick] = useState<boolean>(false);
   const [SlotCheck, setSlotCheck] = useState<ISlotTime[]>([]);
   const [equipmentModal, setEquipmentModal] = useState<boolean>(false);
+  const [equipmentClick, setEquipmentClick] = useState<boolean>(false);
   const [showBookingDetail, setShowBookingDetail] = useState<boolean>(false);
-  const [selectEquipment, setEquipment] = useState<any>(EquipmentInitialValues);
+  const [checkedEquipments, setCheckedEquipments] = useState<{ [key: string]: boolean }>({});
   const { isAuthenticated } = useAuth();
-
-  console.log(booking)
-  console.log(selectEquipment)
 
   const handleSlotsClick = (id: string): void => {
     setSlotsId(id);
     setSlotsClick(true);
   };
 
-  const handleEquipmentChange = (id: string) => {
-    const newEquipment = { ...selectEquipment, id: id, quantity: 1 };
-    const existingEquipmentIndex = booking.equipments.findIndex((equipment) => equipment.id === id);
+  const handleEquipmentChange = (id: string, action: 'increase' | 'decrease' | 'null') => {
+    const existingEquipmentIndex: number = booking.equipments.findIndex((equipment) => equipment.id === id);
 
     if (existingEquipmentIndex !== -1) {
       const existingEquipment = booking.equipments[existingEquipmentIndex];
-      if (existingEquipment.quantity > 1) {
-        const updatedEquipment = { ...existingEquipment, quantity: existingEquipment.quantity - 1 };
-        const updatedEquipments = [...booking.equipments];
-        updatedEquipments[existingEquipmentIndex] = updatedEquipment;
-        setBooking({ ...booking, equipments: updatedEquipments });
+      let updatedEquipment;
+
+      if (action === 'decrease' && existingEquipment.quantity > 0) {
+        updatedEquipment = { ...existingEquipment, quantity: existingEquipment.quantity - 1 };
+      } else if (action === 'increase') {
+        updatedEquipment = { ...existingEquipment, quantity: existingEquipment.quantity + 1 };
       } else {
         const filteredEquipments = booking.equipments.filter((equipment) => equipment.id !== id);
         setBooking({ ...booking, equipments: filteredEquipments });
+        return;
       }
-    } else {
+
+      const updatedEquipments = [...booking.equipments];
+      updatedEquipments[existingEquipmentIndex] = updatedEquipment;
+      setBooking({ ...booking, equipments: updatedEquipments });
+    } else if (action !== 'null') {
+      const newEquipment = { id: id, quantity: 0 };
       setBooking({ ...booking, equipments: [...booking.equipments, newEquipment] });
     }
-    setEquipment(newEquipment);
-  }
+  };
 
-  const handleRadioChange = (id: string) => {
+  const handleRadioChange = (id: string, category: string) => {
     setSelectedId(id);
+    setFieldCategory(category);
     setBooking({
       ...booking,
       slot: { ...booking.slot, date: booking.slot.date },
@@ -243,7 +248,7 @@ const BookingPage: NextPage<Props> = ({ data, equipmentData }) => {
                       name="radio"
                       checked={selectedId === field.id}
                       onChange={() => {
-                        handleRadioChange(field.id),
+                        handleRadioChange(field.id, field.category),
                           setBooking({
                             ...booking,
                             field_id: field.id,
@@ -565,9 +570,7 @@ const BookingPage: NextPage<Props> = ({ data, equipmentData }) => {
                                 if (!event.target.files) return;
                                 const fileData = new FormData();
                                 fileData.append('file', event.target.files[0], event.target.files[0]["name"])
-                                console.log(fileData)
                                 const name = await uploadImageService(fileData)
-                                console.log(name)
                                 setPromptPayData(name.filename as string)
                               }
                               }
@@ -653,39 +656,88 @@ const BookingPage: NextPage<Props> = ({ data, equipmentData }) => {
                   </thead>
                   <tbody>
                     {equipmentData.map((equipment: IEquipment) => (
-                      <tr className="bg-white border-b dark:bg-gray-800 dark:border-gray-700 hover:bg-gray-50 dark:hover:bg-gray-600" key={equipment.id}>
-                        <td className="w-4 p-4">
-                          <div className="flex items-center">
-                            <input
-                              type="checkbox"
-                              className="w-4 h-4 text-blue-600 bg-gray-100 border-gray-300 rounded focus:ring-blue-500"
-                              onClick={() => handleEquipmentChange(equipment.id)}
-                              onChange={() => {
-                                handleEquipmentChange(equipment.id);
-                              }}
-                            />
-                          </div>
-                        </td>
-                        <td className="px-6 py-4 font-semibold text-gray-900 dark:text-white uppercase">
-                          {equipment.name}
-                        </td>
-                        <td className="px-6 py-4">
-                          <div className="flex items-center space-x-3">
-                            <button className="inline-flex items-center p-1 text-sm font-medium text-gray-500 bg-white border border-gray-300 rounded-full focus:outline-none hover:bg-gray-100 focus:ring-4 focus:ring-gray-200 dark:bg-gray-800 dark:text-gray-400 dark:border-gray-600 dark:hover:bg-gray-700 dark:hover:border-gray-600 dark:focus:ring-gray-700" type="button">
-                              <svg className="w-4 h-4" aria-hidden="true" fill="currentColor" viewBox="0 0 20 20" xmlns="http://www.w3.org/2000/svg"><path fillRule="evenodd" d="M3 10a1 1 0 011-1h12a1 1 0 110 2H4a1 1 0 01-1-1z" clipRule="evenodd"></path></svg>
-                            </button>
-                            <div>
-                              <input type="number" id="first_product" className="bg-gray-50 w-14 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block px-2.5 py-1 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500" placeholder="1" required />
-                            </div>
-                            <button className="inline-flex items-center p-1 text-sm font-medium text-gray-500 bg-white border border-gray-300 rounded-full focus:outline-none hover:bg-gray-100 focus:ring-4 focus:ring-gray-200 dark:bg-gray-800 dark:text-gray-400 dark:border-gray-600 dark:hover:bg-gray-700 dark:hover:border-gray-600 dark:focus:ring-gray-700" type="button">
-                              <svg className="w-4 h-4" aria-hidden="true" fill="currentColor" viewBox="0 0 20 20" xmlns="http://www.w3.org/2000/svg"><path fillRule="evenodd" d="M10 5a1 1 0 011 1v3h3a1 1 0 110 2h-3v3a1 1 0 11-2 0v-3H6a1 1 0 110-2h3V6a1 1 0 011-1z" clipRule="evenodd"></path></svg>
-                            </button>
-                          </div>
-                        </td>
-                        <td className="px-6 py-4 font-semibold text-gray-900 dark:text-white">
-                          {equipment.price_per_unit} Bath
-                        </td>
-                      </tr>
+                      <>
+                        {(equipment.category === fieldCategory || equipment.category === 'all') && (
+                          <tr className="bg-white border-b dark:bg-gray-800 dark:border-gray-700 hover:bg-gray-50 dark:hover:bg-gray-600" key={equipment.id}>
+                            <td className="w-4 p-4">
+                              <div className="flex items-center">
+                                <input
+                                  type="checkbox"
+                                  className="w-4 h-4 text-blue-600 bg-gray-100 border-gray-300 rounded focus:ring-blue-500"
+                                  onClick={() => { handleEquipmentChange(equipment.id, 'null'), setEquipmentClick(!equipmentClick) }}
+                                  onChange={() => {
+                                    setCheckedEquipments({ ...checkedEquipments, [equipment.id]: !checkedEquipments[equipment.id] });
+                                    handleEquipmentChange(equipment.id, 'null');
+                                  }}
+                                  checked={checkedEquipments[equipment.id] || false}
+                                />
+                              </div>
+                            </td>
+                            <td className="px-6 py-4 font-semibold text-gray-900 dark:text-white uppercase">
+                              {equipment.name}
+                            </td>
+                            <td className="px-6 py-4">
+                              <div className="flex items-center space-x-3">
+                                <button
+                                  className="inline-flex items-center p-1 text-sm font-medium text-gray-500 bg-white border border-gray-300 rounded-full focus:outline-none hover:bg-gray-100 focus:ring-4 focus:ring-gray-200"
+                                  type="button"
+                                  onClick={() => {
+                                    handleEquipmentChange(equipment.id, 'decrease');
+                                    setEquipmentClick(!equipmentClick);
+                                  }}
+                                  disabled={!checkedEquipments[equipment.id]}
+                                >
+                                  <svg
+                                    className="w-4 h-4"
+                                    aria-hidden="true"
+                                    fill="currentColor"
+                                    viewBox="0 0 20 20"
+                                    xmlns="http://www.w3.org/2000/svg"
+                                  >
+                                    <path fillRule="evenodd" d="M3 10a1 1 0 011-1h12a1 1 0 110 2H4a1 1 0 01-1-1z" clipRule="evenodd"></path>
+                                  </svg>
+                                </button>
+                                <div>
+                                  <input
+                                    type="number"
+                                    className="bg-gray-50 w-14 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block px-2.5 py-1"
+                                    value={booking.equipments.find(equipments => equipments.id === equipment.id)?.quantity.toString() || 0}
+                                    min={1}
+                                    required
+                                    disabled
+                                  />
+                                </div>
+                                <button
+                                  className="inline-flex items-center p-1 text-sm font-medium text-gray-500 bg-white border border-gray-300 rounded-full focus:outline-none hover:bg-gray-100 focus:ring-4 focus:ring-gray-200"
+                                  type="button"
+                                  onClick={() => {
+                                    handleEquipmentChange(equipment.id, 'increase');
+                                    setEquipmentClick(!equipmentClick);
+                                  }}
+                                  disabled={!checkedEquipments[equipment.id]}
+                                >
+                                  <svg
+                                    className="w-4 h-4"
+                                    aria-hidden="true"
+                                    fill="currentColor"
+                                    viewBox="0 0 20 20"
+                                    xmlns="http://www.w3.org/2000/svg"
+                                  >
+                                    <path
+                                      fillRule="evenodd"
+                                      d="M10 5a1 1 0 011 1v3h3a1 1 0 110 2h-3v3a1 1 0 11-2 0v-3H6a1 1 0 110-2h3V6a1 1 0 011-1z"
+                                      clipRule="evenodd"
+                                    ></path>
+                                  </svg>
+                                </button>
+                              </div>
+                            </td>
+                            <td className="px-6 py-4 font-semibold text-gray-900 dark:text-white">
+                              {equipment.price_per_unit * booking.equipments.find(equipments => equipments.id === equipment.id)?.quantity.toString() || 0} Bath
+                            </td>
+                          </tr>
+                        )}
+                      </>
                     ))}
                   </tbody>
                 </table>
