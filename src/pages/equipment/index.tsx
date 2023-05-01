@@ -1,29 +1,26 @@
-import { Fragment } from 'react'
-import Layout from '@/layouts/Layout'
-import { GetServerSideProps, NextPage } from 'next'
-import { EquipmentTable } from '@/components'
-import { getEquipmentService } from '@/services'
-import { IEquipment } from '@/interfaces/equipment'
-import Link from 'next/link'
-import { useAuth } from '@/context/auth'
-import { Loading, Error } from '@/components';
+import { Fragment } from "react";
+import Layout from "@/layouts/Layout";
+import { GetServerSideProps, NextPage } from "next";
+import { EquipmentTable } from "@/components";
+import { getEquipmentService } from "@/services";
+import { IEquipment } from "@/interfaces/equipment";
+import Link from "next/link";
+import { useAuth } from "@/context/auth";
+import { Loading, Error } from "@/components";
 
 interface Props {
   data: IEquipment[];
 }
 
 const EquipmentPage: NextPage<Props> = ({ data }) => {
-
   const { isAuthenticated, isAdmin, isLoading } = useAuth();
 
   if (isLoading) {
     return <Loading />;
   }
-
   if (!isAdmin && !isAuthenticated) {
-    return <Error title="401" />
+    return <Error title="401" />;
   }
-
   return (
     <Fragment>
       <Layout title="Athletix | Equipment">
@@ -78,21 +75,21 @@ export const getServerSideProps: GetServerSideProps = async () => {
     if (data) {
       return {
         props: {
-          data
-        }
+          data,
+        },
       };
     } else {
       return {
         redirect: {
-          destination: '/',
-          permanent: false
-        }
+          destination: "/",
+          permanent: false,
+        },
       };
     }
   } catch (err: unknown) {
     console.log(err);
     return {
-      props: {}
+      props: {},
     };
   }
 };

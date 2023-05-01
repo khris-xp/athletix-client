@@ -2,7 +2,7 @@ import React, { Fragment, useState } from "react";
 import Layout from "@/layouts/Layout";
 import { ICreateField } from "@/interfaces/field";
 import { CreateFieldInitialValues } from "@/constants/field";
-import { Loading, Error } from '@/components';
+import { Loading, Error } from "@/components";
 import { createFieldService, uploadImageService } from "@/services";
 import router from "next/router";
 import { toast } from "react-hot-toast";
@@ -14,7 +14,6 @@ const CreateFieldPage = () => {
   const handleCreateField = async (event: React.FormEvent<HTMLFormElement>) => {
     try {
       event.preventDefault();
-      console.log(field);
       await createFieldService(field);
       setField(CreateFieldInitialValues);
       router.push("/");
@@ -27,11 +26,11 @@ const CreateFieldPage = () => {
   const { isAuthenticated, isLoading, isAdmin } = useAuth();
 
   if (isLoading) {
-    return <Loading />
+    return <Loading />;
   }
 
   if (!isAdmin) {
-    return <Error title="401" />
+    return <Error title="401" />;
   }
 
   return (
@@ -60,8 +59,7 @@ const CreateFieldPage = () => {
                       height={1000}
                       width={1000}
                     />
-                  )
-                  }
+                  )}
                 </div>
                 <div className="lg:col-span-2">
                   <form onSubmit={handleCreateField}>
@@ -102,18 +100,17 @@ const CreateFieldPage = () => {
                           className="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 my-4"
                           placeholder="Your Slip URL"
                           required
-                          onChange={async (event
-                          ) => {
+                          onChange={async (event) => {
                             if (!event.target.files) return;
                             const fileData = new FormData();
-                            fileData.append('file', event.target.files[0], event.target.files[0]["name"])
-                            console.log(fileData)
-                            const name = await uploadImageService(fileData)
-                            console.log(name)
+                            fileData.append(
+                              "file",
+                              event.target.files[0],
+                              event.target.files[0]["name"]
+                            );
+                            const name = await uploadImageService(fileData);
                             setField({ ...field, image: name.filename });
-
-                          }
-                          }
+                          }}
                         />
                       </div>
 

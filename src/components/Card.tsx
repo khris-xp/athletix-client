@@ -33,6 +33,24 @@ const Card = ({ id, image, title, description }: Props) => {
     <Fragment>
       <div className="shadow-md mx-auto max-w-sm transform hover:-translate-y-1 duration-300 hover:shadow-xl cursor-pointer">
         <div className="max-h-140 overflow-hidden">
+          {(image[0] as string) != "h" ? (
+            <Image
+              className="w-full h-60"
+              src={`http://127.0.0.1:4000/${image}`}
+              alt="field-image"
+              width={1000}
+              height={1000}
+            />
+          ) : (
+            <Image
+              className="w-full h-60"
+              src={image}
+              alt="field-image"
+              width={1000}
+              height={1000}
+            />
+          )}
+          ;
         {((image[0] as string) != "h") ? (
           <Image
             className="w-full h-60"
