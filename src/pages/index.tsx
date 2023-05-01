@@ -1,7 +1,7 @@
 import Layout from "@/layouts/Layout";
 import { GetServerSideProps, NextPage } from "next";
 import { Hero, Card, Member } from "@/components";
-import { getFieldService } from "@/services/field.services";
+import { getFieldService } from "@/services";
 import { IField } from "@/interfaces/field";
 import { member } from "@/constants/member";
 import Link from "next/link";

@@ -12,7 +12,7 @@ const ProfilePage: NextPage = () => {
     return <Loading />
   }
   if (!isCustomer && !isAuthenticated) {
-    return <Error />
+    return <Error title="401" />
   }
 
   return (

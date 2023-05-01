@@ -2,7 +2,7 @@ import { Fragment } from "react";
 import Image from "next/image";
 import { useAuth } from "@/context/auth";
 import Link from "next/link";
-import { deleteFieldService } from "@/services/field.services";
+import { deleteFieldService } from "@/services";
 import { NextRouter, useRouter } from "next/router";
 import { toast } from "react-hot-toast";
 
@@ -51,6 +51,23 @@ const Card = ({ id, image, title, description }: Props) => {
             />
           )}
           ;
+        {((image[0] as string) != "h") ? (
+          <Image
+            className="w-full h-60"
+            src={`http://localhost:4000/${image}`}
+            alt="field-image"
+            width={1000}
+            height={1000}
+          />
+        ) : (
+          <Image
+            className="w-full h-60"
+            src={image}
+            alt="field-image"
+            width={1000}
+            height={1000}
+          />
+        )}
         </div>
         <div className="p-7 my-auto">
           <h1 className="text-2xl font-semibold text-gray-700">{title}</h1>

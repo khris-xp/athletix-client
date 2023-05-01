@@ -1,18 +1,26 @@
-import { Fragment } from 'react'
-import Layout from '@/layouts/Layout'
-import { GetServerSideProps, NextPage } from 'next'
-import { EquipmentTable } from '@/components'
-import { getEquipmentService } from '@/services/equipment.services'
-import { IEquipment } from '@/interfaces/equipment'
-import Link from 'next/link'
-import { useAuth } from '@/context/auth'
-import { Loading, Error } from '@/components';
+import { Fragment } from "react";
+import Layout from "@/layouts/Layout";
+import { GetServerSideProps, NextPage } from "next";
+import { EquipmentTable } from "@/components";
+import { getEquipmentService } from "@/services";
+import { IEquipment } from "@/interfaces/equipment";
+import Link from "next/link";
+import { useAuth } from "@/context/auth";
+import { Loading, Error } from "@/components";
 
 interface Props {
   data: IEquipment[];
 }
 
 const EquipmentPage: NextPage<Props> = ({ data }) => {
+  const { isAuthenticated, isAdmin, isLoading } = useAuth();
+
+  if (isLoading) {
+    return <Loading />;
+  }
+  if (!isAdmin && !isAuthenticated) {
+    return <Error title="401" />;
+  }
   return (
     <Fragment>
       <Layout title="Athletix | Equipment">
@@ -62,28 +70,28 @@ const EquipmentPage: NextPage<Props> = ({ data }) => {
 };
 
 export const getServerSideProps: GetServerSideProps = async () => {
-    try {
-        const data: IEquipment = await getEquipmentService();
-        if (data) {
-            return {
-                props: {
-                    data
-                }
-            };
-        } else {
-            return {
-                redirect: {
-                    destination: '/',
-                    permanent: false
-                }
-            };
-        }
-    } catch (err: unknown) {
-        console.log(err);
-        return {
-            props: {}
-        };
+  try {
+    const data: IEquipment = await getEquipmentService();
+    if (data) {
+      return {
+        props: {
+          data,
+        },
+      };
+    } else {
+      return {
+        redirect: {
+          destination: "/",
+          permanent: false,
+        },
+      };
     }
+  } catch (err: unknown) {
+    console.log(err);
+    return {
+      props: {},
+    };
+  }
 };
 
 export default EquipmentPage;

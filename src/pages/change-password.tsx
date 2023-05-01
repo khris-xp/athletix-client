@@ -3,7 +3,7 @@ import { Fragment, useState } from 'react'
 import Layout from '@/layouts/Layout'
 import { IUserChangePassword } from '@/interfaces/user'
 import { UserChangePassword } from '@/constants/user'
-import { changeUserPasswordService } from '@/services/user.services'
+import { changeUserPasswordService } from '@/services'
 import { toast } from 'react-hot-toast'
 import router from 'next/router'
 import { Loading, Error } from '@/components';
@@ -18,7 +18,7 @@ const ChangePasswordPage: NextPage = () => {
     }
 
     if (!isAuthenticated && !isCustomer) {
-        return <Error />
+        return <Error title='401' />
     }
 
   const handleChangePassword = (event: React.ChangeEvent<HTMLFormElement>) => {

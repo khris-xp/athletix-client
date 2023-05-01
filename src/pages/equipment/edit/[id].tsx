@@ -10,7 +10,7 @@ import {
   getEquipmentService,
   getEquipmentByIdService,
   editEquipmentService,
-} from "@/services/equipment.services";
+} from "@/services";
 import { IUpdateEquipment } from "@/interfaces/equipment";
 import { toast } from "react-hot-toast";
 import router from "next/router";
@@ -45,8 +45,8 @@ const EditEquipmentPage: NextPage<Props> = ({
     return <Loading />
   }
 
-  if (!isAdmin) {
-    return <Error />
+  if (!isAdmin && !isAuthenticated) {
+    return <Error title="401" />
   }
 
   const handleEditEquipment = async () => {

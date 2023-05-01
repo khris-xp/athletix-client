@@ -9,7 +9,7 @@ export const createBookingService = async (booking: IBooking) => {
         const CookiesToken: IToken = parseCookies();
         if (CookiesToken.token) {
             axios.defaults.headers.common['Authorization'] = `Bearer ${CookiesToken.token}`;
-            const response: AxiosResponse = await axios.post(`${process.env.NEXT_PUBLIC_GET_API}/booking`, booking);
+            const response: AxiosResponse = await axios.post(`${process.env.NEXT_PUBLIC_POST_PUT_DELETE_API}/booking`, booking);
             return response.data;
         }
     } catch (err) {

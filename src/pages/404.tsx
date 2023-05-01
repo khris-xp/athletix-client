@@ -5,7 +5,7 @@ import { Fragment } from "react";
 const Custom404Page: NextPage = () => {
   return (
     <Fragment>
-      <Error />
+      <Error title="404"/>
     </Fragment>
   );
 };

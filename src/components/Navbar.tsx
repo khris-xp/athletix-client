@@ -1,7 +1,7 @@
 import { Fragment, useState } from "react";
 import Link from "next/link";
 import Image from "next/image";
-import { logoutService } from "@/services/user.services";
+import { logoutService } from "@/services";
 import { useAuth } from "@/context/auth";
 import { NextRouter, useRouter } from "next/router";
 
