@@ -13,7 +13,6 @@ interface Props {
 
 const HomePage: NextPage<Props> = ({ data }) => {
   const { isAdmin } = useAuth();
-  console.log(data);
   return (
     <Layout title="Athletix | Home">
       <Hero />

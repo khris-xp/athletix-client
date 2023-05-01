@@ -13,7 +13,6 @@ interface Props {
 }
 
 const EquipmentPage: NextPage<Props> = ({ data }) => {
-  console.log(data);
   return (
     <Fragment>
       <Layout title="Athletix | Equipment">

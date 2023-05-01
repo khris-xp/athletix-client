@@ -33,7 +33,7 @@ export const createNewService = async (news: ICreateNew) => {
     }
   } catch (err: unknown) {
     throw new Error("Failed to create new");
-  }
+  } 
 };
 
 export const editNewService = async (news: IUpdateNew, id: string) => {

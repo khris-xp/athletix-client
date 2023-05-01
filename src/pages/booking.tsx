@@ -44,7 +44,7 @@ const BookingPage: NextPage<Props> = ({ data, equipmentData }) => {
 
   const { isAuthenticated } = useAuth();
 
-  console.log(booking.equipments)
+  
 
   const handleSlotsClick = (id: string): void => {
     setSlotsId(id);
@@ -64,12 +64,12 @@ const BookingPage: NextPage<Props> = ({ data, equipmentData }) => {
     } as ISearchSlots);
     setSelectedId(id);
 
-    //console.log(selectedId);
+  
   };
 
   const handSlotCheck = async (slotData: ISearchSlots) => {
     try {
-      console.log(slotData);
+    
       const BookingCheck = await checkSlotBookingService(slotData);
       setSlotCheck(BookingCheck);
     } catch (err) {
@@ -266,7 +266,7 @@ const BookingPage: NextPage<Props> = ({ data, equipmentData }) => {
               </div>
             </div>
             {booking.slot.date
-              ? (console.log(booking),
+              &&
                 (
                   <div>
                     <p className="my-8 text-xl font-bold text-blue-900">
@@ -330,8 +330,8 @@ const BookingPage: NextPage<Props> = ({ data, equipmentData }) => {
                       ))}
                     </div>
                   </div>
-                ))
-              : null}
+                )
+              }
             {isAuthenticated && booking.slot.date != "" && booking.field_id != "" ? (
               <button
                 className="mt-8 w-56 rounded-full border-8 border-blue-500 bg-blue-600 px-10 py-4 text-lg font-bold text-white transition hover:translate-y-1"
@@ -529,9 +529,7 @@ const BookingPage: NextPage<Props> = ({ data, equipmentData }) => {
                             if (!event.target.files) return;
                             const fileData = new FormData();
                             fileData.append('file', event.target.files[0], event.target.files[0]["name"])
-                            console.log(fileData)
                             const name = await uploadImageService(fileData)
-                            console.log(name)
                             setPromptPayData(name.filename as string)
                           }
                           }

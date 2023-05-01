@@ -12,7 +12,6 @@ const CreateFieldPage = () => {
   const handleCreateField = async (event: React.FormEvent<HTMLFormElement>) => {
     try {
       event.preventDefault();
-      console.log(field);
       await createFieldService(field);
       setField(CreateFieldInitialValues);
       router.push("/");
@@ -95,9 +94,7 @@ const CreateFieldPage = () => {
                                   if (!event.target.files) return;
                                   const fileData = new FormData();
                                   fileData.append('file', event.target.files[0], event.target.files[0]["name"])
-                                  console.log(fileData)
                                   const name = await  uploadImageService(fileData)
-                                  console.log(name)
                                   setField({ ...field, image: name.filename });
                                   
                               }

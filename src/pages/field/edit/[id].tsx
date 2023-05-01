@@ -128,11 +128,8 @@ const EditFieldPage: NextPage<Props> = ({
                                   if (!event.target.files) return;
                                   const fileData = new FormData();
                                   fileData.append('file', event.target.files[0], event.target.files[0]["name"])
-                                  console.log(fileData)
                                   const name = await  uploadImageService(fileData)
-                                  console.log(name)
                                   setField({ ...field, image: name.filename });
-                                  
                               }
                           }
                           />
@@ -221,8 +218,8 @@ const EditFieldPage: NextPage<Props> = ({
 export const getStaticPaths: GetStaticPaths = async () => {
   try {
     const fieldItems = await getFieldService();
-    const paths = fieldItems.map((fieldItem: { _Field__id: string }) => ({
-      params: { id: fieldItem._Field__id },
+    const paths = fieldItems.map((fieldItem: { id: string }) => ({
+      params: { id: fieldItem.id },
     }));
 
     return {
@@ -256,13 +253,13 @@ export const getStaticProps: GetStaticProps = async ({
     }
     return {
       props: {
-        field_id: fieldItem._Field__id,
-        name: fieldItem._Field__name,
-        description: fieldItem._Field__description,
-        price_by_slot: fieldItem._Field__price_by_slot,
-        category: fieldItem._Field__category,
-        type: fieldItem._Field__type,
-        image: fieldItem._Field__image,
+        field_id: fieldItem.id,
+        name: fieldItem.name,
+        description: fieldItem.description,
+        price_by_slot: fieldItem.price_by_slot,
+        category: fieldItem.category,
+        type: fieldItem.type,
+        image: fieldItem.image,
       },
     };
   } catch (err) {
