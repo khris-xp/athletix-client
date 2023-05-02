@@ -53,7 +53,7 @@ const CreateFieldPage = () => {
                     />
                   ) : (
                     <Image
-                      src={"http://localhost:4000/" + field.image}
+                      src={"http://127.0.0.1:4000/" + field.image}
                       alt="banner-image"
                       className="mt-6 px-5 lg:px-2 lg:pr-10"
                       height={1000}
@@ -93,7 +93,7 @@ const CreateFieldPage = () => {
                       </div>
 
                       <div className="md:col-span-5">
-                        <label>Field Image Url</label>
+                        <label>Field Image</label>
                         <input
                           type="file"
                           id="file_input"

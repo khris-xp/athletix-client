@@ -23,6 +23,7 @@ import Image from "next/image";
 import router from "next/router";
 import { IEquipment } from "@/interfaces/equipment";
 import { useAuth } from "@/context/auth";
+import { EquipmentInitialValues } from "@/constants/equipment";
 
 interface Props {
   data: IField[];
@@ -108,6 +109,7 @@ const BookingPage: NextPage<Props> = ({ data, equipmentData }) => {
       date: booking.slot.date,
     } as ISearchSlots);
     setSelectedId(id);
+    setSlotsId("");
   };
 
   const handSlotCheck = async (slotData: ISearchSlots) => {
@@ -118,9 +120,8 @@ const BookingPage: NextPage<Props> = ({ data, equipmentData }) => {
       console.log(err);
     }
   };
-  
   const handleConvertTime = (time: string) => {
-    const match = time?.match(/^(\d{4})-(\d{2})-(\d{2})T(\d{2}):(\d{2}):/);
+    const match = time.match(/^(\d{4})-(\d{2})-(\d{2})T(\d{2}):(\d{2}):/);
     if (match) {
       const hours = match[4];
       const minutes = match[5];
@@ -299,73 +300,138 @@ const BookingPage: NextPage<Props> = ({ data, equipmentData }) => {
                 </div>
               </div>
             </div>
-            {booking.slot.date && (
-              <div>
-                <p className="my-8 text-xl font-bold text-blue-900">
-                  Select a time
-                </p>
-                <div className="mt-4 grid grid-cols-6 gap-2">
-                  {SlotsInitialValue.map((Slots: ISlots, index: number) => (
-                    <>
-                      {slotsClick && slotsId === Slots.id ? (
-                        <button
-                          className={`rounded-lg ${
-                            SlotCheck.some(
-                              (slot) =>
-                                handleConvertTime(slot.start_time) ===
-                                  Slots.start_time &&
-                                handleConvertTime(slot.end_time) ===
+            {booking.slot.date
+              ? (console.log(booking),
+                (
+                  <div>
+                    <p className="my-8 text-xl font-bold text-blue-900">
+                      Select a time
+                    </p>
+                    <div className="mt-4 grid grid-cols-6 gap-2">
+                      {SlotsInitialValue.map((Slots: ISlots) => (
+                        <>
+                          {slotsClick && slotsId === Slots.id ? (
+                            <button
+                              className={`rounded-lg ${
+                                SlotCheck.some(
+                                  (slot) =>
+                                    handleConvertTime(slot.start_time) ===
+                                      Slots.start_time &&
+                                    handleConvertTime(slot.end_time) ===
+                                      Slots.end_time
+                                )
+                                  ? "bg-red-500"
+                                  : "bg-blue-900"
+                              } px-2 py-2 font-medium text-white active:scale-95`}
+                              onClick={() => {
+                                handleSlotsClick(Slots.id);
+                                handleTimeChange(
+                                  Slots.start_time,
                                   Slots.end_time
-                            )
-                              ? "bg-red-500"
-                              : "bg-blue-900"
-                          } px-2 py-2 font-medium text-white active:scale-95`}
-                          onClick={() => {
-                            handleSlotsClick(Slots.id);
-                            handleTimeChange(Slots.start_time, Slots.end_time);
-                          }}
-                          key={Slots.id}
-                        >
-                          {Slots.start_time} - {Slots.end_time}
-                        </button>
-                      ) : (
-                        <button
-                          className={`rounded-lg ${
-                            SlotCheck.some(
-                              (slot) =>
-                                handleConvertTime(slot.start_time) ===
-                                  Slots.start_time &&
-                                handleConvertTime(slot.end_time) ===
+                                );
+                              }}
+                              key={Slots.id}
+                            >
+                              {Slots.start_time} - {Slots.end_time}
+                            </button>
+                          ) : (
+                            <button
+                              className={`rounded-lg ${
+                                SlotCheck.some(
+                                  (slot) =>
+                                    handleConvertTime(slot.start_time) ===
+                                      Slots.start_time &&
+                                    handleConvertTime(slot.end_time) ===
+                                      Slots.end_time
+                                )
+                                  ? "bg-red-500"
+                                  : "bg-blue-100"
+                              } px-2 py-2 font-medium ${
+                                SlotCheck.some(
+                                  (slot) =>
+                                    handleConvertTime(slot.start_time) ===
+                                      Slots.start_time &&
+                                    handleConvertTime(slot.end_time) ===
+                                      Slots.end_time
+                                )
+                                  ? "text-white"
+                                  : "text-blue-900"
+                              } active:scale-95`}
+                              onClick={() => {
+                                handleSlotsClick(Slots.id);
+                                handleTimeChange(
+                                  Slots.start_time,
                                   Slots.end_time
-                            )
-                              ? "bg-red-500"
-                              : "bg-blue-100"
-                          } px-2 py-2 font-medium ${
-                            SlotCheck.some(
-                              (slot) =>
-                                handleConvertTime(slot.start_time) ===
-                                  Slots.start_time &&
-                                handleConvertTime(slot.end_time) ===
-                                  Slots.end_time
-                            )
-                              ? "text-white"
-                              : "text-blue-900"
-                          } active:scale-95`}
-                          onClick={() => {
-                            handleSlotsClick(Slots.id);
-                            handleTimeChange(Slots.start_time, Slots.end_time);
-                            setEquipmentModal(true);
-                          }}
-                          key={Slots.id}
-                        >
-                          {Slots.start_time} - {Slots.end_time}
-                        </button>
-                      )}
-                    </>
-                  ))}
+                                );
+                                // setEquipmentModal(true);
+                              }}
+                              key={Slots.id}
+                            >
+                              {Slots.start_time} - {Slots.end_time}
+                            </button>
+                          )}
+                        </>
+                      ))}
+                    </div>
+                  </div>
+                ))
+              : null}
+            <div className="mt-8">
+              {slotsId !== "" && (
+                <div>
+                  <p className="my-8 text-xl font-bold text-blue-900">
+                    Select an Equipment{" "}
+                  </p>
+                  <div>
+                    {equipmentData.map((equipment: IEquipment) => (
+                      <div key={equipment.id}>
+                        {(equipment.category === "all" ||
+                          equipment.category === fieldCategory) && (
+                          <div>
+                            <p>{equipment.name}</p>
+                            <div>
+                              <input
+                                type="number"
+                                min={0}
+                                max={equipment.quantity}
+                                placeholder="quantity"
+                                onChange={(e) => {
+                                  setBooking({
+                                    ...booking,
+                                    // check if equipment is empty and if it is, add the equipment to the array of equipments
+                                    equipments: booking.equipments.some(
+                                      (equip) => equip.id === equipment.id
+                                    )
+                                      ? booking.equipments.map((equip) =>
+                                          equip.id === equipment.id
+                                            ? {
+                                                ...equip,
+                                                quantity: parseInt(
+                                                  e.target.value
+                                                ),
+                                              }
+                                            : equip
+                                        )
+                                      : [
+                                          ...booking.equipments,
+                                          {
+                                            id: equipment.id,
+                                            quantity: parseInt(e.target.value),
+                                          },
+                                        ],
+                                  });
+                                }}
+                              />
+                              <span>/{equipment.quantity}</span>
+                            </div>
+                          </div>
+                        )}
+                      </div>
+                    ))}
+                  </div>
                 </div>
-              </div>
-            )}
+              )}
+            </div>
             {isAuthenticated &&
             booking.slot.date != "" &&
             booking.field_id != "" ? (
@@ -807,146 +873,6 @@ const BookingPage: NextPage<Props> = ({ data, equipmentData }) => {
                     ))}
                   </tbody>
                 </table>
-              </div>
-            </div>
-          </div>
-        </div>
-        <div
-          className={`fixed top-0 left-0 right-0 z-50 w-full p-4 overflow-x-hidden overflow-y-auto md:inset-0 h-[calc(100%-1rem)] max-h-full ${
-            paymentModal ? "flex" : "hidden"
-          } items-center justify-center bg-opacity-50 bg-black`}
-        >
-          <div className="relative w-full max-w-2xl max-h-full">
-            <div className="relative bg-white rounded-lg shadow">
-              <button
-                type="button"
-                className="text-gray-400 bg-transparent hover:text-gray-900 rounded-lg text-sm p-4 ml-auto flex justify-end"
-                onClick={() => setPaymentModal(false)}
-              >
-                <svg
-                  aria-hidden="true"
-                  className="w-6 h-6"
-                  fill="currentColor"
-                  viewBox="0 0 20 20"
-                  xmlns="http://www.w3.org/2000/svg"
-                >
-                  <path
-                    fillRule="evenodd"
-                    d="M4.293 4.293a1 1 0 011.414 0L10 8.586l4.293-4.293a1 1 0 111.414 1.414L11.414 10l4.293 4.293a1 1 0 01-1.414 1.414L10 11.414l-4.293 4.293a1 1 0 01-1.414-1.414L8.586 10 4.293 5.707a1 1 0 010-1.414z"
-                    clipRule="evenodd"
-                  ></path>
-                </svg>
-              </button>
-              <div className="w-full mx-auto rounded-lg bg-white shadow-lg p-5 text-gray-700">
-                <div className="w-full pt-1 pb-5">
-                  <div className="bg-indigo-500 text-white overflow-hidden rounded-full w-20 h-20 -mt-24 mx-auto shadow-lg flex justify-center items-center">
-                    <i className="mdi mdi-credit-card-outline text-3xl"></i>
-                  </div>
-                </div>
-                <div className="mb-10">
-                  <h1 className="text-center font-bold text-xl uppercase">
-                    Secure payment info
-                  </h1>
-                </div>
-                <div className="mb-3 flex -mx-2">
-                  <div className="px-2">
-                    <label
-                      htmlFor="type1"
-                      className="flex items-center cursor-pointer"
-                    >
-                      <input
-                        type="radio"
-                        className="form-radio h-5 w-5 text-indigo-500"
-                        name="type"
-                        id="type1"
-                        onClick={() => setPaymentMethod("promptpay")}
-                      />
-                      <Image
-                        src="https://www.ceochannels.com/wp-content/uploads/2017/10/PromptPay.jpg"
-                        alt="payment-image"
-                        width={32}
-                        height={32}
-                        className="ml-3"
-                      />
-                    </label>
-                  </div>
-                  <div className="px-2">
-                    <label
-                      htmlFor="type2"
-                      className="flex items-center cursor-pointer"
-                    >
-                      <input
-                        type="radio"
-                        className="form-radio h-5 w-5 text-indigo-500"
-                        name="type"
-                        id="type2"
-                        onClick={() => setPaymentMethod("cash")}
-                      />
-                      <Image
-                        src="https://cdn-icons-png.flaticon.com/512/2371/2371970.png"
-                        alt="payment-image"
-                        height={32}
-                        width={32}
-                        className="ml-3"
-                      />
-                    </label>
-                  </div>
-                </div>
-                {paymentMethod === "promptpay" ? (
-                  <div className="mb-3 -mx-2 flex items-end">
-                    <div className="px-2 w-full">
-                      <label className="font-bold text-sm mb-2 ml-1">
-                        Your Promptpay Slip
-                      </label>
-                      <div>
-                        <input
-                          type="file"
-                          id="file_input"
-                          className="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 my-4"
-                          placeholder="Your Slip URL"
-                          required
-                          onChange={async (event) => {
-                            if (!event.target.files) return;
-                            const fileData = new FormData();
-                            fileData.append(
-                              "file",
-                              event.target.files[0],
-                              event.target.files[0]["name"]
-                            );
-                            const name = await uploadImageService(fileData);
-                            setPromptPayData(name.filename as string);
-                          }}
-                        />
-                      </div>
-                    </div>
-                  </div>
-                ) : (
-                  <div className="mb-3 -mx-2 flex items-end">
-                    <div className="px-2 w-full">
-                      <label className="font-bold text-sm mb-2 ml-1">
-                        Your Payment Amount {bookingData?.payment?.amount} is
-                        Bath
-                      </label>
-                    </div>
-                  </div>
-                )}
-                <div>
-                  {paymentMethod === "promptpay" ? (
-                    <button
-                      className="block w-full max-w-xs mx-auto bg-indigo-500 hover:bg-indigo-700 focus:bg-indigo-700 text-white rounded-lg px-3 py-3 font-semibold"
-                      onClick={() => handlePromptPayMethod()}
-                    >
-                      <i className="mdi mdi-lock-outline mr-1"></i> PAY NOW
-                    </button>
-                  ) : (
-                    <button
-                      className="block w-full max-w-xs mx-auto bg-indigo-500 hover:bg-indigo-700 focus:bg-indigo-700 text-white rounded-lg px-3 py-3 font-semibold"
-                      onClick={() => handleCashMethod()}
-                    >
-                      <i className="mdi mdi-lock-outline mr-1"></i> PAY NOW
-                    </button>
-                  )}
-                </div>
               </div>
             </div>
           </div>
