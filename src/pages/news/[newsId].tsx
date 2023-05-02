@@ -34,10 +34,6 @@ const NewsDetailPage: NextPage<Props> = ({
     return <Loading />
   }
 
-  if (!isAdmin && !isAuthenticated) {
-    return <Error title="401" />
-  }
-
   let formattedDate = "";
   let formattedTime = "";
   if (createdDate) {
