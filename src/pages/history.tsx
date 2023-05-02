@@ -8,6 +8,8 @@ import { Loading, Error } from "@/components";
 import { useAuth } from "@/context/auth";
 import Image from "next/image";
 import {
+  approveBookingService,
+  cancelBookingService,
   createCashPayment,
   createPromptpayPayment,
 } from "@/services/booking.services";
@@ -22,7 +24,7 @@ const HistoryPage: NextPage<Props> = ({ historyData }) => {
   const [paymentModal, setPaymentModal] = useState<boolean>(false);
   const [paymentMethod, setPaymentMethod] = useState<string>("");
   const [promptPayData, setPromptPayData] = useState<string>("");
-  const { isAuthenticated, isCustomer, isLoading } = useAuth();
+  const { isAuthenticated, isCustomer, isLoading, isFrontDesk } = useAuth();
 
   if (isLoading) {
     return <Loading />;
@@ -61,6 +63,26 @@ const HistoryPage: NextPage<Props> = ({ historyData }) => {
       router.push("/history");
     } catch (err) {
       toast.error("Payment created failed");
+    }
+  };
+
+  const handleDeleteBooking = async (booking_id: string): Promise<void> => {
+    try {
+      await cancelBookingService(booking_id);
+      toast.success("Booking deleted successfully");
+      router.push("/history");
+    } catch (err) {
+      toast.error("Booking deleted failed");
+    }
+  };
+
+  const handleApproveBooking = async (booking_id: string): Promise<void> => {
+    try {
+      await approveBookingService(booking_id);
+      toast.success("Booking approved successfully");
+      router.push("/history");
+    } catch (err) {
+      toast.error("Booking approved failed");
     }
   };
 
@@ -116,6 +138,9 @@ const HistoryPage: NextPage<Props> = ({ historyData }) => {
                         <th scope="col" className="px-6 py-3">
                           Action
                         </th>
+                        <th scope="col" className="px-6 py-3">
+                          Action
+                        </th>
                       </tr>
                     </thead>
                     <tbody>
@@ -141,10 +166,11 @@ const HistoryPage: NextPage<Props> = ({ historyData }) => {
                               {history.equipments.length === 0
                                 ? "No Equipment"
                                 : history.equipments.map((equipment) => (
-                                  <div key={equipment.id} className="w-full">
-                                    {equipment.name} {equipment.quantity} piece
-                                  </div>
-                                ))}
+                                    <div key={equipment.id} className="w-full">
+                                      {equipment.name} {equipment.quantity}{" "}
+                                      piece
+                                    </div>
+                                  ))}
                             </td>
                             <td className="px-6 py-4">
                               {history.payment.amount} Bath
@@ -162,7 +188,7 @@ const HistoryPage: NextPage<Props> = ({ historyData }) => {
                             <td className="px-6 py-4">
                               {new Date(
                                 new Date(history.slot.start_time).getTime() -
-                                7 * 60 * 60 * 1000
+                                  7 * 60 * 60 * 1000
                               ).toLocaleTimeString("th-TH", {
                                 hour: "2-digit",
                                 minute: "2-digit",
@@ -170,7 +196,7 @@ const HistoryPage: NextPage<Props> = ({ historyData }) => {
                               - {` `}
                               {new Date(
                                 new Date(history.slot.end_time).getTime() -
-                                7 * 60 * 60 * 1000
+                                  7 * 60 * 60 * 1000
                               ).toLocaleTimeString("th-TH", {
                                 hour: "2-digit",
                                 minute: "2-digit",
@@ -187,16 +213,38 @@ const HistoryPage: NextPage<Props> = ({ historyData }) => {
                                 >
                                   Paid
                                 </button>
-                              </td>) : (
+                              </td>
+                            ) : (
                               <td className="px-6 py-4">
-                                <p className="text-green-600 font-semibold">Already Paid</p>
+                                <p className="text-green-600 font-semibold">
+                                  Already Paid
+                                </p>
                               </td>
                             )}
+                            <td className="px-6 py-4">
+                              <button
+                                onClick={() => handleDeleteBooking(history.id)}
+                                className="text-red-600 font-semibold"
+                              >
+                                Cancel
+                              </button>
+                              {isFrontDesk && (
+                                <button
+                                  onClick={() =>
+                                    handleApproveBooking(history.id)
+                                  }
+                                  className="text-yellow-600 font-semibold"
+                                >
+                                  Approve
+                                </button>
+                              )}
+                            </td>
                           </tr>
                           <div>
                             <div
-                              className={`fixed top-0 left-0 right-0 z-50 w-full p-4 overflow-x-hidden overflow-y-auto md:inset-0 h-[calc(100%-1rem)] max-h-full ${paymentModal ? "flex" : "hidden"
-                                } items-center justify-center bg-opacity-50 bg-black`}
+                              className={`fixed top-0 left-0 right-0 z-50 w-full p-4 overflow-x-hidden overflow-y-auto md:inset-0 h-[calc(100%-1rem)] max-h-full ${
+                                paymentModal ? "flex" : "hidden"
+                              } items-center justify-center bg-opacity-50 bg-black`}
                             >
                               <div className="relative w-full max-w-2xl max-h-full">
                                 <div className="relative bg-white rounded-lg shadow">

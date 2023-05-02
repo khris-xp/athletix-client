@@ -74,3 +74,16 @@ export const approveBookingService = async (booking_id: string) => {
         console.log(err);
     }
 }
+
+export const cancelBookingService = async (booking_id: string) => {
+    try {
+        const CookiesToken: IToken = parseCookies();
+        if (CookiesToken.token) {
+            axios.defaults.headers.common['Authorization'] = `Bearer ${CookiesToken.token}`;
+            const response: AxiosResponse = await axios.delete(`${process.env.NEXT_PUBLIC_POST_PUT_DELETE_API}/booking/${booking_id}`);
+            return response.data;
+        }
+    } catch (err) {
+        console.log(err);
+    }
+}
