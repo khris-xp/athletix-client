@@ -74,23 +74,17 @@ const EditFieldPage: NextPage<Props> = ({
                 <div className="text-gray-600">
                   <p className="font-medium text-lg">Edit Field</p>
                   <p>Please fill out all the fields.</p>
-                  {(image[0] as string) != "h" ? ( //eiei :D
-                    <Image
-                      className="w-full h-60"
-                      src={`http://localhost:4000/${image}`}
-                      alt="field-image"
-                      width={1000}
-                      height={1000}
-                    />
-                  ) : (
-                    <Image
-                      className="w-full h-60"
-                      src={image}
-                      alt="field-image"
-                      width={1000}
-                      height={1000}
-                    />
-                  )}
+                  <Image
+                    className="w-full h-60"
+                    src={
+                      /^https:/.test(image)
+                        ? image
+                        : `http://127.0.0.1:4000/${image}`
+                    }
+                    alt="field-image"
+                    width={1000}
+                    height={1000}
+                  />
                 </div>
                 <div className="lg:col-span-2">
                   <form>

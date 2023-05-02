@@ -38,13 +38,15 @@ const NewsCard = ({ id, title, description, createdDate, image }: Props) => {
       <div className="xl:w-1/3 md:w-1/2 p-4">
         <div className="bg-white p-6 rounded-lg">
           <Link href={`/news/${id}`}>
-            <Image
-              className="lg:h-60 xl:h-56 md:h-64 sm:h-72 xs:h-72 h-72  rounded w-full object-cover object-center mb-6"
-              src={`${image}`}
-              alt="Image Size 720x400"
-              height={1000}
-              width={1000}
-            />
+          <Image
+            className="w-full h-60"
+            src={
+              /^https:/.test(image) ? image : `http://127.0.0.1:4000/${image}`
+            }
+            alt="field-image"
+            width={1000}
+            height={1000}
+          />
           </Link>
           <h3 className="tracking-widest text-blue-500 text-xs font-medium title-font">
             News

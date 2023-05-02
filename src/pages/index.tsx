@@ -55,7 +55,7 @@ const HomePage: NextPage<Props> = ({ data }) => {
         {member.map((member) => (
           <Member key={member.id} {...member} />
         ))}
-      </div>
+      </div>  
     </Layout>
   );
 };

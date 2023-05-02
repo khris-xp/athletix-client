@@ -11,11 +11,12 @@ import {
   getNewService,
   getNewDetailService,
   editNewService,
+  uploadImageService,
 } from "@/services";
 import { IUpdateNew } from "@/interfaces/news";
 import { toast } from "react-hot-toast";
 import { useAuth } from "@/context/auth";
-import { Error, Loading } from '@/components';
+import { Error, Loading } from "@/components";
 
 interface Props {
   news_id: string;
@@ -40,10 +41,10 @@ const EditNewsPage: NextPage<Props> = ({
 
   const { isAuthenticated, isLoading, isAdmin } = useAuth();
   if (isLoading) {
-    return <Loading />
+    return <Loading />;
   }
   if (!isAdmin && !isAuthenticated) {
-    return <Error title="401" />
+    return <Error title="401" />;
   }
 
   const handleEditNews = async () => {
@@ -95,7 +96,7 @@ const EditNewsPage: NextPage<Props> = ({
                           onChange={(
                             event: React.ChangeEvent<HTMLInputElement>
                           ) => {
-                            setNews({ ...news, title: event.target.value })
+                            setNews({ ...news, title: event.target.value });
                           }}
                         />
                       </div>
@@ -114,13 +115,21 @@ const EditNewsPage: NextPage<Props> = ({
                       <div className="md:col-span-5">
                         <label>News Image Url</label>
                         <input
-                          type="text"
-                          className="h-10 border mt-1 rounded px-4 w-full bg-gray-50"
-                          value={news.image_url}
-                          onChange={(
-                            event: React.ChangeEvent<HTMLInputElement>
-                          ) => {
-                            setNews({ ...news, image_url: event.target.value });
+                          type="file"
+                          id="file_input"
+                          className="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 my-4"
+                          placeholder="Your Slip URL"
+                          required
+                          onChange={async (event) => {
+                            if (!event.target.files) return;
+                            const fileData = new FormData();
+                            fileData.append(
+                              "file",
+                              event.target.files[0],
+                              event.target.files[0]["name"]
+                            );
+                            const name = await uploadImageService(fileData);
+                            setNews({ ...news, image_url: name.filename });
                           }}
                         />
                       </div>

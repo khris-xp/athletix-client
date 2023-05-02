@@ -41,7 +41,7 @@ export const editNewService = async (news: IUpdateNew, id: string) => {
     const Cookies: IToken = parseCookies();
     if (Cookies.token) {
       axios.defaults.headers.common['Authorization'] = `Bearer ${Cookies.token}`;
-      const response: AxiosResponse = await axios.patch(`${process.env.NEXT_PUBLIC_POST_PUT_DELETE_API}/news/${id}`, news);
+      const response: AxiosResponse = await axios.put(`${process.env.NEXT_PUBLIC_POST_PUT_DELETE_API}/news/${id}`, news);
       router.push('/news');
       return response.data;
     }

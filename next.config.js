@@ -14,6 +14,7 @@ const nextConfig = {
         pathname: "/images/**",
       }
     ],
+    domains: ["localhost"],
   },
 };
 

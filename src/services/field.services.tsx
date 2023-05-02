@@ -40,7 +40,7 @@ export const editFieldService = async (field: ICreateField, id: string) => {
         const Cookies: IToken = parseCookies();
         if (Cookies.token) {
             axios.defaults.headers.common['Authorization'] = `Bearer ${Cookies.token}`;
-            const response: AxiosResponse = await axios.patch(`${process.env.NEXT_PUBLIC_POST_PUT_DELETE_API}/fields/${id}`, field);
+            const response: AxiosResponse = await axios.put(`${process.env.NEXT_PUBLIC_POST_PUT_DELETE_API}/fields/${id}`, field);
             router.push('/')
             return response.data;
         }
