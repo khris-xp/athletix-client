@@ -11,7 +11,7 @@ import {
   getNewService,
   getNewDetailService,
   editNewService,
-  uploadImageService,
+  uploadImageService
 } from "@/services";
 import { IUpdateNew } from "@/interfaces/news";
 import { toast } from "react-hot-toast";
@@ -36,8 +36,9 @@ const EditNewsPage: NextPage<Props> = ({
     title: title,
     content: content,
     image_url: image_url,
-    draft: false,
   });
+
+  console.log(news);
 
   const { isAuthenticated, isLoading, isAdmin } = useAuth();
   if (isLoading) {
@@ -52,7 +53,7 @@ const EditNewsPage: NextPage<Props> = ({
       await editNewService(news, news_id);
       toast.success("Edit News Success");
     } catch (err) {
-      toast.error("Edit News Failed");
+      console.log(err);
     }
   };
 
@@ -76,7 +77,11 @@ const EditNewsPage: NextPage<Props> = ({
                     />
                   ) : (
                     <Image
-                      src={news.image_url}
+                      src={
+                        /^https:/.test(image_url)
+                          ? image_url
+                          : `http://127.0.0.1:4000/${image_url}`
+                      }
                       alt="banner-image"
                       className="mt-6 px-5 lg:px-2 lg:pr-10"
                       height={1000}
@@ -113,7 +118,7 @@ const EditNewsPage: NextPage<Props> = ({
                         ></textarea>
                       </div>
                       <div className="md:col-span-5">
-                        <label>News Image Url</label>
+                        <label>News Image</label>
                         <input
                           type="file"
                           id="file_input"
