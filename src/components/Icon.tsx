@@ -15,7 +15,7 @@ const Icon = ({ facebook_url, instagram_url, github_url }: Props) => {
         <li>
           <Link
             href={facebook_url}
-            className="text-[#39569c] hover:text-gray-900 dark:hover:text-white"
+            className="text-[#39569c] hover:text-gray-900"
           >
             <svg
               className="w-6 h-6"
@@ -34,7 +34,7 @@ const Icon = ({ facebook_url, instagram_url, github_url }: Props) => {
         <li>
           <Link
             href={instagram_url}
-            className="text-[#00acee] hover:text-gray-900 dark:hover:text-white"
+            className="text-[#00acee] hover:text-gray-900"
           >
             <Image
               src="https://cdn.iconscout.com/icon/free/png-256/instagram-1868978-1583142.png"
@@ -48,7 +48,7 @@ const Icon = ({ facebook_url, instagram_url, github_url }: Props) => {
         <li>
           <Link
             href={github_url}
-            className="text-gray-900 hover:text-gray-900 dark:hover:text-white dark:text-gray-300"
+            className="text-gray-900 hover:text-gray-900"
           >
             <svg
               className="w-6 h-6"

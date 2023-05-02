@@ -34,7 +34,7 @@ const HistoryPage: NextPage<Props> = ({ historyData }) => {
     return <Error title="401" />;
   }
 
-  const handlePaymentModal = () => {
+  const handlePaymentModal = (): void => {
     setPaymentModal(true);
   };
 
@@ -224,7 +224,7 @@ const HistoryPage: NextPage<Props> = ({ historyData }) => {
                             <td className="px-6 py-4">
                               <button
                                 onClick={() => handleDeleteBooking(history.id)}
-                                className="text-red-600 font-semibold"
+                                className="text-red-600 font-semibold hover:underline hover:text-red-700"
                               >
                                 Cancel
                               </button>

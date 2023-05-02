@@ -20,7 +20,8 @@ const Hero = () => {
           <div className="flex justify-center items-center h-full">
             <div className="text-center text-white px-6 md:px-12">
               <h1 className="text-5xl md:text-6xl xl:text-7xl font-bold tracking-tight mb-12 mt-16">
-                Lorem ipsum dolor sit amet, consectetur adipisicing elit.
+                Web application designed for booking sports fields
+                in a university setting.
               </h1>
               <Link
                 href="/booking"

@@ -16,7 +16,7 @@ interface Props {
 const Member: NextPage<Props> = ({ image, name, studentId, facebook_url, instagram_url, github_url }) => {
     return (
         <Fragment>
-            <div className='text-center text-gray-500 dark:text-gray-400 mb-32'>
+            <div className='text-center text-gray-500 mb-32'>
                 <Image
                     className='mx-auto mb-4 w-36 h-36 rounded-full'
                     src={image}
@@ -25,7 +25,7 @@ const Member: NextPage<Props> = ({ image, name, studentId, facebook_url, instagr
                     width={1000}
                 />
                 <h3
-                    className='mb-1 text-2xl font-bold tracking-tight text-gray-900 dark:text-white'
+                    className='mb-1 text-2xl font-bold tracking-tight text-gray-900'
                 >
                     <Link href='/'>{name}</Link>
                 </h3>

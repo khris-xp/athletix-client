@@ -107,7 +107,7 @@ const AdminDashboard: NextPage<Props> = ({ data }) => {
                   <td className="px-6 py-4">
                     {booking.payment.slip_image !== null ? (
                       <Link
-                        href={`${process.env.NEXT_PUBLIC_GET_API}${booking.payment.slip_image}`}
+                        href={`${process.env.NEXT_PUBLIC_GET_API}/${booking.payment.slip_image}`}
                         target="_blank"
                         rel="noopener noreferrer"
                       >{`${process.env.NEXT_PUBLIC_GET_API}/${booking.payment.slip_image}`}</Link>

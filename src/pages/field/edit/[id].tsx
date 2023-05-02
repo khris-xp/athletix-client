@@ -120,7 +120,7 @@ const EditFieldPage: NextPage<Props> = ({
                       </div>
 
                       <div className="md:col-span-5">
-                        <label>Field Image Url</label>
+                        <label>Field Image</label>
                         <input
                           type="file"
                           id="file_input"

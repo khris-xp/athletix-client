@@ -48,7 +48,7 @@ const NewsCard = ({ id, title, description, createdDate, image }: Props) => {
             height={1000}
           />
           </Link>
-          <h3 className="tracking-widest text-blue-500 text-xs font-medium title-font">
+          <h3 className="tracking-widest text-blue-500 text-base font-bold title-font mt-4">
             News
           </h3>
           <h2 className="text-lg text-gray-900 font-medium title-font my-2 uppercase">
