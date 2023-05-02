@@ -41,7 +41,7 @@ export const member: IMember[] = [
     name: "Chollasak Anuwareepong",
     studentId: "65010196",
     image:
-      "https://scontent.fbkk7-3.fna.fbcdn.net/v/t39.30808-6/316961529_1534751090321595_5539287266596493204_n.jpg?_nc_cat=100&ccb=1-7&_nc_sid=174925&_nc_eui2=AeHEuFsaTFVOoSnyjzso4XjavOYAES-GY5-85gARL4Zjn1YEJn_j2zWHUqM1n_V1xaNQaqPTexbgXCc8DDdGBKSk&_nc_ohc=h9Kv8ywaEGEAX_6zO3J&_nc_ht=scontent.fbkk7-3.fna&oh=00_AfC-GZEJ6qROYetDYRDcQHKTSUbdChdkt-0EpDrvv8SXfg&oe=64394D5D",
+      "https://scontent.fbkk7-2.fna.fbcdn.net/v/t39.30808-6/326017995_885310079265482_2420515864902855000_n.jpg?_nc_cat=102&ccb=1-7&_nc_sid=174925&_nc_ohc=QOG-EX18jg0AX_d2l6J&_nc_ht=scontent.fbkk7-2.fna&oh=00_AfAAyP0IUV3zJvmWOkvHqQhXsV67GAPnZqsXaeX22E-YOw&oe=6454F047",
     facebook_url: "https://web.facebook.com/chollsak",
     instagram_url: "https://www.instagram.com/newxnnn.css/",
     github_url: "https://github.com/chollsak",

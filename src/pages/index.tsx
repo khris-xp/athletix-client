@@ -23,10 +23,7 @@ const HomePage: NextPage<Props> = ({ data }) => {
               Our Fields
             </h2>
             <p className="font-light text-fouth-color sm:text-xl dark:text-gray-400">
-              Lorem ipsum dolor sit, amet consectetur adipisicing elit. Neque
-              ullam minima omnis esse unde nesciunt nulla fuga reprehenderit
-              inventore corporis, aliquid laborum sed nemo eius odio asperiores!
-              Vero, iure cum.
+              Our booking site offers a wide range of pitches to choose from, such as football pitches, basketball courts, and more.
             </p>
           </div>
         </div>
@@ -55,7 +52,7 @@ const HomePage: NextPage<Props> = ({ data }) => {
         {member.map((member) => (
           <Member key={member.id} {...member} />
         ))}
-      </div>  
+      </div>
     </Layout>
   );
 };
