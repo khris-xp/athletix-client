@@ -27,11 +27,10 @@ const NewsDetailPage: NextPage<Props> = ({
   createdDate,
   imageUrl,
 }) => {
-
   const { isAuthenticated, isAdmin, isLoading } = useAuth();
 
   if (isLoading) {
-    return <Loading />
+    return <Loading />;
   }
 
   let formattedDate = "";
@@ -53,7 +52,11 @@ const NewsDetailPage: NextPage<Props> = ({
               <div className="grow-0 shrink-0 basis-auto w-full md:w-10/12 px-3">
                 <div className="relative mx-auto mb-6 max-w-screen-lg overflow-hidden rounded-xl py-32 text-center shadow-xl shadow-gray-300">
                   <Image
-                    src={`${imageUrl}`}
+                    src={
+                      /^https:/.test(imageUrl)
+                        ? imageUrl
+                        : `http://127.0.0.1:4000/${imageUrl}`
+                    }
                     alt="banner-image"
                     className="absolute top-0 left-0 -z-10 h-full w-full object-cover"
                     height={1000}
